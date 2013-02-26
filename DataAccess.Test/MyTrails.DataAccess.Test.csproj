@@ -14,10 +14,29 @@
     <TestProjectType>UnitTest</TestProjectType>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.Entity" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MyTrailsContextTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\MyTrails.Contracts.csproj">
+      <Project>{9f153728-51ac-45da-ba15-d4befd4741e9}</Project>
+      <Name>MyTrails.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\MyTrails.DataAccess.csproj">
+      <Project>{35f56f3a-5e01-4d67-9e03-03f1c0b3ed2a}</Project>
+      <Name>MyTrails.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
