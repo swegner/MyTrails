@@ -34,6 +34,11 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml" />
   </ItemGroup>
 </Project>
