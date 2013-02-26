@@ -1,0 +1,11 @@
+/packages/
+!/packages/repositories.config
+
+obj/
+bin/
+
+*.csproj.user
+*.ldf
+*.mdf
+*.suo
+StyleCop.cache
