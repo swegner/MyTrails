@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTrails.DataAccess", "Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTrails.Importer", "Importer\MyTrails.Importer.csproj", "{D1DAF444-4CCE-42CE-8998-C920D174556E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTrails.DataAccess.Test", "DataAccess.Test\MyTrails.DataAccess.Test.csproj", "{46349C39-86D5-48CB-AB1B-C74F9A661D27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{D1DAF444-4CCE-42CE-8998-C920D174556E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1DAF444-4CCE-42CE-8998-C920D174556E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1DAF444-4CCE-42CE-8998-C920D174556E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46349C39-86D5-48CB-AB1B-C74F9A661D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46349C39-86D5-48CB-AB1B-C74F9A661D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46349C39-86D5-48CB-AB1B-C74F9A661D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46349C39-86D5-48CB-AB1B-C74F9A661D27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
