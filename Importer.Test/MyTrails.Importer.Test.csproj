@@ -19,6 +19,15 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ImportModeTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Importer\MyTrails.Importer.csproj">
+      <Project>{d1daf444-4cce-42ce-8998-c920d174556e}</Project>
+      <Name>MyTrails.Importer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
       <ItemGroup>
