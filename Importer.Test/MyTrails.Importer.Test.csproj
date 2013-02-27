@@ -17,6 +17,10 @@
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.0.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
@@ -29,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImportModeTests.cs" />
+    <Compile Include="Logging\StubLog.cs" />
     <Compile Include="TrailsImporterTests.cs" />
   </ItemGroup>
   <ItemGroup>

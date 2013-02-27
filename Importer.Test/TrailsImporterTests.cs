@@ -4,6 +4,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using FluentAssertions;
+
+    using Importer.Test.Logging;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MyTrails.Importer;
@@ -39,12 +42,13 @@
             this._wtaClientMock = new Mock<IWtaClient>(MockBehavior.Strict);
             this._wtaClientMock
                 .Setup(wc => wc.FetchTrails())
-                .Returns(WrapInTask((IEnumerable<WtaTrail>)new[] { AnyWtaTrail }));
+                .Returns(WrapInTask((IList<WtaTrail>)new List<WtaTrail> { AnyWtaTrail }));
 
             this._importer = new TrailsImporter
             {
                 Modes = ImportModes.ImportAndUpdate,
                 WtaClient = this._wtaClientMock.Object,
+                Logger = new StubLog(),
             };
         }
 
@@ -82,7 +86,7 @@
             // Arrange
             this._wtaClientMock
                 .Setup(wc => wc.FetchTrails())
-                .Returns(WrapInTask((IEnumerable<WtaTrail>)new[] { AnyWtaTrail }))
+                .Returns(WrapInTask((IList<WtaTrail>)new List<WtaTrail> { AnyWtaTrail }))
                 .Verifiable();
 
             // Act

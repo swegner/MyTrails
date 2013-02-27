@@ -5,9 +5,9 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Threading.Tasks;
-
     using CommandLine;
     using CommandLine.Text;
+    using log4net;
 
     /// <summary>
     /// Pulls new and updated trail information from the WTA website.
@@ -28,11 +28,19 @@
         public ITrailsImporter TrailsImporter { get; set; }
 
         /// <summary>
+        /// Logging interface.
+        /// </summary>
+        [Import]
+        public ILog Logger { get; set; }
+
+        /// <summary>
         /// Parse commandline options and execute the trails importer.
         /// </summary>
         /// <param name="args">Command line arguments.</param>
         public void Run(string[] args)
         {
+            this.Logger.Debug("Beginning execution.");
+
             Options options = new Options();
             if (this.CommandLineParser.ParseArguments(args, options))
             {

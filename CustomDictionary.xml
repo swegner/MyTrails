@@ -8,7 +8,10 @@
       <Word>wta</Word>
     </Recognized>
     <Deprecated />
-    <Compound />
+    <Compound>
+      <Term CompoundAlternate="GuideBook">guidebook</Term>
+      <Term CompoundAlternate="HighPoint">highpoint</Term>
+    </Compound>
     <DiscreteExceptions />
   </Words>
   <Acronyms>

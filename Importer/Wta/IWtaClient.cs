@@ -12,6 +12,6 @@
         /// Fetch trail definitions from WTA.
         /// </summary>
         /// <returns>A sequence of trails from WTA.</returns>
-        Task<IEnumerable<WtaTrail>> FetchTrails();
+        Task<IList<WtaTrail>> FetchTrails();
     }
 }
