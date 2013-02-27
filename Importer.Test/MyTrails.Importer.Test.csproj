@@ -21,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImportModeTests.cs" />
+    <Compile Include="TrailsImporterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Importer\MyTrails.Importer.csproj">

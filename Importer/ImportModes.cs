@@ -6,7 +6,7 @@
     /// The run mode in which to run the importer.
     /// </summary>
     [Flags]
-    public enum ImportMode
+    public enum ImportModes
     {
         /// <summary>
         /// Default value, don't import.
