@@ -28,6 +28,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="TrailsImporter.cs" />
     <Compile Include="Wta\IWtaClient.cs" />
+    <Compile Include="Wta\WtaClient.cs" />
     <Compile Include="Wta\WtaTrail.cs" />
   </ItemGroup>
   <ItemGroup>

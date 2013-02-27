@@ -2,6 +2,7 @@
 <RuleSet Name="CacheAlert Rules" Description="Based on Microsoft All Rules, with some exclusions" ToolsVersion="11.0">
   <IncludeAll Action="Warning" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1006" Action="None" />
     <Rule Id="CA1014" Action="None" />
     <Rule Id="CA1020" Action="None" />
     <Rule Id="CA1701" Action="None" />
