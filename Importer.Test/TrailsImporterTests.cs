@@ -4,9 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using FluentAssertions;
-
     using Importer.Test.Logging;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MyTrails.Importer;

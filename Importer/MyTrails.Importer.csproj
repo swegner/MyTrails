@@ -12,6 +12,9 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.3.34\lib\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -20,7 +23,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,6 +51,16 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\MyTrails.Contracts.csproj">
+      <Project>{9f153728-51ac-45da-ba15-d4befd4741e9}</Project>
+      <Name>MyTrails.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\MyTrails.DataAccess.csproj">
+      <Project>{35f56f3a-5e01-4d67-9e03-03f1c0b3ed2a}</Project>
+      <Name>MyTrails.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
