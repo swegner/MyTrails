@@ -72,7 +72,9 @@
                         .ToList();
                     if (duplicates.Any())
                     {
-                        this.Logger.WarnFormat("Encountered {0} duplicates while importing data.", duplicates.Count);
+                        this.Logger.WarnFormat("Encountered {0} duplicate{1} while importing data.", 
+                            duplicates.Count,
+                            duplicates.Count > 1 ? "s" : string.Empty);
                         foreach (WtaTrail dupe in duplicates)
                         {
                             wtaTrails.Remove(dupe);

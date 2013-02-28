@@ -44,29 +44,28 @@
         /// <seealso cref="IWtaClient.FetchTrails"/>
         public async Task<IList<WtaTrail>> FetchTrails()
         {
-            string content;
+            IList<WtaTrail> trails;
             using (HttpClient httpClient = new HttpClient { Timeout = Timeout.InfiniteTimeSpan, })
             {
                 this.Logger.Info("Fetching new trails from WTA.");
                 using (HttpResponseMessage response = await httpClient.GetAsync(SearchEndpoint))
                 using (HttpResponseMessage successResponse = response.EnsureSuccessStatusCode())
                 {
-                    this.Logger.Debug("Received response, reading content stream.");
+                    this.Logger.Debug("Received response, deserializing content stream.");
                     using (Stream stream = await successResponse.Content.ReadAsStreamAsync())
                     using (StreamReader reader = new StreamReader(stream))
+                    using (JsonReader jsonReader = new JsonTextReader(reader))
                     {
-                        content = await reader.ReadToEndAsync();
+                        JsonSerializer serializer = new JsonSerializer
+                        {
+                            MissingMemberHandling = MissingMemberHandling.Error,
+                        };
+                        trails = serializer.Deserialize<IList<WtaTrail>>(jsonReader);
                     }
                 }
             }
 
-            this.Logger.Debug("Finished reading contents, deserializing JSON response.");
-            IList<WtaTrail> trails = await JsonConvert.DeserializeObjectAsync<List<WtaTrail>>(content, new JsonSerializerSettings
-            {
-                MissingMemberHandling = MissingMemberHandling.Error,
-            });
             this.Logger.Debug("Finished deserializing JSON response.");
-
             return trails;
         }
     }
