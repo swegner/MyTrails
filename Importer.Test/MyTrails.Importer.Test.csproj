@@ -44,6 +44,7 @@
     <Compile Include="ImportModeTests.cs" />
     <Compile Include="Logging\StubLog.cs" />
     <Compile Include="TestAssembly.cs" />
+    <Compile Include="TrailFactoryTests.cs" />
     <Compile Include="TrailsImporterTests.cs" />
   </ItemGroup>
   <ItemGroup>
