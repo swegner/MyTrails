@@ -24,12 +24,7 @@
         /// <summary>
         /// WTA search endpoint.
         /// </summary>
-        private static readonly Uri SearchEndpoint = new Uri(WtaDomain,
-#if DEBUG
-            "@@WindowsPhone/Search"); // "?StartIndex=0&EndIndex=100");
-#else
-            "@@WindowsPhone/Search");
-#endif
+        private static readonly Uri SearchEndpoint = new Uri(WtaDomain, "@@WindowsPhone/Search");
 
         /// <summary>
         /// Logging interface.
