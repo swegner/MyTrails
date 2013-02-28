@@ -37,8 +37,10 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ImportModes.cs" />
     <Compile Include="Composition\Exports.cs" />
+    <Compile Include="ITrailFactory.cs" />
     <Compile Include="ITrailsImporter.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TrailFactory.cs" />
     <Compile Include="TrailsImporter.cs" />
     <Compile Include="Wta\IWtaClient.cs" />
     <Compile Include="Wta\WtaClient.cs" />

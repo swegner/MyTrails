@@ -24,7 +24,12 @@
         /// <summary>
         /// WTA search endpoint.
         /// </summary>
-        private static readonly Uri SearchEndpoint = new Uri(WtaDomain, "@@WindowsPhone/Search");
+        private static readonly Uri SearchEndpoint = new Uri(WtaDomain,
+#if DEBUG
+            "@@WindowsPhone/Search"); // "?StartIndex=0&EndIndex=100");
+#else
+            "@@WindowsPhone/Search");
+#endif
 
         /// <summary>
         /// Logging interface.
@@ -44,9 +49,10 @@
             {
                 this.Logger.Info("Fetching new trails from WTA.");
                 using (HttpResponseMessage response = await httpClient.GetAsync(SearchEndpoint))
+                using (HttpResponseMessage successResponse = response.EnsureSuccessStatusCode())
                 {
                     this.Logger.Debug("Received response, reading content stream.");
-                    using (Stream stream = await response.Content.ReadAsStreamAsync())
+                    using (Stream stream = await successResponse.Content.ReadAsStreamAsync())
                     using (StreamReader reader = new StreamReader(stream))
                     {
                         content = await reader.ReadToEndAsync();
@@ -54,9 +60,7 @@
                 }
             }
 
-            this.Logger.Debug("Finished reading contents.");
-            
-            this.Logger.Debug("Deserializing JSON response.");
+            this.Logger.Debug("Finished reading contents, deserializing JSON response.");
             IList<WtaTrail> trails = await JsonConvert.DeserializeObjectAsync<List<WtaTrail>>(content, new JsonSerializerSettings
             {
                 MissingMemberHandling = MissingMemberHandling.Error,

@@ -40,6 +40,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbSetExtensions.cs" />
     <Compile Include="ImportModeTests.cs" />
     <Compile Include="Logging\StubLog.cs" />
     <Compile Include="TestAssembly.cs" />

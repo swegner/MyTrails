@@ -1,5 +1,6 @@
 ﻿namespace MyTrails.Importer
 {
+    using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
@@ -39,15 +40,33 @@
         /// <param name="args">Command line arguments.</param>
         public void Run(string[] args)
         {
-            this.Logger.Debug("Beginning execution.");
+            this.Logger.Info("Beginning execution.");
 
             Options options = new Options();
             if (this.CommandLineParser.ParseArguments(args, options))
             {
                 this.TrailsImporter.Modes = options.Modes;
-                Task t = this.TrailsImporter.Run();
 
-                t.Wait();
+                const string errorStringFormat = "Errors encountered during execution:\n{0}";
+                try
+                {
+                    Task t = this.TrailsImporter.Run();
+                    t.Wait();
+                }
+                catch (AggregateException ae)
+                {
+                    this.Logger.ErrorFormat(errorStringFormat, string.Join(Environment.NewLine, ae.Flatten().InnerExceptions));
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.ErrorFormat(errorStringFormat, ex);
+                    throw;
+                }
+                finally
+                {
+                    this.Logger.Info("Done!");
+                }
             }
         }
 
@@ -55,14 +74,28 @@
         /// Entry point to the application.
         /// </summary>
         /// <param name="args">Commandline arguments.</param>
-        internal static void Main(string[] args)
+        /// <returns>0 on success, or non-zero otherwise.</returns>
+        internal static int Main(string[] args)
         {
-            using (ApplicationCatalog catalog = new ApplicationCatalog())
-            using (CompositionContainer container = new CompositionContainer(catalog))
+            int returnCode;
+
+            try
             {
-                Program p = container.GetExportedValue<Program>();
-                p.Run(args);
+                using (ApplicationCatalog catalog = new ApplicationCatalog())
+                using (CompositionContainer container = new CompositionContainer(catalog))
+                {
+                    Program p = container.GetExportedValue<Program>();
+                    p.Run(args);
+                }
+
+                returnCode = 0;
             }
+            catch
+            {
+                returnCode = -1;
+            }
+
+            return returnCode;
         }
 
         /// <summary>
