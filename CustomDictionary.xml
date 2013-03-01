@@ -4,11 +4,14 @@
     <Unrecognized />
     <Recognized>
       <Word>api</Word>
+      <Word>DbGeography</Word>
+      <Word>deduped</Word>
       <Word>elmah</Word>
       <Word>wta</Word>
     </Recognized>
     <Deprecated />
     <Compound>
+      <Term CompoundAlternate="DbGeography">dbgeography</Term>
       <Term CompoundAlternate="GuideBook">guidebook</Term>
       <Term CompoundAlternate="HighPoint">highpoint</Term>
     </Compound>

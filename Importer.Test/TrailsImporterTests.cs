@@ -180,7 +180,7 @@
         /// the <see cref="TrailsImporter.TrailFactory"/>.
         /// </summary>
         [TestMethod]
-        public void ExistingTrailsDeduplicated()
+        public void ExistingTrailsDeduped()
         {
             // Arrange
             WtaTrail existingTrail = ExistingTrails

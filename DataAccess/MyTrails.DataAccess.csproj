@@ -26,6 +26,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyTrailsContext.cs" />
   </ItemGroup>
   <ItemGroup>

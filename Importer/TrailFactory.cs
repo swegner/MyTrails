@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.Composition;
+    using System.Data.Spatial;
     using MyTrails.Contracts.Data;
     using MyTrails.Importer.Wta;
 
@@ -24,7 +25,18 @@
                 throw new ArgumentNullException("wtaTrail");
             }
 
-            return new Trail { WtaId = wtaTrail.Uid, };
+            // TODO: Write test case for null location/ zero lat / long
+            DbGeography location = DbGeographyExt.PointFromCoordinates(wtaTrail.Location.Latitude, wtaTrail.Location.Longitude);
+
+            return new Trail
+            {
+                Name = wtaTrail.Title,
+                WtaId = wtaTrail.Uid,
+                Url = wtaTrail.Url,
+                Location = location,
+                WtaRating = wtaTrail.Rating,
+                Region = wtaTrail.Location.RegionId.ToString(),
+            };
         }
     }
 }

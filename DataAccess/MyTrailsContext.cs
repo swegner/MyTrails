@@ -3,6 +3,7 @@
     using System.Data.Entity;
 
     using MyTrails.Contracts.Data;
+    using MyTrails.DataAccess.Migrations;
 
     /// <summary>
     /// Data context for MyTrails data store access.
@@ -10,8 +11,21 @@
     public class MyTrailsContext : DbContext
     {
         /// <summary>
+        /// Static initializer; set the database initialize for the context.
+        /// </summary>
+        static MyTrailsContext()
+        {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<MyTrailsContext, Configuration>());
+        }
+
+        /// <summary>
         /// Hiking trails available in the data store.
         /// </summary>
         public DbSet<Trail> Trails { get; set; }
+
+        /// <summary>
+        /// Washington state regions available in the datastore.
+        /// </summary>
+        public DbSet<Region> Regions { get; set; }
     }
 }
