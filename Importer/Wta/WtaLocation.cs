@@ -18,7 +18,7 @@
         public double Longitude { get; set; }
 
         /// <summary>
-        /// WTA Region ID for the location.
+        /// WTA SubRegion ID for the location.
         /// </summary>
         public Guid RegionId { get; set; }
     }

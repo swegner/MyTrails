@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// A geographic region of Washington state.
@@ -24,6 +25,7 @@
         /// <summary>
         /// Name of the region.
         /// </summary>
+        [MaxLength(25)]
         public string Name { get; set; }
 
         /// <summary>

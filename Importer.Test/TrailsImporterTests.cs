@@ -74,8 +74,8 @@
         [TestInitialize]
         public void TestInitialize()
         {
-            this.InitializeMocks();
             this.InitializeDatabase();
+            this.InitializeMocks();
 
             this._importer = new TrailsImporter
             {
@@ -164,8 +164,8 @@
         {
             // Arrange
             this._trailFactoryMock
-            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>()))
-            .Returns((WtaTrail wt) => new Trail { WtaId = wt.Uid })
+            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>()))
+            .Returns((WtaTrail wt, IEnumerable<Region> rs) => new Trail { WtaId = wt.Uid })
             .Verifiable();
 
             // Act
@@ -191,7 +191,8 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail), Times.Never());
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<IEnumerable<Region>>()),
+                Times.Never());
         }
 
         /// <summary>
@@ -212,7 +213,8 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>()), Times.Exactly(NewTrails.Length));
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>()),
+                Times.Exactly(NewTrails.Length));
         }
 
         /// <summary>
@@ -286,8 +288,8 @@
 
             this._trailFactoryMock = new Mock<ITrailFactory>(MockBehavior.Strict);
             this._trailFactoryMock
-                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>()))
-                .Returns((WtaTrail wt) => new Trail { WtaId = wt.Uid });
+                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>()))
+                .Returns((WtaTrail wt, IEnumerable<Region> rs) => new Trail { WtaId = wt.Uid });
         }
 
         /// <summary>

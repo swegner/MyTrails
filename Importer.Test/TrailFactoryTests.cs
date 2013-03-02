@@ -2,6 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using Importer.Test.Logging;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.Contracts.Data;
     using MyTrails.Importer;
@@ -30,6 +33,30 @@
         private const double AnyWtaRating = 4.345;
 
         /// <summary>
+        /// Sample GUID identifier for subregion test data.
+        /// </summary>
+        private static readonly Guid AnySubRegionGuid = Guid.NewGuid();
+
+        /// <summary>
+        /// Sample regions collection to use during testing.
+        /// </summary>
+        private static readonly ICollection<Region> Regions = new Collection<Region>
+        {
+            new Region
+            {
+                Name = "Any Region Name",
+                SubRegions =
+                {
+                    new SubRegion
+                    {
+                        Name = "Any SubRegion Name",
+                        WtaId = AnySubRegionGuid,
+                    },
+                },
+            }
+        };
+
+        /// <summary>
         /// Sample trail URL to use during testing.
         /// </summary>
         private static readonly Uri AnyTrailUrl = new Uri("http://any/trail/url");
@@ -40,31 +67,9 @@
         private static readonly DbGeography AnyLocation = DbGeographyExt.PointFromCoordinates(23.456, -109.654);
 
         /// <summary>
-        /// "Normal" trail with complete data to be filled in.
+        /// Test trail data to use in factory tests.
         /// </summary>
-        private static readonly TestData NormalTrail = new TestData
-        {
-            Input = new WtaTrail
-            {
-                Uid = AnyWtaId,
-                Title = AnyTrailTitle,
-                Url = AnyTrailUrl,
-                Location = new WtaLocation
-                {
-                    Latitude = AnyLocation.Latitude.Value,
-                    Longitude = AnyLocation.Longitude.Value,
-                },
-                Rating = AnyWtaRating,
-            },
-            ExpectedOutput = new Trail
-            {
-                WtaId = AnyWtaId,
-                Name = AnyTrailTitle,
-                Url = AnyTrailUrl,
-                Location = AnyLocation,
-                WtaRating = AnyWtaRating,
-            }
-        };
+        private TestData _trailData;
 
         /// <summary>
         /// <see cref="TrailFactory"/> instance to test against.
@@ -77,57 +82,125 @@
         [TestInitialize]
         public void TestInitialize()
         {
-            this._factory = new TrailFactory();
+            this._factory = new TrailFactory
+            {
+                Logger = new StubLog(),
+            };
+
+            this._trailData = new TestData
+            {
+                Input = new WtaTrail
+                {
+                    Uid = AnyWtaId,
+                    Title = AnyTrailTitle,
+                    Url = AnyTrailUrl,
+                    Location = new WtaLocation
+                    {
+                        Latitude = AnyLocation.Latitude.Value,
+                        Longitude = AnyLocation.Longitude.Value,
+                        RegionId = AnySubRegionGuid,
+                    },
+                    Rating = AnyWtaRating,
+                },
+                ExpectedOutput = new Trail
+                {
+                    WtaId = AnyWtaId,
+                    Name = AnyTrailTitle,
+                    Url = AnyTrailUrl,
+                    Location = AnyLocation,
+                    SubRegion = Regions.First().SubRegions.First(),
+                    WtaRating = AnyWtaRating,
+                }
+            };
         }
 
         /// <summary>
-        /// Verify that the factory assigns the <see cref="Trail.WtaId"/>
+        /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.WtaId"/>
         /// </summary>
         [TestMethod]
         public void AssignsWtaId()
         {
             // Act / Assert
-            this.TestFactoryMethod(NormalTrail, t => t.WtaId);
+            this.TestFactoryMethod(this._trailData, t => t.WtaId);
         }
 
         /// <summary>
-        /// Verify that the factory assigns the <see cref="Trail.Name"/>
+        /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.Name"/>
         /// </summary>
         [TestMethod]
         public void AssignsName()
         {
             // Act / Assert
-            this.TestFactoryMethod(NormalTrail, t => t.Name);
+            this.TestFactoryMethod(this._trailData, t => t.Name);
         }
 
         /// <summary>
-        /// Verify that the factory assigns the <see cref="Trail.Url"/>
+        /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.Url"/>
         /// </summary>
         [TestMethod]
         public void AssignsUrl()
         {
             // Act / Assert
-            this.TestFactoryMethod(NormalTrail, t => t.Url);
+            this.TestFactoryMethod(this._trailData, t => t.Url);
         }
 
         /// <summary>
-        /// Verify that the factory assigns the <see cref="Trail.WtaRating"/>
+        /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.WtaRating"/>
         /// </summary>
         [TestMethod]
         public void AssignsRating()
         {
             // Act / Assert
-            this.TestFactoryMethod(NormalTrail, t => t.WtaRating);
+            this.TestFactoryMethod(this._trailData, t => t.WtaRating);
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.Location"/>
+        /// Verify that the factory assigns <see cref="MyTrails.Contracts.Data.Trail.Location"/>
         /// </summary>
         [TestMethod]
         public void AssignsLocation()
         {
             // Act / Assert
-            this.TestFactoryMethod(NormalTrail, t => t.Location, new DbGeographyPointComparer());
+            this.TestFactoryMethod(this._trailData, t => t.Location, new DbGeographyPointComparer());
+        }
+
+        /// <summary>
+        /// Verify that the factory is resilient to null <see cref="WtaTrail.Location"/> data.
+        /// </summary>
+        [TestMethod]
+        public void SkipsNullLocation()
+        {
+            // Arrange
+            this._trailData.Input.Location = null;
+            this._trailData.ExpectedOutput.Location = null;
+
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.Location);
+        }
+
+        /// <summary>
+        /// Verify that the factory is resilient to zero latitude / longitude
+        /// </summary>
+        [TestMethod]
+        public void HandlesZeroLatitudeLongitude()
+        {
+            // Arrange
+            this._trailData.Input.Location.Latitude = 0;
+            this._trailData.Input.Location.Longitude = 0;
+            this._trailData.ExpectedOutput.Location = null;
+
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.Location);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.SubRegion"/>
+        /// </summary>
+        [TestMethod]
+        public void AssignsSubRegion()
+        {
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.SubRegion);
         }
 
         /// <summary>
@@ -148,7 +221,7 @@
             }
 
             // Act
-            Trail actual = this._factory.CreateTrail(testData.Input);
+            Trail actual = this._factory.CreateTrail(testData.Input, Regions);
 
             // Assert
             TProperty expectedProperty = propertySelector(testData.ExpectedOutput);

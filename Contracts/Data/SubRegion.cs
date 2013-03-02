@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// A geographic region located within a larger region.
@@ -23,13 +24,14 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// Region GUID from the WTA website.
+        /// SubRegion GUID from the WTA website.
         /// </summary>
         public Guid WtaId { get; set; }
 
         /// <summary>
         /// Name of the subregion.
         /// </summary>
+        [MaxLength(40)]
         public string Name { get; set; }
 
         /// <summary>
