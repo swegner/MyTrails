@@ -92,6 +92,7 @@
         [TestCleanup]
         public void TestCleanup()
         {
+            this._dataContext.Trails.Truncate();
             this.Dispose();
         }
 
@@ -164,8 +165,8 @@
         {
             // Arrange
             this._trailFactoryMock
-            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>()))
-            .Returns((WtaTrail wt, IEnumerable<Region> rs) => new Trail { WtaId = wt.Uid })
+            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), It.IsAny<IEnumerable<Guidebook>>()))
+            .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gb) => new Trail { WtaId = wt.Uid })
             .Verifiable();
 
             // Act
@@ -191,7 +192,7 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<IEnumerable<Region>>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<IEnumerable<Region>>(), It.IsAny<IEnumerable<Guidebook>>()),
                 Times.Never());
         }
 
@@ -213,7 +214,7 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), It.IsAny<IEnumerable<Guidebook>>()),
                 Times.Exactly(NewTrails.Length));
         }
 
@@ -274,8 +275,8 @@
 
             this._trailFactoryMock = new Mock<ITrailFactory>(MockBehavior.Strict);
             this._trailFactoryMock
-                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>()))
-                .Returns((WtaTrail wt, IEnumerable<Region> rs) => new Trail { WtaId = wt.Uid });
+                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), It.IsAny<IEnumerable<Guidebook>>()))
+                .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gb) => new Trail { WtaId = wt.Uid });
         }
 
         /// <summary>

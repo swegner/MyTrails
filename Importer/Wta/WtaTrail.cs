@@ -44,7 +44,7 @@
         /// <summary>
         /// Guidebook reference featuring this trail.
         /// </summary>
-        public WtaGuideBook GuideBook { get; set; }
+        public WtaGuidebook Guidebook { get; set; }
 
         /// <summary>
         /// Any required pass for the trail.

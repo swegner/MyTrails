@@ -7,8 +7,16 @@
     /// <summary>
     /// Guidebook reference from WTA.
     /// </summary>
-    public class WtaGuideBook
+    public class WtaGuidebook
     {
+        /// <summary>
+        /// Construct a new <see cref="WtaGuidebook"/> instance.
+        /// </summary>
+        public WtaGuidebook()
+        {
+            this.Merchants = new List<WtaGuidebookMerchant>();
+        }
+
         /// <summary>
         /// Title for the guide book.
         /// </summary>
@@ -31,6 +39,6 @@
             Justification = "Class only used for deserialization."),
         SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists",
             Justification = "Class only used for deserialization.")]
-        public List<WtaGuideBookMerchant> Merchants { get; set; }
+        public List<WtaGuidebookMerchant> Merchants { get; set; }
     }
 }

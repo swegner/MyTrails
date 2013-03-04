@@ -27,5 +27,10 @@
         /// Washington state regions available in the datastore.
         /// </summary>
         public DbSet<Region> Regions { get; set; }
+
+        /// <summary>
+        /// Guidebooks containing trail information.
+        /// </summary>
+        public DbSet<Guidebook> Guidebooks { get; set; }
     }
 }

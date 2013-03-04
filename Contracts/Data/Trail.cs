@@ -81,5 +81,10 @@
         /// The high point of the trail.
         /// </summary>
         public double? HighPoint { get; set; }
+
+        /// <summary>
+        /// Book reference containing trail information.
+        /// </summary>
+        public Guidebook Guidebook { get; set; }
     }
 }

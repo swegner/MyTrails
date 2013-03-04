@@ -1,6 +1,7 @@
 ﻿namespace MyTrails.DataAccess.Test
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.Contracts.Data;
@@ -37,7 +38,7 @@
         public void CanAccessTrails()
         {
             // Act
-            this._context.Trails.FirstOrDefault();
+            this.TestAccess(this._context.Trails);
         }
 
         /// <summary>
@@ -47,7 +48,17 @@
         public void CanAccessRegions()
         {
             // Act
-            this._context.Regions.FirstOrDefault();
+            this.TestAccess(this._context.Regions);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="MyTrailsContext.Guidebooks"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessGuidebooks()
+        {
+            // Act
+            this.TestAccess(this._context.Guidebooks);
         }
 
         /// <summary>
@@ -104,6 +115,17 @@
 
                 this._disposed = true;
             }
+        }
+
+        /// <summary>
+        /// Test that the given <see cref="DbSet{TEntity}"/> is accessible.
+        /// </summary>
+        /// <typeparam name="T">The entity type for the dataset.</typeparam>
+        /// <param name="dataSet">The dataset to test.</param>
+        private void TestAccess<T>(DbSet<T> dataSet)
+            where T : class
+        {
+            dataSet.FirstOrDefault();
         }
     }
 }

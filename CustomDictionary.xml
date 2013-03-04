@@ -12,7 +12,6 @@
     <Deprecated />
     <Compound>
       <Term CompoundAlternate="DbGeography">dbgeography</Term>
-      <Term CompoundAlternate="GuideBook">guidebook</Term>
       <Term CompoundAlternate="HighPoint">highpoint</Term>
     </Compound>
     <DiscreteExceptions />

@@ -14,7 +14,8 @@
         /// </summary>
         /// <param name="wtaTrail">The imported WTA trail to use for trail creating.</param>
         /// <param name="regions">Sequence of registered regions with IDs, to associate with the trial.</param>
+        /// <param name="guidebooks">Sequence of registered guidebooks.</param>
         /// <returns>A new <see cref="Trail"/> instance.</returns>
-        Trail CreateTrail(WtaTrail wtaTrail, IEnumerable<Region> regions);
+        Trail CreateTrail(WtaTrail wtaTrail, IEnumerable<Region> regions, IEnumerable<Guidebook> guidebooks);
     }
 }

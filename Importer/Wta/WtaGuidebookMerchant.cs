@@ -5,7 +5,7 @@
     /// <summary>
     /// Merchant which carries a guidebook returned from WTA.
     /// </summary>
-    public class WtaGuideBookMerchant
+    public class WtaGuidebookMerchant
     {
         /// <summary>
         /// Outlet name for the merchant.
