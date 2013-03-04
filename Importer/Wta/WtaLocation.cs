@@ -10,16 +10,16 @@
         /// <summary>
         /// Latitude part of the coordinates.
         /// </summary>
-        public double Latitude { get; set; }
+        public double? Latitude { get; set; }
 
         /// <summary>
         /// Longitude part of the coordinate.
         /// </summary>
-        public double Longitude { get; set; }
+        public double? Longitude { get; set; }
 
         /// <summary>
-        /// WTA SubRegion ID for the location.
+        /// WTA Region ID for the location.
         /// </summary>
-        public Guid RegionId { get; set; }
+        public Guid? RegionId { get; set; }
     }
 }

@@ -38,25 +38,6 @@
         private static readonly Guid AnySubRegionGuid = Guid.NewGuid();
 
         /// <summary>
-        /// Sample regions collection to use during testing.
-        /// </summary>
-        private static readonly ICollection<Region> Regions = new Collection<Region>
-        {
-            new Region
-            {
-                Name = "Any Region Name",
-                SubRegions =
-                {
-                    new SubRegion
-                    {
-                        Name = "Any SubRegion Name",
-                        WtaId = AnySubRegionGuid,
-                    },
-                },
-            }
-        };
-
-        /// <summary>
         /// Sample trail URL to use during testing.
         /// </summary>
         private static readonly Uri AnyTrailUrl = new Uri("http://any/trail/url");
@@ -72,6 +53,11 @@
         private TestData _trailData;
 
         /// <summary>
+        /// Sample regions collection to use during testing.
+        /// </summary>
+        private ICollection<Region> _regions;
+
+        /// <summary>
         /// <see cref="TrailFactory"/> instance to test against.
         /// </summary>
         private TrailFactory _factory;
@@ -85,6 +71,17 @@
             this._factory = new TrailFactory
             {
                 Logger = new StubLog(),
+            };
+
+            Region region = new Region
+            {
+                Name = "Any Region Name", 
+                SubRegions = { new Region { Name = "Any SubRegion Name", WtaId = AnySubRegionGuid, }, },
+            };
+            this._regions = new Collection<Region>
+            {
+                region,
+                region.SubRegions.First(),
             };
 
             this._trailData = new TestData
@@ -108,7 +105,7 @@
                     Name = AnyTrailTitle,
                     Url = AnyTrailUrl,
                     Location = AnyLocation,
-                    SubRegion = Regions.First().SubRegions.First(),
+                    Region = this._regions.First().SubRegions.First(),
                     WtaRating = AnyWtaRating,
                 }
             };
@@ -179,14 +176,14 @@
         }
 
         /// <summary>
-        /// Verify that the factory is resilient to zero latitude / longitude
+        /// Verify that the factory is resilient to null latitude / longitude
         /// </summary>
         [TestMethod]
-        public void HandlesZeroLatitudeLongitude()
+        public void HandlesNullLatitudeLongitude()
         {
             // Arrange
-            this._trailData.Input.Location.Latitude = 0;
-            this._trailData.Input.Location.Longitude = 0;
+            this._trailData.Input.Location.Latitude = null;
+            this._trailData.Input.Location.Longitude = null;
             this._trailData.ExpectedOutput.Location = null;
 
             // Act / Assert
@@ -194,13 +191,27 @@
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.SubRegion"/>
+        /// Verify that the factory is resilient to null region
+        /// </summary>
+        [TestMethod]
+        public void HandlesNullRegion()
+        {
+            // Arrange
+            this._trailData.Input.Location.RegionId = null;
+            this._trailData.ExpectedOutput.Region = null;
+
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.Region);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.Region"/>
         /// </summary>
         [TestMethod]
         public void AssignsSubRegion()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.SubRegion);
+            this.TestFactoryMethod(this._trailData, t => t.Region);
         }
 
         /// <summary>
@@ -221,7 +232,7 @@
             }
 
             // Act
-            Trail actual = this._factory.CreateTrail(testData.Input, Regions);
+            Trail actual = this._factory.CreateTrail(testData.Input, this._regions);
 
             // Assert
             TProperty expectedProperty = propertySelector(testData.ExpectedOutput);

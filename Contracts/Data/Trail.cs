@@ -60,7 +60,7 @@
         /// <summary>
         /// The geographic region of the trail.
         /// </summary>
-        public SubRegion SubRegion { get; set; }
+        public Region Region { get; set; }
 
         /// <summary>
         /// WTA rating for the trail.

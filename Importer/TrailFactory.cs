@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Data.Spatial;
+    using System.Globalization;
     using System.Linq;
     using log4net;
     using MyTrails.Contracts.Data;
@@ -23,12 +24,12 @@
         /// <summary>
         /// Dictionary of registered subregions, keyed by their WTA ID.
         /// </summary>
-        private Dictionary<Guid, SubRegion> _subRegionDictionary;
+        private Dictionary<Guid, Region> _regionDictionary;
 
         /// <summary>
-        /// Whether <see cref="_subRegionDictionary"/> has been initialized.
+        /// Whether <see cref="_regionDictionary"/> has been initialized.
         /// </summary>
-        private bool _subRegionsInitialized;
+        private bool _regionsInitialized;
 
         /// <summary>
         /// Logging interface.
@@ -52,21 +53,13 @@
 
             this.InitializeSubRegions(regions);
 
-            DbGeography location;
-            SubRegion subRegion;
-            if (wtaTrail.Location != null)
-            {
-                location = (!AlmostEqual(wtaTrail.Location.Latitude, 0) && !AlmostEqual(wtaTrail.Location.Longitude, 0)) ?
-                    DbGeographyExt.PointFromCoordinates(wtaTrail.Location.Latitude, wtaTrail.Location.Longitude) :
-                    null;
-
-                subRegion = this._subRegionDictionary[wtaTrail.Location.RegionId];
-            }
-            else
-            {
-                location = null;
-                subRegion = null;
-            }
+            WtaLocation wtaLocation = wtaTrail.Location ?? new WtaLocation();
+            DbGeography location = wtaLocation.Latitude.HasValue && wtaLocation.Longitude.HasValue ?
+                DbGeographyExt.PointFromCoordinates(wtaLocation.Latitude.Value, wtaLocation.Longitude.Value) :
+                null;
+            Region region = wtaLocation.RegionId.HasValue ?
+                this._regionDictionary[wtaLocation.RegionId.Value] :
+                null;
 
             return new Trail
             {
@@ -75,22 +68,8 @@
                 Url = wtaTrail.Url,
                 Location = location,
                 WtaRating = wtaTrail.Rating,
-                SubRegion = subRegion,
+                Region = region,
             };
-        }
-
-        /// <summary>
-        /// Determine whether two floating point numbers are almost equal.
-        /// </summary>
-        /// <param name="x">First number to compare.</param>
-        /// <param name="y">Second number to compare.</param>
-        /// <returns>True if the numbers are almost equal, of false otherwise.</returns>
-        private static bool AlmostEqual(double x, double y)
-        {
-            const double epsilon = 1e-8;
-
-            double delta = x > y ? x - y : y - x;
-            return delta < epsilon;
         }
 
         /// <summary>
@@ -99,18 +78,16 @@
         /// <param name="regions">Registered regions to enumerate.</param>
         private void InitializeSubRegions(IEnumerable<Region> regions)
         {
-            if (!this._subRegionsInitialized)
+            if (!this._regionsInitialized)
             {
                 lock (this._initLockObject)
                 {
-                    if (!this._subRegionsInitialized)
+                    if (!this._regionsInitialized)
                     {
                         this.Logger.Debug("Initializing subregion dictionary.");
-                        this._subRegionDictionary = regions
-                            .SelectMany(r => r.SubRegions)
-                            .ToDictionary(sr => sr.WtaId, sr => sr);
+                        this._regionDictionary = regions.ToDictionary(sr => sr.WtaId, sr => sr);
 
-                        this._subRegionsInitialized = true;
+                        this._regionsInitialized = true;
                     }
                 }
             }

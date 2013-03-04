@@ -1,5 +1,6 @@
 ﻿namespace MyTrails.Contracts.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
@@ -14,7 +15,7 @@
         /// </summary>
         public Region()
         {
-            this.SubRegions = new Collection<SubRegion>();
+            this.SubRegions = new Collection<Region>();
         }
 
         /// <summary>
@@ -23,14 +24,19 @@
         public int Id { get; set; }
 
         /// <summary>
+        /// SubRegion GUID from the WTA website.
+        /// </summary>
+        public Guid WtaId { get; set; }
+
+        /// <summary>
         /// Name of the region.
         /// </summary>
-        [MaxLength(25)]
+        [MaxLength(40)]
         public string Name { get; set; }
 
         /// <summary>
         /// List of sub-regions for in region.
         /// </summary>
-        public virtual ICollection<SubRegion> SubRegions { get; private set; }
+        public virtual ICollection<Region> SubRegions { get; private set; }
     }
 }

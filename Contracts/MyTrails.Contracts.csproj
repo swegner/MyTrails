@@ -22,7 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Region.cs" />
-    <Compile Include="Data\SubRegion.cs" />
     <Compile Include="Data\Trail.cs" />
   </ItemGroup>
   <ItemGroup>

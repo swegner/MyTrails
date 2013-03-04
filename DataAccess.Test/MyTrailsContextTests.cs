@@ -66,7 +66,7 @@
 
             // Act
             Guid expectedGuid = Guid.Parse("637634387ca38685f89162475c7fc1d2");
-            SubRegion subRegion = region.SubRegions
+            Region subRegion = region.SubRegions
                 .Where(sr => sr.WtaId == expectedGuid)
                 .FirstOrDefault();
 
