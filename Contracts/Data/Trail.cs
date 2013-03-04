@@ -66,5 +66,20 @@
         /// WTA rating for the trail.
         /// </summary>
         public double WtaRating { get; set; }
+
+        /// <summary>
+        /// The round-trip mileage for the hike.
+        /// </summary>
+        public double? Mileage { get; set; }
+
+        /// <summary>
+        /// Total elevation gain for the trial.
+        /// </summary>
+        public double? ElevationGain { get; set; }
+
+        /// <summary>
+        /// The high point of the trail.
+        /// </summary>
+        public double? HighPoint { get; set; }
     }
 }

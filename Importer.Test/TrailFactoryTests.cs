@@ -1,15 +1,15 @@
-﻿namespace Importer.Test
+﻿namespace MyTrails.Importer.Test
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Data.Spatial;
     using System.Linq;
-    using Importer.Test.Logging;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.Contracts.Data;
     using MyTrails.Importer;
+    using MyTrails.Importer.Test.Logging;
     using MyTrails.Importer.Wta;
-    using DbGeography = System.Data.Spatial.DbGeography;
 
     /// <summary>
     /// Unit tests for the <see cref="TrailFactory"/> class.
@@ -31,6 +31,21 @@
         /// Sample trail rating to use during testing.
         /// </summary>
         private const double AnyWtaRating = 4.345;
+
+        /// <summary>
+        /// Sample trail mileage to use during testing.
+        /// </summary>
+        private const double AnyMileage = 345.213;
+
+        /// <summary>
+        /// Sample elevation gain to use during testing.
+        /// </summary>
+        private const double AnyElevationGain = 9834.123;
+
+        /// <summary>
+        /// Sample high point to use during testing.
+        /// </summary>
+        private const double AnyHighPoint = 2353.22;
 
         /// <summary>
         /// Sample GUID identifier for subregion test data.
@@ -97,6 +112,12 @@
                         Longitude = AnyLocation.Longitude.Value,
                         RegionId = AnySubRegionGuid,
                     },
+                    Statistics = new WtaStatistics
+                    {
+                        ElevationGain = AnyElevationGain,
+                        HighPoint = AnyHighPoint,
+                        Mileage = AnyMileage,
+                    },
                     Rating = AnyWtaRating,
                 },
                 ExpectedOutput = new Trail
@@ -107,6 +128,9 @@
                     Location = AnyLocation,
                     Region = this._regions.First().SubRegions.First(),
                     WtaRating = AnyWtaRating,
+                    ElevationGain = AnyElevationGain,
+                    HighPoint = AnyHighPoint,
+                    Mileage = AnyMileage,
                 }
             };
         }
@@ -208,10 +232,82 @@
         /// Verify that the factory assigns <see cref="Trail.Region"/>
         /// </summary>
         [TestMethod]
-        public void AssignsSubRegion()
+        public void AssignsRegion()
         {
             // Act / Assert
             this.TestFactoryMethod(this._trailData, t => t.Region);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.ElevationGain"/>
+        /// </summary>
+        [TestMethod]
+        public void AssignsElevationGain()
+        {
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.ElevationGain);
+        }
+
+        /// <summary>
+        /// Verify that the factory handles null <see cref="WtaStatistics.ElevationGain"/>
+        /// </summary>
+        [TestMethod]
+        public void HandlesNullElevationGain()
+        {
+            // Arrange
+            this._trailData.Input.Statistics.ElevationGain = null;
+            this._trailData.ExpectedOutput.ElevationGain = null;
+
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.ElevationGain);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.Mileage"/>
+        /// </summary>
+        [TestMethod]
+        public void AssignsMileage()
+        {
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.Mileage);
+        }
+
+        /// <summary>
+        /// Verify that the factory handles null <see cref="WtaStatistics.Mileage"/>
+        /// </summary>
+        [TestMethod]
+        public void HandlesNullMileage()
+        {
+            // Arrange
+            this._trailData.Input.Statistics.Mileage = null;
+            this._trailData.ExpectedOutput.Mileage = null;
+
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.Mileage);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.HighPoint"/>
+        /// </summary>
+        [TestMethod]
+        public void AssignsHighPoint()
+        {
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.HighPoint);
+        }
+
+        /// <summary>
+        /// Verify that the factory handles null <see cref="WtaStatistics.HighPoint"/>
+        /// </summary>
+        [TestMethod]
+        public void HandlesNullHighPoint()
+        {
+            // Arrange
+            this._trailData.Input.Statistics.HighPoint = null;
+            this._trailData.ExpectedOutput.HighPoint = null;
+
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.HighPoint);
         }
 
         /// <summary>

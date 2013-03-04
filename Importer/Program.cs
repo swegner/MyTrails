@@ -3,11 +3,8 @@
     using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
     using System.Threading.Tasks;
     using CommandLine;
-    using CommandLine.Text;
     using log4net;
 
     /// <summary>
@@ -16,12 +13,6 @@
     [Export]
     public class Program
     {
-        /// <summary>
-        /// The command line parser.
-        /// </summary>
-        [Import]
-        public ICommandLineParser CommandLineParser { get; set; }
-
         /// <summary>
         /// Imports trails from WTA.
         /// </summary>
@@ -35,38 +26,47 @@
         public ILog Logger { get; set; }
 
         /// <summary>
+        /// Build the composition catalog for the application.
+        /// </summary>
+        /// <returns>The composition catalog for the application.</returns>
+        public static ApplicationCatalog BuildCompositionCatalog()
+        {
+            return new ApplicationCatalog();
+        }
+
+        /// <summary>
         /// Parse commandline options and execute the trails importer.
         /// </summary>
-        /// <param name="args">Command line arguments.</param>
-        public void Run(string[] args)
+        /// <param name="options">Execution options.</param>
+        public void Run(ExecutionOptions options)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
             this.Logger.Info("Beginning execution.");
 
-            Options options = new Options();
-            if (this.CommandLineParser.ParseArguments(args, options))
+            this.TrailsImporter.Modes = options.Modes;
+            const string errorStringFormat = "Errors encountered during execution:\n{0}";
+            try
             {
-                this.TrailsImporter.Modes = options.Modes;
-
-                const string errorStringFormat = "Errors encountered during execution:\n{0}";
-                try
-                {
-                    Task t = this.TrailsImporter.Run();
-                    t.Wait();
-                }
-                catch (AggregateException ae)
-                {
-                    this.Logger.ErrorFormat(errorStringFormat, string.Join(Environment.NewLine, ae.Flatten().InnerExceptions));
-                    throw;
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.ErrorFormat(errorStringFormat, ex);
-                    throw;
-                }
-                finally
-                {
-                    this.Logger.Info("Done!");
-                }
+                Task t = this.TrailsImporter.Run();
+                t.Wait();
+            }
+            catch (AggregateException ae)
+            {
+                this.Logger.ErrorFormat(errorStringFormat, string.Join(Environment.NewLine, ae.Flatten().InnerExceptions));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.ErrorFormat(errorStringFormat, ex);
+                throw;
+            }
+            finally
+            {
+                this.Logger.Info("Done!");
             }
         }
 
@@ -81,11 +81,13 @@
 
             try
             {
-                using (ApplicationCatalog catalog = new ApplicationCatalog())
+                ExecutionOptions options = ParseCommandLine(args);
+
+                using (ApplicationCatalog catalog = BuildCompositionCatalog())
                 using (CompositionContainer container = new CompositionContainer(catalog))
                 {
                     Program p = container.GetExportedValue<Program>();
-                    p.Run(args);
+                    p.Run(options);
                 }
 
                 returnCode = 0;
@@ -99,37 +101,25 @@
         }
 
         /// <summary>
-        /// Commandline options.
+        /// Parse execution options from the command line.
         /// </summary>
-        private class Options : CommandLineOptionsBase
+        /// <param name="args">Command line arguments.</param>
+        /// <returns>Parsed commandline options.</returns>
+        private static ExecutionOptions ParseCommandLine(string[] args)
         {
-            /// <summary>
-            /// The import mode.
-            /// </summary>
-            [Option(shortName: "m", longName: "mode", DefaultValue = ImportModes.ImportAndUpdate,
-                HelpText = "Whether to import new trails, update existing trails, or both")]
-            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode",
-                Justification = "Method called via reflection.")]
-            public ImportModes Modes { get; set; }
-
-            /// <summary>
-            /// Create a usage string to display if commandline parsing fails.
-            /// </summary>
-            /// <returns>A command-line usage string.</returns>
-            [HelpOption]
-            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode",
-                Justification = "Method called via reflection.")] 
-            public string Usage()
+            bool parserSuccess;
+            ExecutionOptions options = new ExecutionOptions();
+            using (Parser parser = new Parser())
             {
-                HelpText helpText = new HelpText
-                {
-                    Heading = new HeadingInfo("MyTrails Importer",
-                        Assembly.GetEntryAssembly().GetName().Version.ToString()),
-                };
-                helpText.AddOptions(this);
-
-                return helpText;
+                parserSuccess = parser.ParseArguments(args, options);
             }
+
+            if (!parserSuccess)
+            {
+                throw new InvalidOperationException("Error parsing command line arguments.");
+            }
+
+            return options;
         }
     }
 }

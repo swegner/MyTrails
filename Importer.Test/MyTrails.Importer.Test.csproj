@@ -4,8 +4,8 @@
   <PropertyGroup>
     <ProjectGuid>{EBCEF8E8-FE80-4023-BFAB-0F2A161454A7}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Importer.Test</RootNamespace>
-    <AssemblyName>Importer.Test</AssemblyName>
+    <RootNamespace>MyTrails.Importer.Test</RootNamespace>
+    <AssemblyName>MyTrails.Importer.Test</AssemblyName>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -14,22 +14,30 @@
     <TestProjectType>UnitTest</TestProjectType>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.2.0.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -41,8 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbSetExtensions.cs" />
+    <Compile Include="E2ETests.cs" />
     <Compile Include="ImportModeTests.cs" />
     <Compile Include="Logging\StubLog.cs" />
+    <Compile Include="ProgramTests.cs" />
+    <Compile Include="TaskExt.cs" />
     <Compile Include="TestAssembly.cs" />
     <Compile Include="TrailFactoryTests.cs" />
     <Compile Include="TrailsImporterTests.cs" />
@@ -60,6 +71,9 @@
       <Project>{d1daf444-4cce-42ce-8998-c920d174556e}</Project>
       <Name>MyTrails.Importer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="sampleData.js" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">

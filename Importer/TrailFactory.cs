@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Data.Spatial;
-    using System.Globalization;
     using System.Linq;
     using log4net;
     using MyTrails.Contracts.Data;
@@ -69,6 +68,9 @@
                 Location = location,
                 WtaRating = wtaTrail.Rating,
                 Region = region,
+                ElevationGain = wtaTrail.Statistics.ElevationGain,
+                Mileage = wtaTrail.Statistics.Mileage,
+                HighPoint = wtaTrail.Statistics.HighPoint,
             };
         }
 

@@ -5,7 +5,6 @@
     using System.ComponentModel.Composition;
     using System.IO;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
     using log4net;
     using Newtonsoft.Json;
@@ -17,14 +16,29 @@
     public class WtaClient : IWtaClient
     {
         /// <summary>
-        /// The base domain address for the WTA website.
-        /// </summary>
-        private static readonly Uri WtaDomain = new Uri("http://www.wta.org");
-
-        /// <summary>
         /// WTA search endpoint.
         /// </summary>
-        private static readonly Uri SearchEndpoint = new Uri(WtaDomain, "@@WindowsPhone/Search");
+        public static readonly Uri SearchEndpoint;
+
+        /// <summary>
+        /// The base domain address for the WTA website.
+        /// </summary>
+        private static readonly Uri WtaDomain;
+
+        /// <summary>
+        /// Initialize static type data.
+        /// </summary>
+        static WtaClient()
+        {
+            WtaDomain = new Uri("http://www.wta.org");
+            SearchEndpoint = new Uri(WtaDomain, "@@WindowsPhone/Search");
+        }
+
+        /// <summary>
+        /// Factory for creating <see cref="IHttpClient"/> instances. 
+        /// </summary>
+        [Import]
+        public IHttpClientFactory HttpClientFactory { get; set; }
 
         /// <summary>
         /// Logging interface.
@@ -40,10 +54,10 @@
         public async Task<IList<WtaTrail>> FetchTrails()
         {
             IList<WtaTrail> trails;
-            using (HttpClient httpClient = new HttpClient { Timeout = Timeout.InfiniteTimeSpan, })
+            using (IHttpClient httpClient = this.HttpClientFactory.CreateClient(SearchEndpoint))
             {
                 this.Logger.Info("Fetching new trails from WTA.");
-                using (HttpResponseMessage response = await httpClient.GetAsync(SearchEndpoint))
+                using (HttpResponseMessage response = await httpClient.SendGetRequest())
                 using (HttpResponseMessage successResponse = response.EnsureSuccessStatusCode())
                 {
                     this.Logger.Debug("Received response, deserializing content stream.");

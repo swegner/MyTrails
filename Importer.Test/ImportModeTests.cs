@@ -1,7 +1,6 @@
-﻿namespace Importer.Test
+﻿namespace MyTrails.Importer.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using MyTrails.Importer;
 
     /// <summary>

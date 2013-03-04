@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer
+﻿namespace MyTrails.Importer.Test
 {
     using System.Data.Entity;
 

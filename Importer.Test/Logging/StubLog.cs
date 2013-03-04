@@ -1,7 +1,6 @@
-﻿namespace Importer.Test.Logging
+﻿namespace MyTrails.Importer.Test.Logging
 {
     using System;
-
     using log4net;
     using log4net.Core;
 

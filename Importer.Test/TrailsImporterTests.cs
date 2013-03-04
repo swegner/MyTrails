@@ -1,16 +1,16 @@
-﻿namespace Importer.Test
+﻿namespace MyTrails.Importer.Test
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using Importer.Test.Logging;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer;
+    using MyTrails.Importer.Test.Logging;
     using MyTrails.Importer.Wta;
 
     /// <summary>
@@ -129,7 +129,7 @@
             // Arrange
             this._wtaClientMock
                 .Setup(wc => wc.FetchTrails())
-                .Returns(() => WrapInTask(TrailsToImport))
+                .Returns(() => TaskExt.WrapInTask(() => TrailsToImport))
                 .Verifiable();
 
             // Act
@@ -207,7 +207,7 @@
                 .ToList();
             this._wtaClientMock
                 .Setup(wc => wc.FetchTrails())
-                .Returns(() => WrapInTask(dupedTrails));
+                .Returns(() => TaskExt.WrapInTask(() => dupedTrails));
 
             // Act
             this._importer.Run().Wait();
@@ -263,20 +263,6 @@
         }
 
         /// <summary>
-        /// Wrap a result object in an instantaneous task.
-        /// </summary>
-        /// <typeparam name="T">The task return type.</typeparam>
-        /// <param name="result">The result object to wrap.</param>
-        /// <returns>An instantaneous task.</returns>
-        private static Task<T> WrapInTask<T>(T result)
-        {
-            TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
-            tcs.SetResult(result);
-
-            return tcs.Task;
-        }
-
-        /// <summary>
         /// Initialize test mock objects.
         /// </summary>
         private void InitializeMocks()
@@ -284,7 +270,7 @@
             this._wtaClientMock = new Mock<IWtaClient>(MockBehavior.Strict);
             this._wtaClientMock
                 .Setup(wc => wc.FetchTrails())
-                .Returns(() => WrapInTask(TrailsToImport));
+                .Returns(() => TaskExt.WrapInTask(() => TrailsToImport));
 
             this._trailFactoryMock = new Mock<ITrailFactory>(MockBehavior.Strict);
             this._trailFactoryMock

@@ -11,15 +11,6 @@
     public static class Exports
     {
         /// <summary>
-        /// Exported <see cref="ICommandLineParser"/> instance.
-        /// </summary>
-        [Export(typeof(ICommandLineParser))]
-        public static ICommandLineParser CommandLineParser
-        {
-            get { return CommandLine.CommandLineParser.Default; }
-        }
-
-        /// <summary>
         /// Exported <see cref="ILog"/> instance.
         /// </summary>
         [Export(typeof(ILog))]
