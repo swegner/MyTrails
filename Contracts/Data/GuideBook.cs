@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// Guidebook containing trails.
@@ -24,11 +25,13 @@
         /// <summary>
         /// Title for the guide book.
         /// </summary>
+        [Required, MaxLength(50)]
         public string Title { get; set; }
 
         /// <summary>
         /// Name of the author.
         /// </summary>
+        [Required, MaxLength(50)]
         public string Author { get; set; }
 
         /// <summary>

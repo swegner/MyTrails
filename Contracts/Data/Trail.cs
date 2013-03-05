@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Spatial;
     using System.Diagnostics;
@@ -29,11 +30,13 @@
         /// <summary>
         /// Name of the hike.
         /// </summary>
+        [Required, MaxLength(100)]
         public string Name { get; set; }
 
         /// <summary>
         /// The WTA ID of the trail.
         /// </summary>
+        [Required, MaxLength(100)]
         public string WtaId { get; set; }
 
         /// <summary>
@@ -56,7 +59,7 @@
         /// <summary>
         /// Helper property for serializing <see cref="Url"/>.
         /// </summary>
-        [Column("Uri")]
+        [Required, Column("Uri"), MaxLength(200)]
         [DebuggerHidden]
         [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings",
             Justification = "String helper needed for EntityFramework serialization.")]

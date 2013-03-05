@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// Pass requirement or fee associated with a hike.
@@ -24,11 +25,13 @@
         /// <summary>
         /// Short-name of the pass requirement.
         /// </summary>
+        [Required, MaxLength(40)]
         public string Name { get; set; }
 
         /// <summary>
         /// Description of the pass requirement.
         /// </summary>
+        [Required, MaxLength(40)]
         public string Description { get; set; }
 
         /// <summary>

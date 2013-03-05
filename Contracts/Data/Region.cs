@@ -31,7 +31,7 @@
         /// <summary>
         /// Name of the region.
         /// </summary>
-        [MaxLength(40)]
+        [Required, MaxLength(40)]
         public string Name { get; set; }
 
         /// <summary>
