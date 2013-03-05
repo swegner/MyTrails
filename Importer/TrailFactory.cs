@@ -94,20 +94,30 @@
                 this._passDictionary[wtaTrail.RequiredPass] :
                 null;
 
-            return new Trail
+            IEnumerable<string> photoLinks = wtaTrail.Photos
+                .Select(u => u.AbsoluteUri);
+
+            Trail trail = new Trail
             {
-                Name = wtaTrail.Title,
-                WtaId = wtaTrail.Uid,
-                Url = wtaTrail.Url,
-                Location = location,
-                WtaRating = wtaTrail.Rating,
-                Region = region,
-                ElevationGain = wtaTrail.Statistics.ElevationGain,
-                Mileage = wtaTrail.Statistics.Mileage,
-                HighPoint = wtaTrail.Statistics.HighPoint,
-                Guidebook = guidebook,
+                Name = wtaTrail.Title, 
+                WtaId = wtaTrail.Uid, 
+                Url = wtaTrail.Url, 
+                Location = location, 
+                WtaRating = wtaTrail.Rating, 
+                Region = region, 
+                ElevationGain = wtaTrail.Statistics.ElevationGain, 
+                Mileage = wtaTrail.Statistics.Mileage, 
+                HighPoint = wtaTrail.Statistics.HighPoint, 
+                Guidebook = guidebook, 
                 RequiredPass = requiredPass,
             };
+
+            foreach (string link in photoLinks)
+            {
+                trail.PhotoLinks.Add(link);
+            }
+
+            return trail;
         }
 
         /// <summary>

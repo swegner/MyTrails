@@ -64,6 +64,7 @@
             const double anyElevation = 9834.123;
             const double anyHighPoint = 2353.22;
             const string anyPassDescription = "Any Pass Description";
+            const string anyTrailPhotoLink = "http://anytrail/photo/link";
             
             Guid anySubRegionGuid = Guid.NewGuid();
             Uri anyTrailUrl = new Uri("http://any/trail/url");
@@ -125,6 +126,7 @@
                         },
                     },
                     RequiredPass = anyPassDescription,
+                    Photos = { new Uri(anyTrailPhotoLink) },
                 },
                 ExpectedOutput = new Trail
                 {
@@ -139,6 +141,7 @@
                     Mileage = anyMileage,
                     Guidebook = AnyGuidebook,
                     RequiredPass = requiredPass,
+                    PhotoLinks = { anyTrailPhotoLink },
                 }
             };
         }
@@ -377,6 +380,16 @@
 
             // Act / Assert
             this.TestFactoryMethod(this._trailData, t => t.RequiredPass);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.PhotoLinks"/>
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void AssignsPhotoLinks()
+        {
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.PhotoLinks.FirstOrDefault());
         }
 
         /// <summary>

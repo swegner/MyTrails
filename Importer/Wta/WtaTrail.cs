@@ -10,6 +10,14 @@
     public class WtaTrail
     {
         /// <summary>
+        /// Construct a new <see cref="WtaTrail"/>
+        /// </summary>
+        public WtaTrail()
+        {
+            this.Photos = new List<Uri>();
+        }
+
+        /// <summary>
         /// Unique ID for the trail.
         /// </summary>
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Uid",

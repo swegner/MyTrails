@@ -1,6 +1,8 @@
 ﻿namespace MyTrails.Contracts.Data
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Spatial;
     using System.Diagnostics;
@@ -11,6 +13,14 @@
     /// </summary>
     public class Trail
     {
+        /// <summary>
+        /// Construct a new <see cref="Trail"/> instance.
+        /// </summary>
+        public Trail()
+        {
+            this.PhotoLinks = new Collection<string>();
+        }
+
         /// <summary>
         /// Data store ID.
         /// </summary>
@@ -91,5 +101,10 @@
         /// Required pass for the trail.
         /// </summary>
         public virtual RequiredPass RequiredPass { get; set; }
+
+        /// <summary>
+        /// Links to photos of the trail.
+        /// </summary>
+        public virtual ICollection<string> PhotoLinks { get; private set; }
     }
 }
