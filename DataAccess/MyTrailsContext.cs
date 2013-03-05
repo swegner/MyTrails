@@ -32,5 +32,10 @@
         /// Guidebooks containing trail information.
         /// </summary>
         public DbSet<Guidebook> Guidebooks { get; set; }
+
+        /// <summary>
+        /// Passes which are required by registered hikes.
+        /// </summary>
+        public DbSet<RequiredPass> Passes { get; set; }
     }
 }

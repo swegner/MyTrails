@@ -52,6 +52,7 @@
     <Compile Include="E2ETests.cs" />
     <Compile Include="ImportModeTests.cs" />
     <Compile Include="Logging\StubLog.cs" />
+    <Compile Include="TestCategory.cs" />
     <Compile Include="ProgramTests.cs" />
     <Compile Include="TaskExt.cs" />
     <Compile Include="TestAssembly.cs" />

@@ -12,7 +12,7 @@
         /// <summary>
         /// Verify that the <see cref="ImportModes"/> default value is <see cref="ImportModes.None"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void DefaultValueIsNone()
         {
             // Act
@@ -25,7 +25,7 @@
         /// <summary>
         /// Verify that each singular flag mode is mutually exclusive.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void VerifySingularModes()
         {
             // Arrange
@@ -53,7 +53,7 @@
         /// Verify that <see cref="ImportModes.ImportAndUpdate"/> is the combination of <see cref="ImportModes.ImportOnly"/> and
         /// <see cref="ImportModes.UpdateOnly"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void VerifyImportAndUpdate()
         {
             Assert.AreEqual(ImportModes.ImportOnly | ImportModes.UpdateOnly, ImportModes.ImportAndUpdate);

@@ -43,7 +43,7 @@
         /// <summary>
         /// Verify that <see cref="ITrailsImporter.Modes"/> is set from parsed commandline arguments.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void ModesSetFromCommandLine()
         {
             const ImportModes anyModes = ImportModes.UpdateOnly;

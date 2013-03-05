@@ -62,6 +62,16 @@
         }
 
         /// <summary>
+        /// Verify that <see cref="MyTrailsContext.Passes"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessPasses()
+        {
+            // Act
+            this.TestAccess(this._context.Passes);
+        }
+
+        /// <summary>
         /// Verify that <see cref="MyTrailsContext.Regions"/> is seeded with data.
         /// </summary>
         [TestMethod]
@@ -84,6 +94,21 @@
             // Assert
             Assert.IsNotNull(subRegion);
             Assert.AreEqual("Stevens Pass - West", subRegion.Name);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="MyTrailsContext.Passes"/> is seeded with data.
+        /// </summary>
+        [TestMethod]
+        public void PassesHasSeedData()
+        {
+            // Act
+            RequiredPass pass = this._context.Passes
+                .Where(rp => rp.Name == "Discover Pass")
+                .FirstOrDefault();
+
+            // Assert
+            Assert.IsNotNull(pass);
         }
 
         /// <summary>

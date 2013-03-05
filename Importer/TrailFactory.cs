@@ -32,6 +32,11 @@
         private ConcurrentDictionary<GuideBookKey, Guidebook> _guideBookDictionary;
 
         /// <summary>
+        /// Dictionary of required passes, keyed by description.
+        /// </summary>
+        private Dictionary<string, RequiredPass> _passDictionary; 
+
+        /// <summary>
         /// Whether entity caches has been initialized.
         /// </summary>
         private bool _cachesInitialized;
@@ -48,18 +53,18 @@
         /// <param name="wtaTrail">The imported WTA trail to use for trail creating.</param>
         /// <param name="regions">Sequence of registered regions with IDs, to associate with the trial.</param>
         /// <param name="guidebooks">Sequence of registered guidebooks.</param>
+        /// <param name="passes">Sequence of required passes registered.</param>
         /// <returns>A new <see cref="Trail"/> instance.</returns>
         /// <seealso cref="ITrailFactory.CreateTrail"/>
-        public Trail CreateTrail(WtaTrail wtaTrail, 
-            IEnumerable<Region> regions,
-            IEnumerable<Guidebook> guidebooks)
+        public Trail CreateTrail(WtaTrail wtaTrail, IEnumerable<Region> regions,
+            IEnumerable<Guidebook> guidebooks, IEnumerable<RequiredPass> passes)
         {
             if (wtaTrail == null)
             {
                 throw new ArgumentNullException("wtaTrail");
             }
 
-            this.InitializeCaches(regions, guidebooks);
+            this.InitializeCaches(regions, guidebooks, passes);
 
             WtaLocation wtaLocation = wtaTrail.Location ?? new WtaLocation();
             DbGeography location = wtaLocation.Latitude.HasValue && wtaLocation.Longitude.HasValue ?
@@ -85,6 +90,10 @@
                 guidebook = null;
             }
 
+            RequiredPass requiredPass = !string.IsNullOrEmpty(wtaTrail.RequiredPass) ?
+                this._passDictionary[wtaTrail.RequiredPass] :
+                null;
+
             return new Trail
             {
                 Name = wtaTrail.Title,
@@ -97,6 +106,7 @@
                 Mileage = wtaTrail.Statistics.Mileage,
                 HighPoint = wtaTrail.Statistics.HighPoint,
                 Guidebook = guidebook,
+                RequiredPass = requiredPass,
             };
         }
 
@@ -105,7 +115,9 @@
         /// </summary>
         /// <param name="regions">Registered regions to enumerate.</param>
         /// <param name="guideBooks">Sequence of registered guidebooks.</param>
-        private void InitializeCaches(IEnumerable<Region> regions, IEnumerable<Guidebook> guideBooks)
+        /// <param name="passes">Sequence of registered passes.</param>
+        private void InitializeCaches(IEnumerable<Region> regions, IEnumerable<Guidebook> guideBooks, 
+            IEnumerable<RequiredPass> passes)
         {
             if (!this._cachesInitialized)
             {
@@ -121,6 +133,9 @@
                             gb => new GuideBookKey(gb), 
                             gb => gb);
                         this._guideBookDictionary = new ConcurrentDictionary<GuideBookKey, Guidebook>(dict);
+
+                        this.Logger.Debug("Initializing required passes dictionary.");
+                        this._passDictionary = passes.ToDictionary(rp => rp.Description, rp => rp);
 
                         this._cachesInitialized = true;
                     }

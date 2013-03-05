@@ -10,6 +10,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using MyTrails.DataAccess;
     using MyTrails.Importer;
     using MyTrails.Importer.Wta;
 
@@ -20,9 +21,21 @@
     public class E2ETests
     {
         /// <summary>
+        /// Initialize test context.
+        /// </summary>
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                context.Trails.Truncate();
+            }
+        }
+
+        /// <summary>
         /// Verify that sample data can be imported without errors.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Integration)]
         public void CanImportSampleData()
         {
             // Arrange

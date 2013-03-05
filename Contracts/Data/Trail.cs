@@ -85,6 +85,11 @@
         /// <summary>
         /// Book reference containing trail information.
         /// </summary>
-        public Guidebook Guidebook { get; set; }
+        public virtual Guidebook Guidebook { get; set; }
+
+        /// <summary>
+        /// Required pass for the trail.
+        /// </summary>
+        public virtual RequiredPass RequiredPass { get; set; }
     }
 }

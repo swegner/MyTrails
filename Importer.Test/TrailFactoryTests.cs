@@ -18,51 +18,6 @@
     public class TrailFactoryTests
     {
         /// <summary>
-        /// Sample WTA ID to use during testing.
-        /// </summary>
-        private const string AnyWtaId = "any-wta-id";
-
-        /// <summary>
-        /// Sample trail title to use during testing.
-        /// </summary>
-        private const string AnyTrailTitle = "Any Trail Title";
-
-        /// <summary>
-        /// Sample trail rating to use during testing.
-        /// </summary>
-        private const double AnyWtaRating = 4.345;
-
-        /// <summary>
-        /// Sample trail mileage to use during testing.
-        /// </summary>
-        private const double AnyMileage = 345.213;
-
-        /// <summary>
-        /// Sample elevation gain to use during testing.
-        /// </summary>
-        private const double AnyElevationGain = 9834.123;
-
-        /// <summary>
-        /// Sample high point to use during testing.
-        /// </summary>
-        private const double AnyHighPoint = 2353.22;
-
-        /// <summary>
-        /// Sample GUID identifier for subregion test data.
-        /// </summary>
-        private static readonly Guid AnySubRegionGuid = Guid.NewGuid();
-
-        /// <summary>
-        /// Sample trail URL to use during testing.
-        /// </summary>
-        private static readonly Uri AnyTrailUrl = new Uri("http://any/trail/url");
-
-        /// <summary>
-        /// Sample trail coordinates to use during testing.
-        /// </summary>
-        private static readonly DbGeography AnyLocation = DbGeographyExt.PointFromCoordinates(23.456, -109.654);
-
-        /// <summary>
         /// Sample guidebook to use during testing.
         /// </summary>
         private static readonly Guidebook AnyGuidebook = new Guidebook
@@ -84,7 +39,12 @@
         /// <summary>
         /// Sample guidebook collection to use during testing.
         /// </summary>
-        private ICollection<Guidebook> _guideBooks; 
+        private ICollection<Guidebook> _guideBooks;
+
+        /// <summary>
+        /// Sample passes collection to use during testing.
+        /// </summary>
+        private ICollection<RequiredPass> _passes;
 
         /// <summary>
         /// <see cref="TrailFactory"/> instance to test against.
@@ -97,6 +57,18 @@
         [TestInitialize]
         public void TestInitialize()
         {
+            const string anyWtaId = "any-wta-id";
+            const string anyTrailTitle = "Any Trail Title";
+            const double anyRating = 4.345;
+            const double anyMileage = 345.213;
+            const double anyElevation = 9834.123;
+            const double anyHighPoint = 2353.22;
+            const string anyPassDescription = "Any Pass Description";
+            
+            Guid anySubRegionGuid = Guid.NewGuid();
+            Uri anyTrailUrl = new Uri("http://any/trail/url");
+            DbGeography anyLocation = DbGeographyExt.PointFromCoordinates(23.456, -109.654);
+
             this._factory = new TrailFactory
             {
                 Logger = new StubLog(),
@@ -105,7 +77,7 @@
             Region region = new Region
             {
                 Name = "Any Region Name", 
-                SubRegions = { new Region { Name = "Any SubRegion Name", WtaId = AnySubRegionGuid, }, },
+                SubRegions = { new Region { Name = "Any SubRegion Name", WtaId = anySubRegionGuid, }, },
             };
             this._regions = new Collection<Region>
             {
@@ -115,26 +87,29 @@
 
             this._guideBooks = new Collection<Guidebook>();
 
+            RequiredPass requiredPass = new RequiredPass { Name = "Any pass name", Description = anyPassDescription };
+            this._passes = new Collection<RequiredPass> { requiredPass };
+
             this._trailData = new TestData
             {
                 Input = new WtaTrail
                 {
-                    Uid = AnyWtaId,
-                    Title = AnyTrailTitle,
-                    Url = AnyTrailUrl,
+                    Uid = anyWtaId,
+                    Title = anyTrailTitle,
+                    Url = anyTrailUrl,
                     Location = new WtaLocation
                     {
-                        Latitude = AnyLocation.Latitude.Value,
-                        Longitude = AnyLocation.Longitude.Value,
-                        RegionId = AnySubRegionGuid,
+                        Latitude = anyLocation.Latitude.Value,
+                        Longitude = anyLocation.Longitude.Value,
+                        RegionId = anySubRegionGuid,
                     },
                     Statistics = new WtaStatistics
                     {
-                        ElevationGain = AnyElevationGain,
-                        HighPoint = AnyHighPoint,
-                        Mileage = AnyMileage,
+                        ElevationGain = anyElevation,
+                        HighPoint = anyHighPoint,
+                        Mileage = anyMileage,
                     },
-                    Rating = AnyWtaRating,
+                    Rating = anyRating,
                     Guidebook = new WtaGuidebook
                     {
                         Author = AnyGuidebook.Author,
@@ -148,20 +123,22 @@
                                 Url = new Uri("http://any/merchant/uri"),
                             },
                         },
-                    }
+                    },
+                    RequiredPass = anyPassDescription,
                 },
                 ExpectedOutput = new Trail
                 {
-                    WtaId = AnyWtaId,
-                    Name = AnyTrailTitle,
-                    Url = AnyTrailUrl,
-                    Location = AnyLocation,
+                    WtaId = anyWtaId,
+                    Name = anyTrailTitle,
+                    Url = anyTrailUrl,
+                    Location = anyLocation,
                     Region = this._regions.First().SubRegions.First(),
-                    WtaRating = AnyWtaRating,
-                    ElevationGain = AnyElevationGain,
-                    HighPoint = AnyHighPoint,
-                    Mileage = AnyMileage,
+                    WtaRating = anyRating,
+                    ElevationGain = anyElevation,
+                    HighPoint = anyHighPoint,
+                    Mileage = anyMileage,
                     Guidebook = AnyGuidebook,
+                    RequiredPass = requiredPass,
                 }
             };
         }
@@ -169,7 +146,7 @@
         /// <summary>
         /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.WtaId"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsWtaId()
         {
             // Act / Assert
@@ -179,7 +156,7 @@
         /// <summary>
         /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.Name"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsName()
         {
             // Act / Assert
@@ -189,7 +166,7 @@
         /// <summary>
         /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.Url"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsUrl()
         {
             // Act / Assert
@@ -199,7 +176,7 @@
         /// <summary>
         /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.WtaRating"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsRating()
         {
             // Act / Assert
@@ -209,7 +186,7 @@
         /// <summary>
         /// Verify that the factory assigns <see cref="MyTrails.Contracts.Data.Trail.Location"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsLocation()
         {
             // Act / Assert
@@ -219,7 +196,7 @@
         /// <summary>
         /// Verify that the factory is resilient to null <see cref="WtaTrail.Location"/> data.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void SkipsNullLocation()
         {
             // Arrange
@@ -233,7 +210,7 @@
         /// <summary>
         /// Verify that the factory is resilient to null latitude / longitude
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void HandlesNullLatitudeLongitude()
         {
             // Arrange
@@ -248,7 +225,7 @@
         /// <summary>
         /// Verify that the factory is resilient to null region
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void HandlesNullRegion()
         {
             // Arrange
@@ -262,7 +239,7 @@
         /// <summary>
         /// Verify that the factory assigns <see cref="Trail.Region"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsRegion()
         {
             // Act / Assert
@@ -272,7 +249,7 @@
         /// <summary>
         /// Verify that the factory assigns <see cref="Trail.ElevationGain"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsElevationGain()
         {
             // Act / Assert
@@ -282,7 +259,7 @@
         /// <summary>
         /// Verify that the factory handles null <see cref="WtaStatistics.ElevationGain"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void HandlesNullElevationGain()
         {
             // Arrange
@@ -296,7 +273,7 @@
         /// <summary>
         /// Verify that the factory assigns <see cref="Trail.Mileage"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsMileage()
         {
             // Act / Assert
@@ -306,7 +283,7 @@
         /// <summary>
         /// Verify that the factory handles null <see cref="WtaStatistics.Mileage"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void HandlesNullMileage()
         {
             // Arrange
@@ -320,7 +297,7 @@
         /// <summary>
         /// Verify that the factory assigns <see cref="Trail.HighPoint"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsHighPoint()
         {
             // Act / Assert
@@ -330,7 +307,7 @@
         /// <summary>
         /// Verify that the factory handles null <see cref="WtaStatistics.HighPoint"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void HandlesNullHighPoint()
         {
             // Arrange
@@ -344,7 +321,7 @@
         /// <summary>
         /// Verify that the factory assigns <see cref="Trail.HighPoint"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsGuidebook()
         {
             // Act / Assert
@@ -354,7 +331,7 @@
         /// <summary>
         /// Verify that the factory handles null <see cref="WtaTrail.Guidebook"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void HandlesNullGuidebook()
         {
             // Arrange
@@ -368,7 +345,7 @@
         /// <summary>
         /// Verify that guidebook definitions are not duplicated.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void GuidebooksNotDuplicated()
         {
             // Arrange
@@ -376,6 +353,30 @@
 
             // Act / Assert
             this.TestFactoryMethod(this._trailData, t => t.Guidebook);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.RequiredPass"/>
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void AssignsRequiredPass()
+        {
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.RequiredPass, new RequiredPassComparer());
+        }
+
+        /// <summary>
+        /// Verify that the factory handles null <see cref="WtaTrail.RequiredPass"/>
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void HandlesNullRequiredPass()
+        {
+            // Arrange
+            this._trailData.Input.RequiredPass = null;
+            this._trailData.ExpectedOutput.RequiredPass = null;
+
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.RequiredPass);
         }
 
         /// <summary>
@@ -396,7 +397,7 @@
             }
 
             // Act
-            Trail actual = this._factory.CreateTrail(testData.Input, this._regions, this._guideBooks);
+            Trail actual = this._factory.CreateTrail(testData.Input, this._regions, this._guideBooks, this._passes);
 
             // Assert
             TProperty expectedProperty = propertySelector(testData.ExpectedOutput);
@@ -486,7 +487,7 @@
             /// </summary>
             /// <param name="x">The first <see cref="Guidebook"/>.</param>
             /// <param name="y">The second <see cref="Guidebook"/>.</param>
-            /// <returns>True if the points are equal, or false otherwise.</returns>
+            /// <returns>True if the objects are equal, or false otherwise.</returns>
             /// <seealso cref="EqualityComparer{T}.Equals(T,T)"/>
             public override bool Equals(Guidebook x, Guidebook y)
             {
@@ -514,6 +515,49 @@
                 int hash = 23;
                 hash = (hash * obj.Author.GetHashCode()) + 13;
                 hash = (hash * obj.Title.GetHashCode()) + 13;
+
+                return hash;
+            }
+        }
+
+        /// <summary>
+        /// Equality comparer to check two <see cref="RequiredPass"/> instances for equality.
+        /// </summary>
+        private class RequiredPassComparer : EqualityComparer<RequiredPass>
+        {
+            /// <summary>
+            /// Check whether two <see cref="RequiredPass"/> instances are equal.
+            /// </summary>
+            /// <param name="x">The first <see cref="RequiredPass"/>.</param>
+            /// <param name="y">The second <see cref="RequiredPass"/>.</param>
+            /// <returns>True if the objects are equal, or false otherwise.</returns>
+            /// <seealso cref="EqualityComparer{T}.Equals(T,T)"/>
+            public override bool Equals(RequiredPass x, RequiredPass y)
+            {
+                if (x == null || y == null)
+                {
+                    return object.ReferenceEquals(x, y);
+                }
+
+                return x.Name == y.Name && x.Description == y.Description;
+            }
+
+            /// <summary>
+            /// Generate a hash-code for the <see cref="RequiredPass"/> instance.
+            /// </summary>
+            /// <param name="obj">The object to generate a hash code for.</param>
+            /// <returns>A hash code for the object.</returns>
+            /// <seealso cref="EqualityComparer{T}.GetHashCode(T)"/>
+            public override int GetHashCode(RequiredPass obj)
+            {
+                if (obj == null)
+                {
+                    return 0;
+                }
+
+                int hash = 23;
+                hash = (hash * obj.Name.GetHashCode()) + 13;
+                hash = (hash * obj.Description.GetHashCode()) + 13;
 
                 return hash;
             }

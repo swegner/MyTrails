@@ -33,6 +33,8 @@ namespace MyTrails.DataAccess.Migrations
             }
 
             this.SeedRegions(context.Regions);
+            this.SeedPasses(context.Passes);
+
             base.Seed(context);
         }
 
@@ -177,6 +179,23 @@ namespace MyTrails.DataAccess.Migrations
                         new Region { Name = "South", WtaId = Guid.Parse("3ca3cd096bfedde6ff95b0859278cc75"), },
                     },
                 });
+        }
+
+        /// <summary>
+        /// Seed the <see cref="MyTrailsContext.Passes"/> data with predefined passes.
+        /// </summary>
+        /// <param name="passes">The <see cref="DbSet{TEntity}"/> to seed.</param>
+        private void SeedPasses(DbSet<RequiredPass> passes)
+        {
+            passes.AddOrUpdate(p => p.Name, new[]
+            {
+                new RequiredPass { Name = "None", Description = "No pass or permit" },
+                new RequiredPass { Name = "Northwest Forest Pass", Description = "Northwest Forest Pass" },
+                new RequiredPass { Name = "Discover Pass", Description = "Discover Pass" },
+                new RequiredPass { Name = "National Park", Description = "National Park/Refuge entry fee" },
+                new RequiredPass { Name = "Sno-Park", Description = "Sno-Park pass" },
+                new RequiredPass { Name = "Mount St. Helens", Description = "Mount St. Helens fee" },
+            });
         }
     }
 }

@@ -99,7 +99,7 @@
         /// <summary>
         /// Verify that <see cref="TrailsImporter.Run"/> does not throw an exception.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void RunDoesNotThrow()
         {
             // Act
@@ -110,7 +110,7 @@
         /// <summary>
         /// Verify that <see cref="TrailsImporter.Run"/> validates <see cref="TrailsImporter.Modes"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void ValidatesModes()
         {
             // Arrange
@@ -124,7 +124,7 @@
         /// <summary>
         /// Verify that new hikes are fetched via <see cref="TrailsImporter.WtaClient"/>
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void FetchesFromWtaClient()
         {
             // Arrange
@@ -143,7 +143,7 @@
         /// <summary>
         /// Verify that <see cref="ImportModes.UpdateOnly"/> skips importing.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void UpdateOnlySkipsImport()
         {
             // Arrange
@@ -160,13 +160,18 @@
         /// Verify that <see cref="Trail"/> instances are created for imported <see cref="WtaTrail"/>s
         /// using the <see cref="TrailsImporter.TrailFactory"/>.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void CreatesTrailsUsingFactory()
         {
             // Arrange
             this._trailFactoryMock
-            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), It.IsAny<IEnumerable<Guidebook>>()))
-            .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gb) => new Trail { WtaId = wt.Uid })
+            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), 
+                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>()))
+            .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gbs, IEnumerable<RequiredPass> ps) => 
+                new Trail
+                {
+                    WtaId = wt.Uid,
+                })
             .Verifiable();
 
             // Act
@@ -180,7 +185,7 @@
         /// Verify that existing trails in the database are deduped before sending them through
         /// the <see cref="TrailsImporter.TrailFactory"/>.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void ExistingTrailsDeduped()
         {
             // Arrange
@@ -192,14 +197,15 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<IEnumerable<Region>>(), It.IsAny<IEnumerable<Guidebook>>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<IEnumerable<Region>>(), 
+                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>()),
                 Times.Never());
         }
 
         /// <summary>
         /// Verify that duplicates encountered during import are removed.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void ImportSkipsDuplicates()
         {
             // Arrange
@@ -214,14 +220,15 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), It.IsAny<IEnumerable<Guidebook>>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), 
+                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>()),
                 Times.Exactly(NewTrails.Length));
         }
 
         /// <summary>
         /// Verify that newly imported trails are added to the database.
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory(TestCategory.Unit)]
         public void ImportedTrailsAddedToDatabase()
         {
             // Act
@@ -275,8 +282,13 @@
 
             this._trailFactoryMock = new Mock<ITrailFactory>(MockBehavior.Strict);
             this._trailFactoryMock
-                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), It.IsAny<IEnumerable<Guidebook>>()))
-                .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gb) => new Trail { WtaId = wt.Uid });
+                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), 
+                    It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>()))
+                .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gs, IEnumerable<RequiredPass> rps) => 
+                    new Trail
+                    {
+                        WtaId = wt.Uid,
+                    });
         }
 
         /// <summary>
