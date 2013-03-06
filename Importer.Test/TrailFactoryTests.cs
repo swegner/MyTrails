@@ -76,6 +76,8 @@
                 region.SubRegions.First(),
             };
 
+            Collection<Guidebook> guidebooks = new Collection<Guidebook> { AnyGuidebook };
+
             RequiredPass requiredPass = new RequiredPass { Name = "Any pass name", Description = anyPassDescription };
             Collection<RequiredPass> requiredPasses = new Collection<RequiredPass> { requiredPass };
 
@@ -85,7 +87,7 @@
             TrailCharacteristic characteristic = new TrailCharacteristic { WtaId = (int)WtaUserInfo.GoodForKids, Description = "Any trail characteristic" };
             Collection<TrailCharacteristic> trailCharacteristics = new Collection<TrailCharacteristic> { characteristic };
 
-            this._trailContext = TrailContext.Create(regions, new Collection<Guidebook>(), requiredPasses, trailFeatures, trailCharacteristics);
+            this._trailContext = TrailContext.Create(regions, guidebooks, requiredPasses, trailFeatures, trailCharacteristics);
 
             this._trailData = new TestData
             {

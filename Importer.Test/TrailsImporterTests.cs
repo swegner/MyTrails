@@ -10,6 +10,7 @@
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer;
+    using MyTrails.Importer.Extenders;
     using MyTrails.Importer.Test.Logging;
     using MyTrails.Importer.Wta;
 
@@ -74,6 +75,11 @@
         private Mock<ITrailFactory> _trailFactoryMock;
 
         /// <summary>
+        /// Mock <see cref="ITrailExtender"/> to inject test behavior.
+        /// </summary>
+        private Mock<ITrailExtender> _trailExtenderMock;
+
+        /// <summary>
         /// Whether the instance has been disposed of.
         /// </summary>
         private bool _disposed;
@@ -92,6 +98,10 @@
                 Modes = ImportModes.ImportAndUpdate,
                 WtaClient = this._wtaClientMock.Object,
                 TrailFactory = this._trailFactoryMock.Object,
+                TrailExtenders =
+                {
+                    this._trailExtenderMock.Object,
+                },
                 Logger = new StubLog(),
             };
         }
@@ -251,6 +261,25 @@
         }
 
         /// <summary>
+        /// Verify that each extender is executed for newly imported trails.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void ImportCallsExtenders()
+        {
+            // Arrange
+            this._trailExtenderMock
+                .Setup(te => te.Extend(It.IsAny<Trail>(), It.IsAny<TrailContext>()))
+                .Returns(TaskExt.CreateNopOpTask)
+                .Verifiable();
+
+            // Act
+            this._importer.Run().Wait();
+
+            // Assert
+            this._trailExtenderMock.Verify();
+        }
+
+        /// <summary>
         /// Dispose of object resources.
         /// </summary>
         /// <seealso cref="IDisposable.Dispose"/>
@@ -301,6 +330,11 @@
                         WtaId = wt.Uid,
                         Url = wt.Url,
                     });
+
+            this._trailExtenderMock = new Mock<ITrailExtender>(MockBehavior.Strict);
+            this._trailExtenderMock
+                .Setup(te => te.Extend(It.IsAny<Trail>(), It.IsAny<TrailContext>()))
+                .Returns(TaskExt.CreateNopOpTask);
         }
 
         /// <summary>
