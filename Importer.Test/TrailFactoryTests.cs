@@ -32,29 +32,9 @@
         private TestData _trailData;
 
         /// <summary>
-        /// Sample regions collection to use during testing.
+        /// Sample trail context data to use during testing.
         /// </summary>
-        private ICollection<Region> _regions;
-
-        /// <summary>
-        /// Sample guidebook collection to use during testing.
-        /// </summary>
-        private ICollection<Guidebook> _guideBooks;
-
-        /// <summary>
-        /// Sample passes collection to use during testing.
-        /// </summary>
-        private ICollection<RequiredPass> _passes;
-
-        /// <summary>
-        /// Sample trail features collection to use during testing.
-        /// </summary>
-        private ICollection<TrailFeature> _trailFeatures;
-
-        /// <summary>
-        /// Sample trail characteristic collection to use during testing.
-        /// </summary>
-        private ICollection<TrailCharacteristic> _trailCharacteristics; 
+        private TrailContext _trailContext;
 
         /// <summary>
         /// <see cref="TrailFactory"/> instance to test against.
@@ -90,22 +70,22 @@
                 Name = "Any Region Name", 
                 SubRegions = { new Region { Name = "Any SubRegion Name", WtaId = anySubRegionGuid, }, },
             };
-            this._regions = new Collection<Region>
+            ICollection<Region> regions = new Collection<Region>
             {
                 region,
                 region.SubRegions.First(),
             };
 
-            this._guideBooks = new Collection<Guidebook>();
-
             RequiredPass requiredPass = new RequiredPass { Name = "Any pass name", Description = anyPassDescription };
-            this._passes = new Collection<RequiredPass> { requiredPass };
+            Collection<RequiredPass> requiredPasses = new Collection<RequiredPass> { requiredPass };
 
             TrailFeature trailFeature = new TrailFeature { WtaId = (int)WtaFeatures.MountainViews, Description = "Any trail feature description" };
-            this._trailFeatures = new Collection<TrailFeature> { trailFeature };
+            Collection<TrailFeature> trailFeatures = new Collection<TrailFeature> { trailFeature };
 
             TrailCharacteristic characteristic = new TrailCharacteristic { WtaId = (int)WtaUserInfo.GoodForKids, Description = "Any trail characteristic" };
-            this._trailCharacteristics = new Collection<TrailCharacteristic> { characteristic };
+            Collection<TrailCharacteristic> trailCharacteristics = new Collection<TrailCharacteristic> { characteristic };
+
+            this._trailContext = TrailContext.Create(regions, new Collection<Guidebook>(), requiredPasses, trailFeatures, trailCharacteristics);
 
             this._trailData = new TestData
             {
@@ -152,7 +132,7 @@
                     Name = anyTrailTitle,
                     Url = anyTrailUrl,
                     Location = anyLocation,
-                    Region = this._regions.First().SubRegions.First(),
+                    Region = regions.First().SubRegions.First(),
                     WtaRating = anyRating,
                     ElevationGain = anyElevation,
                     HighPoint = anyHighPoint,
@@ -372,7 +352,7 @@
         public void GuidebooksNotDuplicated()
         {
             // Arrange
-            this._guideBooks.Add(AnyGuidebook);
+            ((ICollection<Guidebook>)new Collection<Guidebook>()).Add(AnyGuidebook);
 
             // Act / Assert
             this.TestFactoryMethod(this._trailData, t => t.Guidebook);
@@ -450,8 +430,7 @@
             }
 
             // Act
-            Trail actual = this._factory.CreateTrail(testData.Input, this._regions, this._guideBooks, this._passes, 
-                this._trailFeatures, this._trailCharacteristics);
+            Trail actual = this._factory.CreateTrail(testData.Input, this._trailContext);
 
             // Assert
             TProperty expectedProperty = propertySelector(testData.ExpectedOutput);

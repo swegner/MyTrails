@@ -90,10 +90,11 @@
                         .Select(t => t.WtaId));
 
                     this.Logger.Debug("Creating new trail entries.");
+                    TrailContext trailContext = TrailContext.Create(context.Regions, context.Guidebooks, 
+                        context.Passes, context.TrailFeatures, context.TrailCharacteristics);
                     newTrails = wtaTrails
                         .Where(wt => !existingTrailIds.Contains(wt.Uid))
-                        .Select(wt => this.TrailFactory.CreateTrail(wt, context.Regions, 
-                            context.Guidebooks, context.Passes, context.TrailFeatures, context.TrailCharacteristics))
+                        .Select(wt => this.TrailFactory.CreateTrail(wt, trailContext))
                         .ToList();
 
                     this.Logger.DebugFormat("Created {0} new trails.", newTrails.Count);

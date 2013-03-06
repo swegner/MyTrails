@@ -177,11 +177,8 @@
         {
             // Arrange
             this._trailFactoryMock
-            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), 
-                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>(), 
-                It.IsAny<IEnumerable<TrailFeature>>(), It.IsAny<IEnumerable<TrailCharacteristic>>()))
-            .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gbs, 
-                IEnumerable<RequiredPass> ps, IEnumerable<TrailFeature> tfs, IEnumerable<TrailCharacteristic> tcs) => 
+            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<TrailContext>()))
+            .Returns((WtaTrail wt, TrailContext tc) => 
                 new Trail
                 {
                     Name = wt.Title,
@@ -213,9 +210,7 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<IEnumerable<Region>>(),
-                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>(),
-                It.IsAny<IEnumerable<TrailFeature>>(), It.IsAny<IEnumerable<TrailCharacteristic>>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<TrailContext>()),
                 Times.Never());
         }
 
@@ -237,9 +232,7 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(),
-                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>(),
-                It.IsAny<IEnumerable<TrailFeature>>(), It.IsAny<IEnumerable<TrailCharacteristic>>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<TrailContext>()),
                 Times.Exactly(NewTrails.Length));
         }
 
@@ -300,11 +293,8 @@
 
             this._trailFactoryMock = new Mock<ITrailFactory>(MockBehavior.Strict);
             this._trailFactoryMock
-                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(),
-                    It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>(),
-                    It.IsAny<IEnumerable<TrailFeature>>(), It.IsAny<IEnumerable<TrailCharacteristic>>()))
-                .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gs, 
-                    IEnumerable<RequiredPass> rps, IEnumerable<TrailFeature> tfs, IEnumerable<TrailCharacteristic> tcs) => 
+                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<TrailContext>()))
+                .Returns((WtaTrail wt, TrailContext tc) => 
                     new Trail
                     {
                         Name = wt.Title,

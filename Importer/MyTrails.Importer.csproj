@@ -38,11 +38,13 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DbGeographyExt.cs" />
     <Compile Include="ExecutionOptions.cs" />
+    <Compile Include="Extenders\ITrailExtender.cs" />
     <Compile Include="ImportModes.cs" />
     <Compile Include="Composition\Exports.cs" />
     <Compile Include="ITrailFactory.cs" />
     <Compile Include="ITrailsImporter.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TrailContext.cs" />
     <Compile Include="TrailFactory.cs" />
     <Compile Include="TrailsImporter.cs" />
     <Compile Include="Wta\HttpClientAdapter.cs" />
