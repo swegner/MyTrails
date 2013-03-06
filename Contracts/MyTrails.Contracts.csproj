@@ -25,6 +25,8 @@
     <Compile Include="Data\Region.cs" />
     <Compile Include="Data\RequiredPass.cs" />
     <Compile Include="Data\Trail.cs" />
+    <Compile Include="Data\TrailCharacteristic.cs" />
+    <Compile Include="Data\TrailFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

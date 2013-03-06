@@ -37,5 +37,15 @@
         /// Passes which are required by registered hikes.
         /// </summary>
         public DbSet<RequiredPass> Passes { get; set; }
+
+        /// <summary>
+        /// Trail categorization features.
+        /// </summary>
+        public DbSet<TrailFeature> TrailFeatures { get; set; }
+
+        /// <summary>
+        /// Trail characteristic attributes.
+        /// </summary>
+        public DbSet<TrailCharacteristic> TrailCharacteristics { get; set; }
     }
 }

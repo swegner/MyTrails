@@ -24,7 +24,12 @@
         /// </summary>
         private static readonly Trail[] ExistingTrails = new[]
         {
-            new Trail { WtaId = "existing-trail-1", },
+            new Trail
+            {
+                Name = "Existing Trail 1 ", 
+                WtaId = "existing-trail-1",
+                Url = new Uri("http://existing/trail/1")
+            },
         };
 
         /// <summary>
@@ -32,7 +37,12 @@
         /// </summary>
         private static readonly WtaTrail[] NewTrails = new[]
         {
-            new WtaTrail { Uid = "new-trail-1", },
+            new WtaTrail
+            {
+                Title = "New Trail 1 ",
+                Uid = "new-trail-1",
+                Url = new Uri("http://new/trail/1")
+            },
         };
 
         /// <summary>
@@ -93,6 +103,8 @@
         public void TestCleanup()
         {
             this._dataContext.Trails.Truncate();
+            this._dataContext.SaveChanges();
+
             this.Dispose();
         }
 
@@ -166,11 +178,15 @@
             // Arrange
             this._trailFactoryMock
             .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), 
-                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>()))
-            .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gbs, IEnumerable<RequiredPass> ps) => 
+                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>(), 
+                It.IsAny<IEnumerable<TrailFeature>>(), It.IsAny<IEnumerable<TrailCharacteristic>>()))
+            .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gbs, 
+                IEnumerable<RequiredPass> ps, IEnumerable<TrailFeature> tfs, IEnumerable<TrailCharacteristic> tcs) => 
                 new Trail
                 {
+                    Name = wt.Title,
                     WtaId = wt.Uid,
+                    Url = wt.Url,
                 })
             .Verifiable();
 
@@ -197,8 +213,9 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<IEnumerable<Region>>(), 
-                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<IEnumerable<Region>>(),
+                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>(),
+                It.IsAny<IEnumerable<TrailFeature>>(), It.IsAny<IEnumerable<TrailCharacteristic>>()),
                 Times.Never());
         }
 
@@ -220,8 +237,9 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), 
-                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(),
+                It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>(),
+                It.IsAny<IEnumerable<TrailFeature>>(), It.IsAny<IEnumerable<TrailCharacteristic>>()),
                 Times.Exactly(NewTrails.Length));
         }
 
@@ -282,12 +300,16 @@
 
             this._trailFactoryMock = new Mock<ITrailFactory>(MockBehavior.Strict);
             this._trailFactoryMock
-                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(), 
-                    It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>()))
-                .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gs, IEnumerable<RequiredPass> rps) => 
+                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<IEnumerable<Region>>(),
+                    It.IsAny<IEnumerable<Guidebook>>(), It.IsAny<IEnumerable<RequiredPass>>(),
+                    It.IsAny<IEnumerable<TrailFeature>>(), It.IsAny<IEnumerable<TrailCharacteristic>>()))
+                .Returns((WtaTrail wt, IEnumerable<Region> rs, IEnumerable<Guidebook> gs, 
+                    IEnumerable<RequiredPass> rps, IEnumerable<TrailFeature> tfs, IEnumerable<TrailCharacteristic> tcs) => 
                     new Trail
                     {
+                        Name = wt.Title,
                         WtaId = wt.Uid,
+                        Url = wt.Url,
                     });
         }
 

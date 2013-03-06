@@ -51,11 +51,13 @@
     <Compile Include="Wta\IHttpClientFactory.cs" />
     <Compile Include="Wta\IWtaClient.cs" />
     <Compile Include="Wta\WtaClient.cs" />
+    <Compile Include="Wta\WtaFeatures.cs" />
     <Compile Include="Wta\WtaGuideBook.cs" />
     <Compile Include="Wta\WtaGuidebookMerchant.cs" />
     <Compile Include="Wta\WtaLocation.cs" />
     <Compile Include="Wta\WtaStatistics.cs" />
     <Compile Include="Wta\WtaTrail.cs" />
+    <Compile Include="Wta\WtaUserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

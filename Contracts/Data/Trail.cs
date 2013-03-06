@@ -19,6 +19,8 @@
         /// </summary>
         public Trail()
         {
+            this.Features = new Collection<TrailFeature>();
+            this.Characteristics = new Collection<TrailCharacteristic>();
             this.PhotoLinks = new Collection<string>();
         }
 
@@ -104,6 +106,16 @@
         /// Required pass for the trail.
         /// </summary>
         public virtual RequiredPass RequiredPass { get; set; }
+
+        /// <summary>
+        /// Features associated with the trail.
+        /// </summary>
+        public virtual ICollection<TrailFeature> Features { get; private set; }
+
+        /// <summary>
+        /// Characteristics associated with the trail.
+        /// </summary>
+        public virtual ICollection<TrailCharacteristic> Characteristics { get; private set; }
 
         /// <summary>
         /// Links to photos of the trail.

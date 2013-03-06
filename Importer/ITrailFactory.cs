@@ -16,8 +16,11 @@
         /// <param name="regions">Sequence of registered regions with IDs, to associate with the trial.</param>
         /// <param name="guidebooks">Sequence of registered guidebooks.</param>
         /// <param name="passes">Sequence of required passes registered.</param>
+        /// <param name="trailFeatures">Sequence of registered trail features.</param>
+        /// <param name="trailCharacteristics">Sequence of registered trail characteristics.</param>
         /// <returns>A new <see cref="Trail"/> instance.</returns>
         Trail CreateTrail(WtaTrail wtaTrail, IEnumerable<Region> regions, IEnumerable<Guidebook> guidebooks,
-            IEnumerable<RequiredPass> passes);
+            IEnumerable<RequiredPass> passes, IEnumerable<TrailFeature> trailFeatures,
+            IEnumerable<TrailCharacteristic> trailCharacteristics);
     }
 }

@@ -47,6 +47,16 @@
         private ICollection<RequiredPass> _passes;
 
         /// <summary>
+        /// Sample trail features collection to use during testing.
+        /// </summary>
+        private ICollection<TrailFeature> _trailFeatures;
+
+        /// <summary>
+        /// Sample trail characteristic collection to use during testing.
+        /// </summary>
+        private ICollection<TrailCharacteristic> _trailCharacteristics; 
+
+        /// <summary>
         /// <see cref="TrailFactory"/> instance to test against.
         /// </summary>
         private TrailFactory _factory;
@@ -91,6 +101,12 @@
             RequiredPass requiredPass = new RequiredPass { Name = "Any pass name", Description = anyPassDescription };
             this._passes = new Collection<RequiredPass> { requiredPass };
 
+            TrailFeature trailFeature = new TrailFeature { WtaId = (int)WtaFeatures.MountainViews, Description = "Any trail feature description" };
+            this._trailFeatures = new Collection<TrailFeature> { trailFeature };
+
+            TrailCharacteristic characteristic = new TrailCharacteristic { WtaId = (int)WtaUserInfo.GoodForKids, Description = "Any trail characteristic" };
+            this._trailCharacteristics = new Collection<TrailCharacteristic> { characteristic };
+
             this._trailData = new TestData
             {
                 Input = new WtaTrail
@@ -109,6 +125,8 @@
                         ElevationGain = anyElevation,
                         HighPoint = anyHighPoint,
                         Mileage = anyMileage,
+                        Features = (WtaFeatures)trailFeature.WtaId,
+                        UserInfo = (WtaUserInfo)characteristic.WtaId,
                     },
                     Rating = anyRating,
                     Guidebook = new WtaGuidebook
@@ -142,6 +160,8 @@
                     Guidebook = AnyGuidebook,
                     RequiredPass = requiredPass,
                     PhotoLinks = { anyTrailPhotoLink },
+                    Features = { trailFeature },
+                    Characteristics = { characteristic },
                 }
             };
         }
@@ -393,6 +413,26 @@
         }
 
         /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.Features"/>
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void AssignsFeatures()
+        {
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.Features, new CollectionComparer<TrailFeature>());
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.Characteristics"/>
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void AssignsCharacteristics()
+        {
+            // Act / Assert
+            this.TestFactoryMethod(this._trailData, t => t.Characteristics, new CollectionComparer<TrailCharacteristic>());
+        }
+
+        /// <summary>
         /// Call <see cref="TrailFactory.CreateTrail"/> on the test data and compare the property
         /// selected in <see cref="propertySelector"/> to the expected value.
         /// </summary>
@@ -410,7 +450,8 @@
             }
 
             // Act
-            Trail actual = this._factory.CreateTrail(testData.Input, this._regions, this._guideBooks, this._passes);
+            Trail actual = this._factory.CreateTrail(testData.Input, this._regions, this._guideBooks, this._passes, 
+                this._trailFeatures, this._trailCharacteristics);
 
             // Assert
             TProperty expectedProperty = propertySelector(testData.ExpectedOutput);
@@ -573,6 +614,46 @@
                 hash = (hash * obj.Description.GetHashCode()) + 13;
 
                 return hash;
+            }
+        }
+
+        /// <summary>
+        /// Comparer which compares the contained objects ni the collection.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the collection.</typeparam>
+        private class CollectionComparer<T> : EqualityComparer<ICollection<T>>
+        {
+            /// <summary>
+            /// Check whether two collections have equal contents.
+            /// </summary>
+            /// <param name="x">The first collection.</param>
+            /// <param name="y">The second collection.</param>
+            /// <returns>True if the object contents are equal, or false otherwise.</returns>
+            /// <seealso cref="EqualityComparer{T}.Equals(T,T)"/>
+            public override bool Equals(ICollection<T> x, ICollection<T> y)
+            {
+                if (x == null || y == null)
+                {
+                    return object.ReferenceEquals(x, y);
+                }
+
+                return x.Count == y.Count && x.Intersect(y).Count() == x.Count;
+            }
+
+            /// <summary>
+            /// Generate a hash-code for the collection.
+            /// </summary>
+            /// <param name="obj">The collection to generate a hash code for.</param>
+            /// <returns>A hash code for the collection.</returns>
+            /// <seealso cref="EqualityComparer{T}.GetHashCode(T)"/>
+            public override int GetHashCode(ICollection<T> obj)
+            {
+                if (obj == null)
+                {
+                    return 0;
+                }
+
+                return obj.Aggregate(seed: 13, func: (s, e) => s ^ e.GetHashCode());
             }
         }
     }

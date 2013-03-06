@@ -34,6 +34,8 @@ namespace MyTrails.DataAccess.Migrations
 
             this.SeedRegions(context.Regions);
             this.SeedPasses(context.Passes);
+            this.SeedTrailFeatures(context.TrailFeatures);
+            this.SeedTrailCharacteristics(context.TrailCharacteristics);
 
             base.Seed(context);
         }
@@ -195,6 +197,48 @@ namespace MyTrails.DataAccess.Migrations
                 new RequiredPass { Name = "National Park", Description = "National Park/Refuge entry fee" },
                 new RequiredPass { Name = "Sno-Park", Description = "Sno-Park pass" },
                 new RequiredPass { Name = "Mount St. Helens", Description = "Mount St. Helens fee" },
+            });
+        }
+
+        /// <summary>
+        /// Seed the <see cref="MyTrailsContext.TrailFeatures"/> data with predefined features.
+        /// </summary>
+        /// <param name="features">The <see cref="DbSet{TEntity}"/> to seed.</param>
+        private void SeedTrailFeatures(DbSet<TrailFeature> features)
+        {
+            features.AddOrUpdate(f => f.WtaId, new[]
+            {
+                new TrailFeature { WtaId = 1 << 0, Description = "Coast" },
+                new TrailFeature { WtaId = 1 << 1, Description = "Rivers" },
+                new TrailFeature { WtaId = 1 << 2, Description = "Lakes" },
+                new TrailFeature { WtaId = 1 << 3, Description = "Waterfalls" },
+                new TrailFeature { WtaId = 1 << 4, Description = "Old Growth" },
+                new TrailFeature { WtaId = 1 << 5, Description = "Fall Foliage" },
+                new TrailFeature { WtaId = 1 << 6, Description = "Wildflowers / Meadows" },
+                new TrailFeature { WtaId = 1 << 7, Description = "Mountain Views" },
+                new TrailFeature { WtaId = 1 << 8, Description = "Summits" },
+                new TrailFeature { WtaId = 1 << 9, Description = "Wildlife" },
+                new TrailFeature { WtaId = 1 << 10, Description = "Ridges / Passes" },
+                new TrailFeature { WtaId = 1 << 11, Description = "Established Campsites" },
+            });
+        }
+
+        /// <summary>
+        /// Seed the <see cref="MyTrailsContext.TrailCharacteristics"/> data with predefined attributes.
+        /// </summary>
+        /// <param name="characteristics">The <see cref="DbSet{TEntity}"/> to seed.</param>
+        private void SeedTrailCharacteristics(DbSet<TrailCharacteristic> characteristics)
+        {
+            characteristics.AddOrUpdate(tc => tc.WtaId, new[]
+            {
+                new TrailCharacteristic { WtaId = 1 << 0, Description = "Good for Kids" },
+                new TrailCharacteristic { WtaId = 1 << 1, Description = "Dogs Allowed On-Leash" },
+                new TrailCharacteristic { WtaId = 1 << 2, Description = "Dogs Allowed Without Leash" },
+                new TrailCharacteristic { WtaId = 1 << 3, Description = "Dogs Not Allowed" },
+                new TrailCharacteristic { WtaId = 1 << 4, Description = "May Encounter Pack Animals" },
+                new TrailCharacteristic { WtaId = 1 << 5, Description = "May Encounter Mountain Bikes" },
+                new TrailCharacteristic { WtaId = 1 << 6, Description = "May Encounter Motorized Vehicles" },
+                new TrailCharacteristic { WtaId = 1 << 7, Description = "Permit or Pass Required" },
             });
         }
     }

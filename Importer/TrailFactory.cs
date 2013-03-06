@@ -34,7 +34,17 @@
         /// <summary>
         /// Dictionary of required passes, keyed by description.
         /// </summary>
-        private Dictionary<string, RequiredPass> _passDictionary; 
+        private Dictionary<string, RequiredPass> _passDictionary;
+
+        /// <summary>
+        /// Dictionary of trail features, keyed by WTA ID.
+        /// </summary>
+        private Dictionary<WtaFeatures, TrailFeature> _trailFeatureDictionary;
+
+        /// <summary>
+        /// Dictionary of trail characteristics, keyed by WTA ID.
+        /// </summary>
+        private Dictionary<WtaUserInfo, TrailCharacteristic> _characteristicDictionary; 
 
         /// <summary>
         /// Whether entity caches has been initialized.
@@ -54,17 +64,20 @@
         /// <param name="regions">Sequence of registered regions with IDs, to associate with the trial.</param>
         /// <param name="guidebooks">Sequence of registered guidebooks.</param>
         /// <param name="passes">Sequence of required passes registered.</param>
+        /// <param name="trailFeatures">Sequence of registered trail features.</param>
+        /// <param name="trailCharacteristics">Sequence of registered trail characteristics.</param>
         /// <returns>A new <see cref="Trail"/> instance.</returns>
         /// <seealso cref="ITrailFactory.CreateTrail"/>
         public Trail CreateTrail(WtaTrail wtaTrail, IEnumerable<Region> regions,
-            IEnumerable<Guidebook> guidebooks, IEnumerable<RequiredPass> passes)
+            IEnumerable<Guidebook> guidebooks, IEnumerable<RequiredPass> passes,
+            IEnumerable<TrailFeature> trailFeatures, IEnumerable<TrailCharacteristic> trailCharacteristics)
         {
             if (wtaTrail == null)
             {
                 throw new ArgumentNullException("wtaTrail");
             }
 
-            this.InitializeCaches(regions, guidebooks, passes);
+            this.InitializeCaches(regions, guidebooks, passes, trailFeatures, trailCharacteristics);
 
             WtaLocation wtaLocation = wtaTrail.Location ?? new WtaLocation();
             DbGeography location = wtaLocation.Latitude.HasValue && wtaLocation.Longitude.HasValue ?
@@ -97,6 +110,14 @@
             IEnumerable<string> photoLinks = wtaTrail.Photos
                 .Select(u => u.AbsoluteUri);
 
+            IEnumerable<TrailFeature> features = this._trailFeatureDictionary
+                .Where(kvp => wtaTrail.Statistics.Features.HasFlag(kvp.Key))
+                .Select(kvp => kvp.Value);
+
+            IEnumerable<TrailCharacteristic> characteristics = this._characteristicDictionary
+                .Where(kvp => wtaTrail.Statistics.UserInfo.HasFlag(kvp.Key))
+                .Select(kvp => kvp.Value);
+
             Trail trail = new Trail
             {
                 Name = wtaTrail.Title, 
@@ -112,6 +133,16 @@
                 RequiredPass = requiredPass,
             };
 
+            foreach (TrailFeature feature in features)
+            {
+                trail.Features.Add(feature);
+            }
+
+            foreach (TrailCharacteristic characteristic in characteristics)
+            {
+                trail.Characteristics.Add(characteristic);
+            }
+
             foreach (string link in photoLinks)
             {
                 trail.PhotoLinks.Add(link);
@@ -126,8 +157,10 @@
         /// <param name="regions">Registered regions to enumerate.</param>
         /// <param name="guideBooks">Sequence of registered guidebooks.</param>
         /// <param name="passes">Sequence of registered passes.</param>
+        /// <param name="trailFeatures">Sequence of registered trail features.</param>
+        /// <param name="characteristics">Sequence of registered trail characteristics.</param>
         private void InitializeCaches(IEnumerable<Region> regions, IEnumerable<Guidebook> guideBooks, 
-            IEnumerable<RequiredPass> passes)
+            IEnumerable<RequiredPass> passes, IEnumerable<TrailFeature> trailFeatures, IEnumerable<TrailCharacteristic> characteristics)
         {
             if (!this._cachesInitialized)
             {
@@ -146,6 +179,12 @@
 
                         this.Logger.Debug("Initializing required passes dictionary.");
                         this._passDictionary = passes.ToDictionary(rp => rp.Description, rp => rp);
+
+                        this.Logger.Debug("Initializing trail features dictionary.");
+                        this._trailFeatureDictionary = trailFeatures.ToDictionary(tf => (WtaFeatures)tf.WtaId, tf => tf);
+
+                        this.Logger.Debug("Initializing trail characteristics dictionary.");
+                        this._characteristicDictionary = characteristics.ToDictionary(tc => (WtaUserInfo)tc.WtaId, tc => tc);
 
                         this._cachesInitialized = true;
                     }

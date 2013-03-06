@@ -48,7 +48,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbSetExtensions.cs" />
     <Compile Include="E2ETests.cs" />
     <Compile Include="ImportModeTests.cs" />
     <Compile Include="Logging\StubLog.cs" />

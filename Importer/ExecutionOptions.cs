@@ -1,6 +1,5 @@
 ﻿namespace MyTrails.Importer
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using CommandLine;
     using CommandLine.Text;

@@ -72,6 +72,26 @@
         }
 
         /// <summary>
+        /// Verify that <see cref="MyTrailsContext.TrailFeatures"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessTrailFeatures()
+        {
+            // Act
+            this.TestAccess(this._context.TrailFeatures);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="MyTrailsContext.TrailCharacteristics"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessTrailCharacteristics()
+        {
+            // Act
+            this.TestAccess(this._context.TrailCharacteristics);
+        }
+
+        /// <summary>
         /// Verify that <see cref="MyTrailsContext.Regions"/> is seeded with data.
         /// </summary>
         [TestMethod]
@@ -109,6 +129,36 @@
 
             // Assert
             Assert.IsNotNull(pass);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="MyTrailsContext.TrailFeatures"/> is seeded with data.
+        /// </summary>
+        [TestMethod]
+        public void TrailFeaturesHasSeedData()
+        {
+            // Act
+            TrailFeature feature = this._context.TrailFeatures
+                .Where(tf => tf.Description == "Mountain Views")
+                .FirstOrDefault();
+
+            // Assert
+            Assert.IsNotNull(feature);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="MyTrailsContext.TrailCharacteristics"/> is seeded with data.
+        /// </summary>
+        [TestMethod]
+        public void TrailCharacteristicsHasSeedData()
+        {
+            // Act
+            TrailCharacteristic characteristic = this._context.TrailCharacteristics
+                .Where(tf => tf.Description == "Dogs Allowed Without Leash")
+                .FirstOrDefault();
+
+            // Assert
+            Assert.IsNotNull(characteristic);
         }
 
         /// <summary>

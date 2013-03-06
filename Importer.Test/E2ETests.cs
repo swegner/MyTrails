@@ -29,6 +29,7 @@
             using (MyTrailsContext context = new MyTrailsContext())
             {
                 context.Trails.Truncate();
+                context.SaveChanges();
             }
         }
 

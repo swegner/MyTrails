@@ -23,11 +23,11 @@
         /// <summary>
         /// Features for the trail.
         /// </summary>
-        public int Features { get; set; }
+        public WtaFeatures Features { get; set; }
 
         /// <summary>
         /// User info for the trail.
         /// </summary>
-        public int UserInfo { get; set; }
+        public WtaUserInfo UserInfo { get; set; }
     }
 }
