@@ -21,6 +21,7 @@
         {
             this.Features = new Collection<TrailFeature>();
             this.Characteristics = new Collection<TrailCharacteristic>();
+            this.TripReports = new Collection<TripReport>();
             this.PhotoLinks = new Collection<string>();
         }
 
@@ -116,6 +117,11 @@
         /// Characteristics associated with the trail.
         /// </summary>
         public virtual ICollection<TrailCharacteristic> Characteristics { get; private set; }
+
+        /// <summary>
+        /// Collection of trip reports.
+        /// </summary>
+        public virtual ICollection<TripReport> TripReports { get; private set; } 
 
         /// <summary>
         /// Links to photos of the trail.

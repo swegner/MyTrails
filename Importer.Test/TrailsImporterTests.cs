@@ -112,7 +112,7 @@
         [TestCleanup]
         public void TestCleanup()
         {
-            this._dataContext.Trails.Truncate();
+            this._dataContext.ClearDatabase();
             this._dataContext.SaveChanges();
 
             this.Dispose();
@@ -187,8 +187,8 @@
         {
             // Arrange
             this._trailFactoryMock
-            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<TrailContext>()))
-            .Returns((WtaTrail wt, TrailContext tc) => 
+            .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<MyTrailsContext>()))
+            .Returns((WtaTrail wt, MyTrailsContext c) => 
                 new Trail
                 {
                     Name = wt.Title,
@@ -220,7 +220,7 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<TrailContext>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<MyTrailsContext>()),
                 Times.Never());
         }
 
@@ -242,7 +242,7 @@
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<TrailContext>()),
+            this._trailFactoryMock.Verify(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<MyTrailsContext>()),
                 Times.Exactly(NewTrails.Length));
         }
 
@@ -268,7 +268,7 @@
         {
             // Arrange
             this._trailExtenderMock
-                .Setup(te => te.Extend(It.IsAny<Trail>(), It.IsAny<TrailContext>()))
+                .Setup(te => te.Extend(It.IsAny<Trail>(), It.IsAny<MyTrailsContext>()))
                 .Returns(TaskExt.CreateNopOpTask)
                 .Verifiable();
 
@@ -322,8 +322,8 @@
 
             this._trailFactoryMock = new Mock<ITrailFactory>(MockBehavior.Strict);
             this._trailFactoryMock
-                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<TrailContext>()))
-                .Returns((WtaTrail wt, TrailContext tc) => 
+                .Setup(tf => tf.CreateTrail(It.IsAny<WtaTrail>(), It.IsAny<MyTrailsContext>()))
+                .Returns((WtaTrail wt, MyTrailsContext c) => 
                     new Trail
                     {
                         Name = wt.Title,
@@ -333,7 +333,7 @@
 
             this._trailExtenderMock = new Mock<ITrailExtender>(MockBehavior.Strict);
             this._trailExtenderMock
-                .Setup(te => te.Extend(It.IsAny<Trail>(), It.IsAny<TrailContext>()))
+                .Setup(te => te.Extend(It.IsAny<Trail>(), It.IsAny<MyTrailsContext>()))
                 .Returns(TaskExt.CreateNopOpTask);
         }
 
@@ -345,7 +345,7 @@
             this._dataContext = new MyTrailsContext();
 
             // Clear any existing contents.
-            this._dataContext.Trails.Truncate();
+            this._dataContext.ClearDatabase();
 
             // Seed test data
             foreach (Trail existingTrail in ExistingTrails)

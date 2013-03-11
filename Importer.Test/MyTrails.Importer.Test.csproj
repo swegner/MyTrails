@@ -51,6 +51,7 @@
     <Compile Include="E2ETests.cs" />
     <Compile Include="ImportModeTests.cs" />
     <Compile Include="Logging\StubLog.cs" />
+    <Compile Include="MyTrailsContextExtensions.cs" />
     <Compile Include="TestCategory.cs" />
     <Compile Include="ProgramTests.cs" />
     <Compile Include="TaskExt.cs" />
@@ -73,7 +74,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="sampleData.js" />
+    <EmbeddedResource Include="SampleData\trails.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\tripreports5.js" />
+    <EmbeddedResource Include="SampleData\tripreports4.js" />
+    <EmbeddedResource Include="SampleData\tripreports3.js" />
+    <EmbeddedResource Include="SampleData\tripreports2.js" />
+    <EmbeddedResource Include="SampleData\tripreports1.js" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">

@@ -28,7 +28,7 @@
         {
             using (MyTrailsContext context = new MyTrailsContext())
             {
-                context.Trails.Truncate();
+                context.ClearDatabase();
                 context.SaveChanges();
             }
         }
@@ -60,10 +60,24 @@
         }
 
         /// <summary>
-        /// Retrieve WTA trail data from an embedded resource rather than dynamic web results.
+        /// Retrieve WTA data from an embedded resource rather than dynamic web results.
         /// </summary>
-        private sealed class WtaResultsFromEmbeddedResource : IHttpClient
+        private sealed class WtaDataFromEmbeddedResource : IHttpClient
         {
+            /// <summary>
+            /// The resource to retrieve data from.
+            /// </summary>
+            private readonly string _resourceName;
+
+            /// <summary>
+            /// Construct a new <see cref="WtaDataFromEmbeddedResource"/> instance.
+            /// </summary>
+            /// <param name="resourceName">The resource to retrieve data from.</param>
+            public WtaDataFromEmbeddedResource(string resourceName)
+            {
+                this._resourceName = resourceName;
+            }
+
             /// <summary>
             /// Send a GET request to the specified Uri as an asynchronous operation.
             /// </summary>
@@ -72,7 +86,7 @@
             public Task<HttpResponseMessage> SendGetRequest()
             {
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                Stream resourceStream = assembly.GetManifestResourceStream("MyTrails.Importer.Test.sampleData.js");
+                Stream resourceStream = assembly.GetManifestResourceStream(this._resourceName);
 
                 Task<HttpResponseMessage> returnTask;
                 try
@@ -111,11 +125,23 @@
         }
 
         /// <summary>
-        /// Factory for creating <see cref="WtaResultsFromEmbeddedResource"/> instances.
+        /// Factory for creating <see cref="WtaDataFromEmbeddedResource"/> instances.
         /// </summary>
         [Export(typeof(IHttpClientFactory))]
         private class WtaResultFromEmbeddedResourceFactory : IHttpClientFactory
         {
+            /// <summary>
+            /// Trip report resource files.
+            /// </summary>
+            private static readonly string[] TripReportResources = new[]
+            {
+                "MyTrails.Importer.Test.SampleData.tripreports1.js",
+                "MyTrails.Importer.Test.SampleData.tripreports2.js",
+                "MyTrails.Importer.Test.SampleData.tripreports3.js",
+                "MyTrails.Importer.Test.SampleData.tripreports4.js",
+                "MyTrails.Importer.Test.SampleData.tripreports5.js",
+            };
+
             /// <summary>
             /// Create a new <see cref="IHttpClient"/> instance for the given endpoint.
             /// </summary>
@@ -124,13 +150,28 @@
             /// <seealso cref="IHttpClientFactory.CreateClient"/>
             public IHttpClient CreateClient(Uri endpoint)
             {
-                if (endpoint != WtaClient.SearchEndpoint)
+                if (endpoint == null)
                 {
-                    throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture,
-                        "The only supported endpoint is: {0}", WtaClient.SearchEndpoint));
+                    throw new ArgumentNullException("endpoint");
                 }
 
-                return new WtaResultsFromEmbeddedResource();
+                string resourceName;
+                if (endpoint == WtaClient.SearchEndpoint)
+                {
+                    resourceName = "MyTrails.Importer.Test.SampleData.trails.js";
+                }
+                else if (endpoint.AbsoluteUri.Contains(WtaClient.TripReportsEndpointFormat))
+                {
+                    int resourceIndex = Math.Abs(endpoint.GetHashCode()) % TripReportResources.Length;
+                    resourceName = TripReportResources[resourceIndex];
+                }
+                else
+                {
+                    throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture,
+                        "Endpoint not supported: {0}", WtaClient.SearchEndpoint));
+                }
+
+                return new WtaDataFromEmbeddedResource(resourceName);
             }
         }
     }

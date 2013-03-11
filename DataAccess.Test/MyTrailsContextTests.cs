@@ -200,7 +200,7 @@
         private void TestAccess<T>(DbSet<T> dataSet)
             where T : class
         {
-            dataSet.FirstOrDefault();
+            dataSet.Load();
         }
     }
 }

@@ -7,6 +7,7 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.Contracts.Data;
+    using MyTrails.DataAccess;
     using MyTrails.Importer;
     using MyTrails.Importer.Test.Logging;
     using MyTrails.Importer.Wta;
@@ -15,7 +16,7 @@
     /// Unit tests for the <see cref="TrailFactory"/> class.
     /// </summary>
     [TestClass]
-    public class TrailFactoryTests
+    public class TrailFactoryTests : IDisposable
     {
         /// <summary>
         /// Sample guidebook to use during testing.
@@ -34,12 +35,17 @@
         /// <summary>
         /// Sample trail context data to use during testing.
         /// </summary>
-        private TrailContext _trailContext;
+        private MyTrailsContext _trailContext;
 
         /// <summary>
         /// <see cref="TrailFactory"/> instance to test against.
         /// </summary>
         private TrailFactory _factory;
+
+        /// <summary>
+        /// Whether the object has been disposed of.
+        /// </summary>
+        private bool _disposed;
 
         /// <summary>
         /// Initialize test helper objects.
@@ -53,10 +59,8 @@
             const double anyMileage = 345.213;
             const double anyElevation = 9834.123;
             const double anyHighPoint = 2353.22;
-            const string anyPassDescription = "Any Pass Description";
             const string anyTrailPhotoLink = "http://anytrail/photo/link";
             
-            Guid anySubRegionGuid = Guid.NewGuid();
             Uri anyTrailUrl = new Uri("http://any/trail/url");
             DbGeography anyLocation = DbGeographyExt.PointFromCoordinates(23.456, -109.654);
 
@@ -65,29 +69,21 @@
                 Logger = new StubLog(),
             };
 
-            Region region = new Region
-            {
-                Name = "Any Region Name", 
-                SubRegions = { new Region { Name = "Any SubRegion Name", WtaId = anySubRegionGuid, }, },
-            };
-            ICollection<Region> regions = new Collection<Region>
-            {
-                region,
-                region.SubRegions.First(),
-            };
+            this._trailContext = new MyTrailsContext();
+            this._trailContext.ClearDatabase();
+            this._trailContext.SaveChanges();
 
-            Collection<Guidebook> guidebooks = new Collection<Guidebook> { AnyGuidebook };
+            this._trailContext.Guidebooks.Add(AnyGuidebook);
 
-            RequiredPass requiredPass = new RequiredPass { Name = "Any pass name", Description = anyPassDescription };
-            Collection<RequiredPass> requiredPasses = new Collection<RequiredPass> { requiredPass };
+            Region region = this._trailContext.Regions
+                .Select(r => r.SubRegions.FirstOrDefault())
+                .Where(sr => sr != null)
+                .First();
+            RequiredPass requiredPass = this._trailContext.Passes.First();
+            TrailFeature trailFeature = this._trailContext.TrailFeatures.First();
+            TrailCharacteristic characteristic = this._trailContext.TrailCharacteristics.First();
 
-            TrailFeature trailFeature = new TrailFeature { WtaId = (int)WtaFeatures.MountainViews, Description = "Any trail feature description" };
-            Collection<TrailFeature> trailFeatures = new Collection<TrailFeature> { trailFeature };
-
-            TrailCharacteristic characteristic = new TrailCharacteristic { WtaId = (int)WtaUserInfo.GoodForKids, Description = "Any trail characteristic" };
-            Collection<TrailCharacteristic> trailCharacteristics = new Collection<TrailCharacteristic> { characteristic };
-
-            this._trailContext = TrailContext.Create(regions, guidebooks, requiredPasses, trailFeatures, trailCharacteristics);
+            this._trailContext.SaveChanges();
 
             this._trailData = new TestData
             {
@@ -100,7 +96,7 @@
                     {
                         Latitude = anyLocation.Latitude.Value,
                         Longitude = anyLocation.Longitude.Value,
-                        RegionId = anySubRegionGuid,
+                        RegionId = region.WtaId,
                     },
                     Statistics = new WtaStatistics
                     {
@@ -125,7 +121,7 @@
                             },
                         },
                     },
-                    RequiredPass = anyPassDescription,
+                    RequiredPass = requiredPass.Description,
                     Photos = { new Uri(anyTrailPhotoLink) },
                 },
                 ExpectedOutput = new Trail
@@ -134,7 +130,7 @@
                     Name = anyTrailTitle,
                     Url = anyTrailUrl,
                     Location = anyLocation,
-                    Region = regions.First().SubRegions.First(),
+                    Region = region,
                     WtaRating = anyRating,
                     ElevationGain = anyElevation,
                     HighPoint = anyHighPoint,
@@ -146,6 +142,18 @@
                     Characteristics = { characteristic },
                 }
             };
+        }
+
+        /// <summary>
+        /// Clean up test helper objects.
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            this._trailContext.ClearDatabase();
+            this._trailContext.SaveChanges();
+
+            this.Dispose();
         }
 
         /// <summary>
@@ -412,6 +420,34 @@
         {
             // Act / Assert
             this.TestFactoryMethod(this._trailData, t => t.Characteristics, new CollectionComparer<TrailCharacteristic>());
+        }
+
+        /// <summary>
+        /// Dispose of object resources.
+        /// </summary>
+        /// <seealso cref="IDisposable.Dispose"/>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Dispose of object resources.
+        /// </summary>
+        /// <param name="disposing">Whether it is safe to reference managed objects.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    this._trailContext.Dispose();
+                    this._trailContext = null;
+                }
+
+                this._disposed = true;
+            }
         }
 
         /// <summary>

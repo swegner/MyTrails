@@ -47,5 +47,10 @@
         /// Trail characteristic attributes.
         /// </summary>
         public DbSet<TrailCharacteristic> TrailCharacteristics { get; set; }
+
+        /// <summary>
+        /// Registered trip reports.
+        /// </summary>
+        public DbSet<TripReport> TripReports { get; set; }
     }
 }

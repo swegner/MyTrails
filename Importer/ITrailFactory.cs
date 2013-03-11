@@ -1,6 +1,7 @@
 ﻿namespace MyTrails.Importer
 {
     using MyTrails.Contracts.Data;
+    using MyTrails.DataAccess;
     using MyTrails.Importer.Wta;
 
     /// <summary>
@@ -14,6 +15,6 @@
         /// <param name="wtaTrail">The imported WTA trail to use for trail creating.</param>
         /// <param name="context">Trail context data.</param>
         /// <returns>A new <see cref="Trail"/> instance.</returns>
-        Trail CreateTrail(WtaTrail wtaTrail, TrailContext context);
+        Trail CreateTrail(WtaTrail wtaTrail, MyTrailsContext context);
     }
 }

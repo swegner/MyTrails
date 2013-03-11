@@ -39,12 +39,12 @@
     <Compile Include="DbGeographyExt.cs" />
     <Compile Include="ExecutionOptions.cs" />
     <Compile Include="Extenders\ITrailExtender.cs" />
+    <Compile Include="Extenders\TripReportExtender.cs" />
     <Compile Include="ImportModes.cs" />
     <Compile Include="Composition\Exports.cs" />
     <Compile Include="ITrailFactory.cs" />
     <Compile Include="ITrailsImporter.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="TrailContext.cs" />
     <Compile Include="TrailFactory.cs" />
     <Compile Include="TrailsImporter.cs" />
     <Compile Include="Wta\HttpClientAdapter.cs" />
@@ -59,6 +59,7 @@
     <Compile Include="Wta\WtaLocation.cs" />
     <Compile Include="Wta\WtaStatistics.cs" />
     <Compile Include="Wta\WtaTrail.cs" />
+    <Compile Include="Wta\WtaTripReport.cs" />
     <Compile Include="Wta\WtaUserInfo.cs" />
   </ItemGroup>
   <ItemGroup>

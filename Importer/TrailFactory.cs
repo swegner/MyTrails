@@ -8,6 +8,7 @@
     using System.Linq;
     using log4net;
     using MyTrails.Contracts.Data;
+    using MyTrails.DataAccess;
     using MyTrails.Importer.Wta;
 
     /// <summary>
@@ -64,7 +65,7 @@
         /// <param name="context">Trail context data.</param>
         /// <returns>A new <see cref="Trail"/> instance.</returns>
         /// <seealso cref="ITrailFactory.CreateTrail"/>
-        public Trail CreateTrail(WtaTrail wtaTrail, TrailContext context)
+        public Trail CreateTrail(WtaTrail wtaTrail, MyTrailsContext context)
         {
             if (wtaTrail == null)
             {
@@ -149,7 +150,7 @@
         /// Initialize lookup dictionaries for registered regions and guidebooks.
         /// </summary>
         /// <param name="context">Trail context data.</param>
-        private void InitializeCaches(TrailContext context)
+        private void InitializeCaches(MyTrailsContext context)
         {
             if (!this._cachesInitialized)
             {

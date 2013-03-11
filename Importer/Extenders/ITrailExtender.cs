@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using MyTrails.Contracts.Data;
+    using MyTrails.DataAccess;
 
     /// <summary>
     /// Extends trail definitions by adding additional context.
@@ -12,8 +13,8 @@
         /// Add additional context to the trail.
         /// </summary>
         /// <param name="trail">The trail to extend.</param>
-        /// <param name="context">Registered context.</param>
+        /// <param name="context">Datastore context.</param>
         /// <returns>Task for asynchronous completion.</returns>
-        Task Extend(Trail trail, TrailContext context);
+        Task Extend(Trail trail, MyTrailsContext context);
     }
 }

@@ -106,11 +106,9 @@
                         .Select(t => t.WtaId));
 
                     this.Logger.Debug("Creating new trail entries.");
-                    TrailContext trailContext = TrailContext.Create(context.Regions, context.Guidebooks, 
-                        context.Passes, context.TrailFeatures, context.TrailCharacteristics);
                     IEnumerable<Task<Trail>> trailTasks = wtaTrails
                         .Where(wt => !existingTrailIds.Contains(wt.Uid))
-                        .Select(wt => this.ImportNewTrail(wt, trailContext));
+                        .Select(wt => this.ImportNewTrail(wt, context));
 
                     newTrails = await Task.WhenAll(trailTasks);
 
@@ -138,7 +136,7 @@
         /// <param name="wtaTrail">The <see cref="WtaTrail"/> to import.</param>
         /// <param name="trailContext">The import context.</param>
         /// <returns>A new <see cref="Trail"/> instance.</returns>
-        private async Task<Trail> ImportNewTrail(WtaTrail wtaTrail, TrailContext trailContext)
+        private async Task<Trail> ImportNewTrail(WtaTrail wtaTrail, MyTrailsContext trailContext)
         {
             Trail trail = this.TrailFactory.CreateTrail(wtaTrail, trailContext);
             IEnumerable<Task> extenderTasks = this.TrailExtenders
