@@ -38,6 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BingMaps\GeocodeServiceFactory.cs" />
+    <Compile Include="BingMaps\IGeocodeServiceFactory.cs" />
+    <Compile Include="BingMaps\IRouteServiceFactory.cs" />
+    <Compile Include="BingMaps\RouteServiceFactory.cs" />
     <Compile Include="DbGeographyExt.cs" />
     <Compile Include="ExecutionOptions.cs" />
     <Compile Include="Extenders\DrivingDistanceExtender.cs" />
