@@ -92,6 +92,36 @@
         }
 
         /// <summary>
+        /// Verify that <see cref="MyTrailsContext.TripReports"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessTripReports()
+        {
+            // Act
+            this.TestAccess(this._context.TripReports);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="MyTrailsContext.Users"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessUsers()
+        {
+            // Act
+            this.TestAccess(this._context.Users);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="MyTrailsContext.Addresses"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessAddresses()
+        {
+            // Act
+            this.TestAccess(this._context.Addresses);
+        }
+
+        /// <summary>
         /// Verify that <see cref="MyTrailsContext.Regions"/> is seeded with data.
         /// </summary>
         [TestMethod]

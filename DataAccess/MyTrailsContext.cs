@@ -52,5 +52,15 @@
         /// Registered trip reports.
         /// </summary>
         public DbSet<TripReport> TripReports { get; set; }
+
+        /// <summary>
+        /// Registered users.
+        /// </summary>
+        public DbSet<User> Users { get; set; }
+
+        /// <summary>
+        /// Registered user addresses.
+        /// </summary>
+        public DbSet<Address> Addresses { get; set; }
     }
 }

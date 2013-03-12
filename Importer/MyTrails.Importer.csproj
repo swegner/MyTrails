@@ -38,6 +38,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DbGeographyExt.cs" />
     <Compile Include="ExecutionOptions.cs" />
+    <Compile Include="Extenders\DrivingDistanceExtender.cs" />
     <Compile Include="Extenders\ITrailExtender.cs" />
     <Compile Include="Extenders\TripReportExtender.cs" />
     <Compile Include="ImportModes.cs" />

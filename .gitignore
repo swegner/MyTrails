@@ -5,6 +5,7 @@
 obj/
 bin/
 
+*.DotSettings.user
 *.csproj.user
 *.ldf
 *.mdf
