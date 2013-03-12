@@ -163,22 +163,6 @@
         }
 
         /// <summary>
-        /// Verify that <see cref="ImportModes.UpdateOnly"/> skips importing.
-        /// </summary>
-        [TestMethod, TestCategory(TestCategory.Unit)]
-        public void UpdateOnlySkipsImport()
-        {
-            // Arrange
-            this._importer.Modes = ImportModes.UpdateOnly;
-
-            // Act
-            this._importer.Run().Wait();
-
-            // Assert
-            this._wtaClientMock.Verify(wc => wc.FetchTrails(), Times.Never());
-        }
-
-        /// <summary>
         /// Verify that <see cref="Trail"/> instances are created for imported <see cref="WtaTrail"/>s
         /// using the <see cref="TrailsImporter.TrailFactory"/>.
         /// </summary>

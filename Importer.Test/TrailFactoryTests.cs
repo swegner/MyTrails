@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Data.Spatial;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,7 +15,7 @@
     /// Unit tests for the <see cref="TrailFactory"/> class.
     /// </summary>
     [TestClass]
-    public class TrailFactoryTests : IDisposable
+    public class TrailFactoryTests
     {
         /// <summary>
         /// Sample guidebook to use during testing.
@@ -33,19 +32,9 @@
         private TestData _trailData;
 
         /// <summary>
-        /// Sample trail context data to use during testing.
-        /// </summary>
-        private MyTrailsContext _trailContext;
-
-        /// <summary>
         /// <see cref="TrailFactory"/> instance to test against.
         /// </summary>
         private TrailFactory _factory;
-
-        /// <summary>
-        /// Whether the object has been disposed of.
-        /// </summary>
-        private bool _disposed;
 
         /// <summary>
         /// Initialize test helper objects.
@@ -69,21 +58,33 @@
                 Logger = new StubLog(),
             };
 
-            this._trailContext = new MyTrailsContext();
-            this._trailContext.ClearDatabase();
-            this._trailContext.SaveChanges();
+            Guidebook guidebook;
+            Region region;
+            RequiredPass requiredPass;
+            TrailFeature trailFeature;
+            TrailCharacteristic characteristic;
+            using (MyTrailsContext trailContext = new MyTrailsContext())
+            {
+                trailContext.ClearDatabase();
+                trailContext.SaveChanges();
 
-            this._trailContext.Guidebooks.Add(AnyGuidebook);
+                trailContext.Guidebooks.Add(AnyGuidebook);
+                trailContext.SaveChanges();
 
-            Region region = this._trailContext.Regions
-                .Select(r => r.SubRegions.FirstOrDefault())
-                .Where(sr => sr != null)
-                .First();
-            RequiredPass requiredPass = this._trailContext.Passes.First();
-            TrailFeature trailFeature = this._trailContext.TrailFeatures.First();
-            TrailCharacteristic characteristic = this._trailContext.TrailCharacteristics.First();
-
-            this._trailContext.SaveChanges();
+                guidebook = trailContext.Guidebooks
+                    .Where(gb => gb.Title == AnyGuidebook.Title && gb.Author == AnyGuidebook.Author)
+                    .First();
+                region = trailContext.Regions
+                    .Select(r => r.SubRegions.FirstOrDefault())
+                    .Where(sr => sr != null)
+                    .First();
+                requiredPass = trailContext.Passes
+                    .First();
+                trailFeature = trailContext.TrailFeatures
+                    .First();
+                characteristic = trailContext.TrailCharacteristics
+                    .First();
+            }
 
             this._trailData = new TestData
             {
@@ -131,12 +132,15 @@
                     Url = anyTrailUrl,
                     Location = anyLocation,
                     Region = region,
+                    RegionId = region.Id,
                     WtaRating = anyRating,
                     ElevationGain = anyElevation,
                     HighPoint = anyHighPoint,
                     Mileage = anyMileage,
                     Guidebook = AnyGuidebook,
+                    GuidebookId = guidebook.Id,
                     RequiredPass = requiredPass,
+                    RequiredPassId = requiredPass.Id,
                     PhotoLinks = { anyTrailPhotoLink },
                     Features = { trailFeature },
                     Characteristics = { characteristic },
@@ -150,10 +154,11 @@
         [TestCleanup]
         public void TestCleanup()
         {
-            this._trailContext.ClearDatabase();
-            this._trailContext.SaveChanges();
-
-            this.Dispose();
+            using (MyTrailsContext trailContext = new MyTrailsContext())
+            {
+                trailContext.ClearDatabase();
+                trailContext.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -256,7 +261,7 @@
         public void AssignsRegion()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Region);
+            this.TestFactoryMethod(this._trailData, t => t.RegionId);
         }
 
         /// <summary>
@@ -338,7 +343,7 @@
         public void AssignsGuidebook()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Guidebook, new GuidebookComparer());
+            this.TestFactoryMethod(this._trailData, t => t.GuidebookId);
         }
 
         /// <summary>
@@ -356,26 +361,13 @@
         }
 
         /// <summary>
-        /// Verify that guidebook definitions are not duplicated.
-        /// </summary>
-        [TestMethod, TestCategory(TestCategory.Unit)]
-        public void GuidebooksNotDuplicated()
-        {
-            // Arrange
-            ((ICollection<Guidebook>)new Collection<Guidebook>()).Add(AnyGuidebook);
-
-            // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Guidebook);
-        }
-
-        /// <summary>
         /// Verify that the factory assigns <see cref="Trail.RequiredPass"/>
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsRequiredPass()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.RequiredPass, new RequiredPassComparer());
+            this.TestFactoryMethod(this._trailData, t => t.RequiredPassId);
         }
 
         /// <summary>
@@ -409,7 +401,8 @@
         public void AssignsFeatures()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Features, new CollectionComparer<TrailFeature>());
+            this.TestFactoryMethod(this._trailData, t => t.Features, new ProjectionComparer<ICollection<TrailFeature>, ICollection<int>>(
+                    tfs => tfs.Select(tf => tf.Id).ToList(), new CollectionComparer<int>()));
         }
 
         /// <summary>
@@ -419,35 +412,9 @@
         public void AssignsCharacteristics()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Characteristics, new CollectionComparer<TrailCharacteristic>());
-        }
-
-        /// <summary>
-        /// Dispose of object resources.
-        /// </summary>
-        /// <seealso cref="IDisposable.Dispose"/>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Dispose of object resources.
-        /// </summary>
-        /// <param name="disposing">Whether it is safe to reference managed objects.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    this._trailContext.Dispose();
-                    this._trailContext = null;
-                }
-
-                this._disposed = true;
-            }
+            this.TestFactoryMethod(this._trailData, t => t.Characteristics,
+                new ProjectionComparer<ICollection<TrailCharacteristic>, ICollection<int>>(
+                    cs => cs.Select(c => c.Id).ToList(), new CollectionComparer<int>()));
         }
 
         /// <summary>
@@ -461,19 +428,24 @@
         private void TestFactoryMethod<TProperty>(TestData testData, Func<Trail, TProperty> propertySelector,
             IEqualityComparer<TProperty> comparer = null)
         {
-            // Arrange
-            if (comparer == null)
-            {
-                comparer = EqualityComparer<TProperty>.Default;
-            }
-
             // Act
-            Trail actual = this._factory.CreateTrail(testData.Input, this._trailContext);
+            Trail actual;
+            using (MyTrailsContext trailContext = new MyTrailsContext())
+            {
+                actual = this._factory.CreateTrail(testData.Input, trailContext);
+            }
 
             // Assert
             TProperty expectedProperty = propertySelector(testData.ExpectedOutput);
             TProperty actualProperty = propertySelector(actual);
-            Assert.IsTrue(comparer.Equals(expectedProperty, actualProperty));
+            if (comparer == null)
+            {
+                Assert.AreEqual(expectedProperty, actualProperty);
+            }
+            else
+            {
+                Assert.IsTrue(comparer.Equals(expectedProperty, actualProperty));
+            }
         }
 
         /// <summary>
@@ -549,92 +521,6 @@
         }
 
         /// <summary>
-        /// Equality comparer to check two <see cref="Guidebook"/> instances for equality.
-        /// </summary>
-        private class GuidebookComparer : EqualityComparer<Guidebook>
-        {
-            /// <summary>
-            /// Check whether two <see cref="Guidebook"/> instances are equal.
-            /// </summary>
-            /// <param name="x">The first <see cref="Guidebook"/>.</param>
-            /// <param name="y">The second <see cref="Guidebook"/>.</param>
-            /// <returns>True if the objects are equal, or false otherwise.</returns>
-            /// <seealso cref="EqualityComparer{T}.Equals(T,T)"/>
-            public override bool Equals(Guidebook x, Guidebook y)
-            {
-                if (x == null || y == null)
-                {
-                    return object.ReferenceEquals(x, y);
-                }
-
-                return x.Author == y.Author && x.Title == y.Title;
-            }
-
-            /// <summary>
-            /// Generate a hash-code for the <see cref="Guidebook"/> instance.
-            /// </summary>
-            /// <param name="obj">The object to generate a hash code for.</param>
-            /// <returns>A hash code for the object.</returns>
-            /// <seealso cref="EqualityComparer{T}.GetHashCode(T)"/>
-            public override int GetHashCode(Guidebook obj)
-            {
-                if (obj == null)
-                {
-                    return 0;
-                }
-
-                int hash = 23;
-                hash = (hash * obj.Author.GetHashCode()) + 13;
-                hash = (hash * obj.Title.GetHashCode()) + 13;
-
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Equality comparer to check two <see cref="RequiredPass"/> instances for equality.
-        /// </summary>
-        private class RequiredPassComparer : EqualityComparer<RequiredPass>
-        {
-            /// <summary>
-            /// Check whether two <see cref="RequiredPass"/> instances are equal.
-            /// </summary>
-            /// <param name="x">The first <see cref="RequiredPass"/>.</param>
-            /// <param name="y">The second <see cref="RequiredPass"/>.</param>
-            /// <returns>True if the objects are equal, or false otherwise.</returns>
-            /// <seealso cref="EqualityComparer{T}.Equals(T,T)"/>
-            public override bool Equals(RequiredPass x, RequiredPass y)
-            {
-                if (x == null || y == null)
-                {
-                    return object.ReferenceEquals(x, y);
-                }
-
-                return x.Name == y.Name && x.Description == y.Description;
-            }
-
-            /// <summary>
-            /// Generate a hash-code for the <see cref="RequiredPass"/> instance.
-            /// </summary>
-            /// <param name="obj">The object to generate a hash code for.</param>
-            /// <returns>A hash code for the object.</returns>
-            /// <seealso cref="EqualityComparer{T}.GetHashCode(T)"/>
-            public override int GetHashCode(RequiredPass obj)
-            {
-                if (obj == null)
-                {
-                    return 0;
-                }
-
-                int hash = 23;
-                hash = (hash * obj.Name.GetHashCode()) + 13;
-                hash = (hash * obj.Description.GetHashCode()) + 13;
-
-                return hash;
-            }
-        }
-
-        /// <summary>
         /// Comparer which compares the contained objects ni the collection.
         /// </summary>
         /// <typeparam name="T">The type of element in the collection.</typeparam>
@@ -671,6 +557,69 @@
                 }
 
                 return obj.Aggregate(seed: 13, func: (s, e) => s ^ e.GetHashCode());
+            }
+        }
+
+        /// <summary>
+        /// Comparer which projects objects to another type to utilize a comparer for that type.
+        /// </summary>
+        /// <typeparam name="TSource">The source type of the projection.</typeparam>
+        /// <typeparam name="TTarget">The target type of the projection.</typeparam>
+        private class ProjectionComparer<TSource, TTarget> : IEqualityComparer<TSource>
+            where TSource : class
+        {
+            /// <summary>
+            /// Function used to project to a new type.
+            /// </summary>
+            private readonly Func<TSource, TTarget> _projection;
+
+            /// <summary>
+            /// Equality comparer for the projected type.
+            /// </summary>
+            private readonly IEqualityComparer<TTarget> _innerComparer; 
+
+            /// <summary>
+            /// Construct a new <see cref="ProjectionComparer{TSource,TTarget}"/> instance.
+            /// </summary>
+            /// <param name="projection">The projection function.</param>
+            /// <param name="innerComparer">Comparer for the projected type.</param>
+            public ProjectionComparer(Func<TSource, TTarget> projection, IEqualityComparer<TTarget> innerComparer)
+            {
+                this._projection = projection;
+                this._innerComparer = innerComparer;
+            }
+
+            /// <summary>
+            /// Check whether two projected objects have equal contents.
+            /// </summary>
+            /// <param name="x">The first object.</param>
+            /// <param name="y">The second objecte.</param>
+            /// <returns>True if the object projections are equal, or false otherwise.</returns>
+            /// <seealso cref="EqualityComparer{T}.Equals(T,T)"/>
+            public bool Equals(TSource x, TSource y)
+            {
+                if (x == null || y == null)
+                {
+                    return object.ReferenceEquals(x, y);
+                }
+
+                return this._innerComparer.Equals(this._projection(x), this._projection(y));
+            }
+
+            /// <summary>
+            /// Generate a hash-code for the projected object.
+            /// </summary>
+            /// <param name="obj">The projected object to generate a hash code for.</param>
+            /// <returns>A hash code for the projection.</returns>
+            /// <seealso cref="EqualityComparer{T}.GetHashCode(T)"/>
+            public int GetHashCode(TSource obj)
+            {
+                if (obj == null)
+                {
+                    return 0;
+                }
+
+                return this._innerComparer.GetHashCode(this._projection(obj));
             }
         }
     }
