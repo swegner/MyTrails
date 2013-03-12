@@ -69,81 +69,96 @@
                 throw new InvalidOperationException(string.Format("Invalid ImportModes specified: {0}.", modes));
             }
 
-            this.Logger.DebugFormat("Running importer in mode: {0}.", modes);
+            this.Logger.Debug("Importing new trails.");
+            IList<WtaTrail> wtaTrails = await this.WtaClient.FetchTrails();
+            IEnumerable<WtaTrail> newWtaTrails = this.DeDupeWtaTrails(wtaTrails);
 
+            this.Logger.Debug("Creating new trail entries.");
+            Task[] trailTasks = newWtaTrails
+                .Select(this.ImportNewTrail)
+                .ToArray();
+            await Task.WhenAll(trailTasks);
+
+            this.Logger.DebugFormat("Created {0} new trails.", trailTasks.Length);
+        }
+
+        /// <summary>
+        /// Search imported trails for duplicates, and return a unique set of new trails.
+        /// </summary>
+        /// <param name="wtaTrails">Trails fetched from WTA.</param>
+        /// <returns>Sequence of uniuqe, new trails.</returns>
+        private IEnumerable<WtaTrail> DeDupeWtaTrails(ICollection<WtaTrail> wtaTrails)
+        {
+            this.Logger.DebugFormat("Deduping {0} imported against existing trails.", wtaTrails.Count);
+
+            List<WtaTrail> duplicates = wtaTrails
+                .GroupBy(wt => wt.Uid)
+                .Where(g => g.Count() > 1)
+                .SelectMany(g => g.Skip(1))
+                .ToList();
+
+            if (duplicates.Any())
+            {
+                this.Logger.WarnFormat("Encountered {0} duplicate{1} while importing data.", duplicates.Count, duplicates.Count > 1 ? "s" : string.Empty);
+                foreach (WtaTrail dupe in duplicates)
+                {
+                    wtaTrails.Remove(dupe);
+                }
+            }
+
+            List<string> importedIds = wtaTrails.Select(wt => wt.Uid).ToList();
+            HashSet<string> existingTrailIds;
             using (MyTrailsContext context = new MyTrailsContext())
             {
-                IList<Trail> newTrails;
-                if (modes.HasFlag(ImportModes.ImportOnly))
-                {
-                    this.Logger.Debug("Importing new trails.");
-                    IList<WtaTrail> wtaTrails = await this.WtaClient.FetchTrails();
-                    
-                    this.Logger.DebugFormat("Deduping {0} imported against existing trails.", wtaTrails.Count);
-
-                    List<WtaTrail> duplicates = wtaTrails
-                        .GroupBy(wt => wt.Uid)
-                        .Where(g => g.Count() > 1)
-                        .SelectMany(g => g.Skip(1))
-                        .ToList();
-                    if (duplicates.Any())
-                    {
-                        this.Logger.WarnFormat("Encountered {0} duplicate{1} while importing data.", 
-                            duplicates.Count,
-                            duplicates.Count > 1 ? "s" : string.Empty);
-                        foreach (WtaTrail dupe in duplicates)
-                        {
-                            wtaTrails.Remove(dupe);
-                        }
-                    }
-
-                    List<string> importedIds = wtaTrails
-                        .Select(wt => wt.Uid)
-                        .ToList();
-
-                    HashSet<string> existingTrailIds = new HashSet<string>(context.Trails
-                        .Where(t => importedIds.Contains(t.WtaId))
-                        .Select(t => t.WtaId));
-
-                    this.Logger.Debug("Creating new trail entries.");
-                    IEnumerable<Task<Trail>> trailTasks = wtaTrails
-                        .Where(wt => !existingTrailIds.Contains(wt.Uid))
-                        .Select(wt => this.ImportNewTrail(wt, context));
-
-                    newTrails = await Task.WhenAll(trailTasks);
-
-                    this.Logger.DebugFormat("Created {0} new trails.", newTrails.Count);
-                }
-                else
-                {
-                    newTrails = new List<Trail>();
-                }
-
-                this.Logger.Debug("Adding new trails to database.");
-                foreach (Trail trail in newTrails)
-                {
-                    context.Trails.Add(trail);
-                }
-
-                this.Logger.Debug("Saving changes.");
-                context.SaveChanges(this.Logger);
+                existingTrailIds = new HashSet<string>(context.Trails
+                    .Where(t => importedIds.Contains(t.WtaId))
+                    .Select(t => t.WtaId));
             }
+
+            IEnumerable<WtaTrail> newWtaTrails = wtaTrails
+                .Where(wt => !existingTrailIds.Contains(wt.Uid));
+
+            return newWtaTrails;
         }
 
         /// <summary>
         /// Import a new <see cref="WtaTrail"/>.
         /// </summary>
         /// <param name="wtaTrail">The <see cref="WtaTrail"/> to import.</param>
-        /// <param name="trailContext">The import context.</param>
-        /// <returns>A new <see cref="Trail"/> instance.</returns>
-        private async Task<Trail> ImportNewTrail(WtaTrail wtaTrail, MyTrailsContext trailContext)
+        /// <returns>Task for asynchronous completion.</returns>
+        private async Task ImportNewTrail(WtaTrail wtaTrail)
         {
-            Trail trail = this.TrailFactory.CreateTrail(wtaTrail, trailContext);
+            int trailId;
+            using (MyTrailsContext trailContext = new MyTrailsContext())
+            {
+                Trail trail = this.TrailFactory.CreateTrail(wtaTrail, trailContext);
+                trailContext.Trails.Add(trail);
+
+                trailContext.SaveChanges(this.Logger);
+                trailId = trail.Id;
+            }
+
             IEnumerable<Task> extenderTasks = this.TrailExtenders
-                .Select(te => te.Extend(trail, trailContext));
+                .Select(te => this.RunExtender(te, trailId));
 
             await Task.WhenAll(extenderTasks);
-            return trail;
+        }
+
+        /// <summary>
+        /// Execute a trail extender for a new trail.
+        /// </summary>
+        /// <param name="extender">The extender to run.</param>
+        /// <param name="trailId">The trail ID to extend.</param>
+        /// <returns>Task for asyncrhonous execution.</returns>
+        private async Task RunExtender(ITrailExtender extender, int trailId)
+        {
+            using (MyTrailsContext trailContext = new MyTrailsContext())
+            {
+                Trail trail = trailContext.Trails.Find(trailId);
+                await extender.Extend(trail, trailContext);
+
+                trailContext.SaveChanges(this.Logger);
+            }
         }
     }
 }

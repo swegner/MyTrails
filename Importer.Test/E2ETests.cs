@@ -79,6 +79,12 @@
             }
 
             /// <summary>
+            /// Does nothing.
+            /// </summary>
+            /// <seealso cref="IHttpClient.Timeout"/>
+            public TimeSpan Timeout { get; set; }
+
+            /// <summary>
             /// Send a GET request to the specified Uri as an asynchronous operation.
             /// </summary>
             /// <returns>A task for the asynchronous operation.</returns>

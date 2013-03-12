@@ -74,11 +74,6 @@
         public DbGeography Location { get; set; }
 
         /// <summary>
-        /// The geographic region of the trail.
-        /// </summary>
-        public Region Region { get; set; }
-
-        /// <summary>
         /// WTA rating for the trail.
         /// </summary>
         public double WtaRating { get; set; }
@@ -99,9 +94,29 @@
         public double? HighPoint { get; set; }
 
         /// <summary>
+        /// Datastore ID of the associated <see cref="Region"/>.
+        /// </summary>
+        public int? RegionId { get; set; }
+
+        /// <summary>
+        /// The geographic region of the trail.
+        /// </summary>
+        public virtual Region Region { get; set; }
+
+        /// <summary>
+        /// Datastore ID of the associated <see cref="Guidebook"/>
+        /// </summary>
+        public int? GuidebookId { get; set; }
+
+        /// <summary>
         /// Book reference containing trail information.
         /// </summary>
         public virtual Guidebook Guidebook { get; set; }
+
+        /// <summary>
+        /// Datastore ID of the associated <see cref="RequiredPass"/>
+        /// </summary>
+        public int? RequiredPassId { get; set; }
 
         /// <summary>
         /// Required pass for the trail.

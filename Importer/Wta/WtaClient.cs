@@ -87,6 +87,7 @@
                 await this._httpClientManager.ObtainResource(() => this.HttpClientFactory.CreateClient(SearchEndpoint)))
             {
                 this.Logger.Info("Fetching new trails from WTA.");
+                httpClientResource.Resource.Timeout = Timeout.InfiniteTimeSpan;
                 using (HttpResponseMessage response = await httpClientResource.Resource.SendGetRequest())
                 using (HttpResponseMessage successResponse = response.EnsureSuccessStatusCode())
                 {
@@ -122,6 +123,7 @@
             using (ManagedConcurentResource<IHttpClient> httpClientResource =
                 await this._httpClientManager.ObtainResource(() => this.HttpClientFactory.CreateClient(trailReportUri)))
             {
+                httpClientResource.Resource.Timeout = TimeSpan.FromSeconds(30);
                 this.Logger.InfoFormat("Fetching trip reports for trail: {0}", wtaTrailId);
 
                 using (HttpResponseMessage response = await httpClientResource.Resource.SendGetRequest())

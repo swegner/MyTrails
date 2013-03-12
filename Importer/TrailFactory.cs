@@ -4,6 +4,7 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
+    using System.Data.Entity.Migrations;
     using System.Data.Spatial;
     using System.Linq;
     using log4net;
@@ -25,27 +26,27 @@
         /// <summary>
         /// Dictionary of registered subregions, keyed by their WTA ID.
         /// </summary>
-        private Dictionary<Guid, Region> _regionDictionary;
+        private Dictionary<Guid, int> _regionDictionary;
 
         /// <summary>
         /// Dictionary of registered guide books.
         /// </summary>
-        private ConcurrentDictionary<GuideBookKey, Guidebook> _guideBookDictionary;
+        private ConcurrentDictionary<GuideBookKey, int> _guideBookDictionary;
 
         /// <summary>
         /// Dictionary of required passes, keyed by description.
         /// </summary>
-        private Dictionary<string, RequiredPass> _passDictionary;
+        private Dictionary<string, int> _passDictionary;
 
         /// <summary>
         /// Dictionary of trail features, keyed by WTA ID.
         /// </summary>
-        private Dictionary<WtaFeatures, TrailFeature> _trailFeatureDictionary;
+        private Dictionary<WtaFeatures, int> _trailFeatureDictionary;
 
         /// <summary>
         /// Dictionary of trail characteristics, keyed by WTA ID.
         /// </summary>
-        private Dictionary<WtaUserInfo, TrailCharacteristic> _characteristicDictionary; 
+        private Dictionary<WtaUserInfo, int> _characteristicDictionary; 
 
         /// <summary>
         /// Whether entity caches has been initialized.
@@ -78,40 +79,46 @@
             DbGeography location = wtaLocation.Latitude.HasValue && wtaLocation.Longitude.HasValue ?
                 DbGeographyExt.PointFromCoordinates(wtaLocation.Latitude.Value, wtaLocation.Longitude.Value) :
                 null;
-            Region region = wtaLocation.RegionId.HasValue ?
+            int? regionId = wtaLocation.RegionId.HasValue ?
                 this._regionDictionary[wtaLocation.RegionId.Value] :
-                null;
+                (int?)null;
 
             WtaGuidebook wtaGuidebook = wtaTrail.Guidebook;
-            Guidebook guidebook;
+            int? guidebookId;
             if (wtaGuidebook != null)
             {
                 GuideBookKey key = new GuideBookKey(wtaGuidebook);
-                guidebook = this._guideBookDictionary.GetOrAdd(key, k => new Guidebook
+                guidebookId = this._guideBookDictionary.GetOrAdd(key, k =>
                 {
-                    Author = k.Author,
-                    Title = k.Title,
+                    Guidebook gb = new Guidebook
+                    {
+                        Author = k.Author,
+                        Title = k.Title,
+                    };
+                    context.Guidebooks.AddOrUpdate(g => new { g.Author, g.Title }, gb);
+                    context.SaveChanges();
+                    return gb.Id;
                 });
             }
             else
             {
-                guidebook = null;
+                guidebookId = null;
             }
 
-            RequiredPass requiredPass = !string.IsNullOrEmpty(wtaTrail.RequiredPass) ?
+            int? requiredPassId = !string.IsNullOrEmpty(wtaTrail.RequiredPass) ?
                 this._passDictionary[wtaTrail.RequiredPass] :
-                null;
+                (int?)null;
 
             IEnumerable<string> photoLinks = wtaTrail.Photos
                 .Select(u => u.AbsoluteUri);
 
             IEnumerable<TrailFeature> features = this._trailFeatureDictionary
                 .Where(kvp => wtaTrail.Statistics.Features.HasFlag(kvp.Key))
-                .Select(kvp => kvp.Value);
+                .Select(kvp => context.TrailFeatures.Find(kvp.Value));
 
             IEnumerable<TrailCharacteristic> characteristics = this._characteristicDictionary
                 .Where(kvp => wtaTrail.Statistics.UserInfo.HasFlag(kvp.Key))
-                .Select(kvp => kvp.Value);
+                .Select(kvp => context.TrailCharacteristics.Find(kvp.Value));
 
             Trail trail = new Trail
             {
@@ -119,13 +126,13 @@
                 WtaId = wtaTrail.Uid, 
                 Url = wtaTrail.Url, 
                 Location = location, 
-                WtaRating = wtaTrail.Rating, 
-                Region = region, 
+                WtaRating = wtaTrail.Rating,
+                RegionId = regionId, 
                 ElevationGain = wtaTrail.Statistics.ElevationGain, 
                 Mileage = wtaTrail.Statistics.Mileage, 
-                HighPoint = wtaTrail.Statistics.HighPoint, 
-                Guidebook = guidebook, 
-                RequiredPass = requiredPass,
+                HighPoint = wtaTrail.Statistics.HighPoint,
+                GuidebookId = guidebookId,
+                RequiredPassId = requiredPassId,
             };
 
             foreach (TrailFeature feature in features)
@@ -159,22 +166,22 @@
                     if (!this._cachesInitialized)
                     {
                         this.Logger.Debug("Initializing region dictionary.");
-                        this._regionDictionary = context.Regions.ToDictionary(sr => sr.WtaId, sr => sr);
+                        this._regionDictionary = context.Regions.ToDictionary(sr => sr.WtaId, sr => sr.Id);
 
                         this.Logger.Debug("Initializing guidebook dictionary.");
-                        Dictionary<GuideBookKey, Guidebook> dict = context.Guidebooks.ToDictionary(
+                        Dictionary<GuideBookKey, int> dict = context.Guidebooks.ToDictionary(
                             gb => new GuideBookKey(gb), 
-                            gb => gb);
-                        this._guideBookDictionary = new ConcurrentDictionary<GuideBookKey, Guidebook>(dict);
+                            gb => gb.Id);
+                        this._guideBookDictionary = new ConcurrentDictionary<GuideBookKey, int>(dict);
 
                         this.Logger.Debug("Initializing required passes dictionary.");
-                        this._passDictionary = context.Passes.ToDictionary(rp => rp.Description, rp => rp);
+                        this._passDictionary = context.Passes.ToDictionary(rp => rp.Description, rp => rp.Id);
 
                         this.Logger.Debug("Initializing trail features dictionary.");
-                        this._trailFeatureDictionary = context.TrailFeatures.ToDictionary(tf => (WtaFeatures)tf.WtaId, tf => tf);
+                        this._trailFeatureDictionary = context.TrailFeatures.ToDictionary(tf => (WtaFeatures)tf.WtaId, tf => tf.Id);
 
                         this.Logger.Debug("Initializing trail characteristics dictionary.");
-                        this._characteristicDictionary = context.TrailCharacteristics.ToDictionary(tc => (WtaUserInfo)tc.WtaId, tc => tc);
+                        this._characteristicDictionary = context.TrailCharacteristics.ToDictionary(tc => (WtaUserInfo)tc.WtaId, tc => tc.Id);
 
                         this._cachesInitialized = true;
                     }

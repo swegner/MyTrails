@@ -2,7 +2,6 @@
 {
     using System;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -34,15 +33,16 @@
             this._endpoint = endpoint;
 
             this._innerClient = new HttpClient();
-            try
-            {
-                this._innerClient.Timeout = Timeout.InfiniteTimeSpan;
-            }
-            catch (Exception)
-            {
-                this._innerClient.Dispose();
-                throw;
-            }
+        }
+
+        /// <summary>
+        /// Time to wait before the request times out.
+        /// </summary>
+        /// <seealso cref="IHttpClient.Timeout"/>
+        public TimeSpan Timeout
+        {
+            get { return this._innerClient.Timeout; }
+            set { this._innerClient.Timeout = value; }
         }
 
         /// <summary>

@@ -1,7 +1,6 @@
 ﻿namespace MyTrails.Importer.Extenders
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Data.Entity;
@@ -24,11 +23,6 @@
         private readonly object _initSyncObject;
 
         /// <summary>
-        /// Dictionary cache of looked-up trip reports.
-        /// </summary>
-        private readonly ConcurrentDictionary<string, TripReport> _cachedReports;
-
-        /// <summary>
         /// Maximum date of previously stored trip reports.
         /// </summary>
         private DateTime _maxTripReportDate;
@@ -44,7 +38,6 @@
         public TripReportExtender()
         {
             this._initSyncObject = new object();
-            this._cachedReports = new ConcurrentDictionary<string, TripReport>();
         }
 
         /// <summary>
@@ -69,7 +62,6 @@
         public async Task Extend(Trail trail, MyTrailsContext context)
         {
             this.InitializeMaxTripReportDate(context.TripReports);
-            this.Logger.InfoFormat("Adding trip reports on or after {0}.", this._maxTripReportDate);
 
             string wtaTrailId = trail.WtaId;
             IList<WtaTripReport> reports = await this.WtaClient.FetchTripReports(wtaTrailId);
@@ -81,22 +73,14 @@
             {
                 string wtaReportId = this.GetWtaReportId(wtaReport);
 
-                TripReport report;
-                bool found = this._cachedReports.TryGetValue(wtaReportId, out report);
-                if (!found)
+                TripReport report = context.TripReports
+                    .Where(tr => tr.WtaId == wtaReportId)
+                    .FirstOrDefault();
+
+                if (report == null)
                 {
-                    TripReport newReport = context.TripReports
-                        .Where(tr => tr.WtaId == wtaReportId)
-                        .FirstOrDefault();
-
-                    if (newReport == null)
-                    {
-                        this.Logger.InfoFormat("Found new trip report: {0}", wtaReportId);
-                        newReport = this.CreateReport(wtaReportId, wtaReport);
-                    }
-
-                    this._cachedReports.TryAdd(wtaReportId, newReport);
-                    report = newReport;
+                    this.Logger.InfoFormat("Found new trip report: {0}", wtaReportId);
+                    report = this.CreateReport(wtaReportId, wtaReport);
                 }
 
                 trail.TripReports.Add(report);
@@ -118,6 +102,8 @@
                         this._maxTripReportDate = tripReports.Any() ?
                             tripReports.Max(tr => tr.Date) :
                             DateTime.MinValue;
+
+                        this.Logger.InfoFormat("Adding trip reports on or after {0}.", this._maxTripReportDate);
                         this._initialized = true;
                     }
                 }
