@@ -28,6 +28,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +48,16 @@
     <Compile Include="ITrailFactory.cs" />
     <Compile Include="ITrailsImporter.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Service References\BingMaps.Geocoding\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\BingMaps.Routing\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="TrailFactory.cs" />
     <Compile Include="TrailsImporter.cs" />
     <Compile Include="Wta\HttpClientAdapter.cs" />
@@ -66,6 +78,46 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Service References\BingMaps.Geocoding\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Geocoding\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Geocoding\contracts.wsdl" />
+    <None Include="Service References\BingMaps.Geocoding\contracts.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Geocoding\geocode.wsdl" />
+    <None Include="Service References\BingMaps.Geocoding\geocode.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Geocoding\MyTrails.Importer.BingMaps.Geocoding.GeocodeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BingMaps.Geocoding\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Routing\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Routing\contracts.wsdl" />
+    <None Include="Service References\BingMaps.Routing\contracts.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Routing\MyTrails.Importer.BingMaps.Routing.MajorRoutesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BingMaps.Routing\MyTrails.Importer.BingMaps.Routing.RouteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BingMaps.Routing\route.wsdl" />
+    <None Include="Service References\BingMaps.Routing\route.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Routing\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\MyTrails.Contracts.csproj">
@@ -76,6 +128,37 @@
       <Project>{35f56f3a-5e01-4d67-9e03-03f1c0b3ed2a}</Project>
       <Name>MyTrails.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\BingMaps.Geocoding\" />
+    <WCFMetadataStorage Include="Service References\BingMaps.Routing\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Routing\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Routing\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Routing\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Geocoding\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Geocoding\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Geocoding\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
