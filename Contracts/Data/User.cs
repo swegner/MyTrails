@@ -15,7 +15,7 @@
         /// <summary>
         /// Unique username for the user.
         /// </summary>
-        [Required]
+        [Required, MaxLength(50)]
         public string UserName { get; set; }
 
         /// <summary>

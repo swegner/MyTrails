@@ -25,13 +25,13 @@
         /// <summary>
         /// ID of the associated WTA trip type.
         /// </summary>
-        [Required]
+        [Required, MaxLength(30)]
         public string WtaId { get; set; }
 
         /// <summary>
         /// Description of the trip type.
         /// </summary>
-        [Required]
+        [Required, MaxLength(50)]
         public string Description { get; set; }
 
         /// <summary>

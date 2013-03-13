@@ -26,7 +26,7 @@
         /// <summary>
         /// The user-entered address location.
         /// </summary>
-        [Required]
+        [Required, MaxLength(100)]
         public string Location { get; set; }
 
         /// <summary>
