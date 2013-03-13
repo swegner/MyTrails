@@ -62,7 +62,7 @@
         /// <summary>
         /// Helper property for serializing <see cref="Url"/>.
         /// </summary>
-        [Required, Column("Uri"), MaxLength(200)]
+        [Required, Column("Url"), MaxLength(200)]
         [DebuggerHidden]
         [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings",
             Justification = "String helper needed for EntityFramework serialization.")]
