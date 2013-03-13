@@ -11,6 +11,7 @@
         /// Create a new <see cref="IRouteService"/> instance.
         /// </summary>
         /// <returns>A new <see cref=" IRouteService"/> instance.</returns>
+        /// <remarks>Consumer is responsible for disposing of returned <see cref="IRouteService"/> instance.</remarks>
         IRouteService CreateRouteService();
     }
 }

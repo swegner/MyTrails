@@ -12,7 +12,10 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.DataAccess;
     using MyTrails.Importer;
+    using MyTrails.Importer.BingMaps;
+    using MyTrails.Importer.BingMaps.Routing;
     using MyTrails.Importer.Wta;
+    using ExecutionOptions = MyTrails.Importer.ExecutionOptions;
 
     /// <summary>
     /// End-to-end tests for the importer.
@@ -45,12 +48,14 @@
                 Modes = ImportModes.ImportOnly,
             };
 
-            string contractToReplace = AttributedModelServices.GetContractName(typeof(IHttpClientFactory));
+            string httpClientFactoryContract = AttributedModelServices.GetContractName(typeof(IHttpClientFactory));
+            string routeServiceFactoryContract = AttributedModelServices.GetContractName(typeof(IRouteServiceFactory));
 
             using (ApplicationCatalog initialCatalog = Program.BuildCompositionCatalog())
-            using (FilteredCatalog filteredCatalog = initialCatalog.Filter(d => !d.Exports(contractToReplace)))
-            using (TypeCatalog replacementCatalog = new TypeCatalog(typeof(WtaResultFromEmbeddedResourceFactory)))
-            using (AggregateCatalog aggregateCatalog = new AggregateCatalog(filteredCatalog, replacementCatalog))
+            using (FilteredCatalog filteredCatalog = initialCatalog.Filter(d => !d.Exports(httpClientFactoryContract) && !d.Exports(routeServiceFactoryContract)))
+            using (TypeCatalog httpClientFactoryCatalog = new TypeCatalog(typeof(WtaResultFromEmbeddedResourceFactory)))
+            using (TypeCatalog routeServiceFactoryCatalog = new TypeCatalog(typeof(RouteServiceFromCalculatedDistanceFactory)))
+            using (AggregateCatalog aggregateCatalog = new AggregateCatalog(filteredCatalog, httpClientFactoryCatalog, routeServiceFactoryCatalog))
             using (CompositionContainer container = new CompositionContainer(aggregateCatalog))
             {
                 // Act
@@ -178,6 +183,101 @@
                 }
 
                 return new WtaDataFromEmbeddedResource(resourceName);
+            }
+        }
+
+        /// <summary>
+        /// Calculates routes based on the distance between points.
+        /// </summary>
+        private class RouteServiceFromCalculatedDistance : IRouteService
+        {
+            /// <summary>
+            /// Not implemented.
+            /// </summary>
+            /// <param name="request">The parameter is not used.</param>
+            /// <returns>Throws an exception.</returns>
+            /// <seealso cref="IRouteService.CalculateRoute"/>
+            public RouteResponse CalculateRoute(RouteRequest request)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            /// Calculates a route based on the distance between points.
+            /// </summary>
+            /// <param name="request">The request to calculate a route for..</param>
+            /// <returns>A response with the calculated distance.</returns>
+            /// <seealso cref="IRouteService.CalculateRouteAsync"/>
+            public Task<RouteResponse> CalculateRouteAsync(RouteRequest request)
+            {
+                if (request == null)
+                {
+                    throw new ArgumentNullException("request");
+                }
+
+                const double secondsPerUnitDistance = 60 * 60;
+
+                Location start = request.Waypoints[0].Location;
+                Location end = request.Waypoints[0].Location;
+
+                double northSouth = start.Latitude - end.Latitude;
+                double eastWest = start.Longitude - end.Longitude;
+                double approximateDistance = Math.Sqrt(Math.Pow(northSouth, 2) + Math.Pow(eastWest, 2));
+                int travelTimeSeconds = (int)(approximateDistance * secondsPerUnitDistance);
+
+                RouteResponse response = new RouteResponse
+                {
+                    Result = new RouteResult
+                    {
+                        Summary = new RouteSummary
+                        {
+                            TimeInSeconds = travelTimeSeconds,
+                        },
+                    },
+                };
+                return TaskExt.WrapInTask(() => response);
+            }
+
+            /// <summary>
+            /// Not implemented.
+            /// </summary>
+            /// <param name="request">The parameter is not used.</param>
+            /// <returns>Throws an exception.</returns>
+            /// <seealso cref="IRouteService.CalculateRoutesFromMajorRoads"/>
+            public MajorRoutesResponse CalculateRoutesFromMajorRoads(MajorRoutesRequest request)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            /// Not implemented.
+            /// </summary>
+            /// <param name="request">The parameter is not used.</param>
+            /// <returns>Throws an exception.</returns>
+            /// <seealso cref="IRouteService.CalculateRoutesFromMajorRoadsAsync"/>
+            public Task<MajorRoutesResponse> CalculateRoutesFromMajorRoadsAsync(MajorRoutesRequest request)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Create a new <see cref="IRouteService"/> instance.
+        /// </summary>
+        /// <returns>A new <see cref=" IRouteService"/> instance.</returns>
+        /// <seealso cref="IRouteServiceFactory.CreateRouteService"/>
+        [Export(typeof(IRouteServiceFactory))]
+        private class RouteServiceFromCalculatedDistanceFactory : IRouteServiceFactory
+        {
+            /// <summary>
+            /// Create a new <see cref="IRouteService"/> instance.
+            /// </summary>
+            /// <returns>A new <see cref=" IRouteService"/> instance.</returns>
+            /// <remarks>Consumer is responsible for disposing of returned <see cref="IRouteService"/> instance.</remarks>
+            /// <seealso cref="IRouteServiceFactory.CreateRouteService"/>
+            public IRouteService CreateRouteService()
+            {
+                return new RouteServiceFromCalculatedDistance();
             }
         }
     }

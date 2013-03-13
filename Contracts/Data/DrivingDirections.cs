@@ -14,15 +14,25 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// The driving time between the locations.
+        /// The driving time between the locations, in seconds.
         /// </summary>
-        public TimeSpan DrivingTime { get; set; }
+        public int DrivingTimeSeconds { get; set; }
+
+        /// <summary>
+        /// ID of <see cref="Address"/> in the datastore.
+        /// </summary>
+        public int AddressId { get; set; }
 
         /// <summary>
         /// The starting address for the directions.
         /// </summary>
         [Required]
         public virtual Address Address { get; set; }
+
+        /// <summary>
+        /// ID of <see cref="Trail"/> in the datastore.
+        /// </summary>
+        public int TrailId { get; set; }
 
         /// <summary>
         /// The trail destination for the directions.

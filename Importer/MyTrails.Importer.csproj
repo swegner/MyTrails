@@ -25,6 +25,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Net.Http" />
@@ -38,7 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BingMaps\BingMapsCredentials.cs" />
     <Compile Include="BingMaps\GeocodeServiceFactory.cs" />
+    <Compile Include="BingMaps\IBingMapsCredentials.cs" />
     <Compile Include="BingMaps\IGeocodeServiceFactory.cs" />
     <Compile Include="BingMaps\IRouteServiceFactory.cs" />
     <Compile Include="BingMaps\RouteServiceFactory.cs" />
@@ -81,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="apiKeys.config" />
     <None Include="packages.config" />
     <None Include="Service References\BingMaps.Geocoding\Arrays.xsd">
       <SubType>Designer</SubType>
