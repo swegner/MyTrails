@@ -9,10 +9,5 @@
         /// The registered ApplicationID.
         /// </summary>
         string ApplicationId { get; }
-
-        /// <summary>
-        /// The registered application token.
-        /// </summary>
-        string Token { get; }
     }
 }

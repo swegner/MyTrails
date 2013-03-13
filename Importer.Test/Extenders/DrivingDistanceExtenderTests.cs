@@ -75,9 +75,6 @@
             this._credentialsMock
                 .SetupGet(c => c.ApplicationId)
                 .Returns("anyApplicationId");
-            this._credentialsMock
-                .SetupGet(c => c.Token)
-                .Returns("anyApplicationToken");
 
             this._extender = new DrivingDistanceExtender
             {
@@ -122,16 +119,11 @@
         public void SendsCredentials()
         {
             const string anyApplicationId = "any application id";
-            const string anyApplicationToken = "any applicaiton token";
 
             // Arrange
             this._credentialsMock
                 .SetupGet(c => c.ApplicationId)
                 .Returns(anyApplicationId)
-                .Verifiable();
-            this._credentialsMock
-                .SetupGet(c => c.Token)
-                .Returns(anyApplicationToken)
                 .Verifiable();
 
             bool hasAuthentication = false;
@@ -140,8 +132,7 @@
                 .Callback((RouteRequest rr) =>
                 {
                     hasAuthentication = rr.Credentials != null &&
-                        rr.Credentials.ApplicationId == anyApplicationId &&
-                        rr.Credentials.Token == anyApplicationToken;
+                        rr.Credentials.ApplicationId == anyApplicationId;
                 })
                 .Returns(TaskExt.WrapInTask(() => this.CreateRouteResponse(12345)));
 

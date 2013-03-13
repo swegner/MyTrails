@@ -70,7 +70,6 @@
                 Credentials = new Credentials
                 {
                     ApplicationId = this.BingMapsCredentials.ApplicationId,
-                    Token = this.BingMapsCredentials.Token,
                 },
                 Waypoints = new[]
                 {
