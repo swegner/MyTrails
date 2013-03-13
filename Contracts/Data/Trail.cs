@@ -62,7 +62,7 @@
         /// <summary>
         /// Helper property for serializing <see cref="Url"/>.
         /// </summary>
-        [Required, Column("Url"), MaxLength(200)]
+        [Column("Url"), Required, MaxLength(200)]
         [DebuggerHidden]
         [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings",
             Justification = "String helper needed for EntityFramework serialization.")]
@@ -142,5 +142,15 @@
         /// Links to photos of the trail.
         /// </summary>
         public virtual ICollection<string> PhotoLinks { get; private set; }
+
+        /// <summary>
+        /// Retrieve a string representation of the trail.
+        /// </summary>
+        /// <returns>A string representation of the trail.</returns>
+        /// <seealso cref="object.ToString"/>
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

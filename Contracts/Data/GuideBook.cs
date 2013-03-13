@@ -38,5 +38,15 @@
         /// Trails contained within the book.
         /// </summary>
         public virtual ICollection<Trail> Trails { get; private set; }
+
+        /// <summary>
+        /// Returns a string representation of the book.
+        /// </summary>
+        /// <returns>A string representation of the book.</returns>
+        /// <seealso cref="object.ToString"/>
+        public override string ToString()
+        {
+            return this.Title;
+        }
     }
 }

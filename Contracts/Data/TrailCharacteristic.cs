@@ -37,5 +37,15 @@
         /// Trails which have the associated characteristic.
         /// </summary>
         public virtual ICollection<Trail> Trails { get; private set; }
+
+        /// <summary>
+        /// Retrive a string representation of the characteristic.
+        /// </summary>
+        /// <returns>A string representation of the characteristic.</returns>
+        /// <seealso cref="object.ToString"/>
+        public override string ToString()
+        {
+            return this.Description;
+        }
     }
 }

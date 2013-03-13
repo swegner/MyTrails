@@ -23,5 +23,15 @@
         /// </summary>
         [Required]
         public virtual Address HomeAddress { get; set; }
+
+        /// <summary>
+        /// Retrieve a string representation of the user.
+        /// </summary>
+        /// <returns>A string representation of the user.</returns>
+        /// <seealso cref="object.ToString"/>
+        public override string ToString()
+        {
+            return this.UserName;
+        }
     }
 }

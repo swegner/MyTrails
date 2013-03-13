@@ -75,8 +75,6 @@
                     .Where(gb => gb.Title == AnyGuidebook.Title && gb.Author == AnyGuidebook.Author)
                     .First();
                 region = trailContext.Regions
-                    .Select(r => r.SubRegions.FirstOrDefault())
-                    .Where(sr => sr != null)
                     .First();
                 requiredPass = trailContext.Passes
                     .First();
@@ -432,7 +430,11 @@
             Trail actual;
             using (MyTrailsContext trailContext = new MyTrailsContext())
             {
-                actual = this._factory.CreateTrail(testData.Input, trailContext);
+                Trail newTrail = this._factory.CreateTrail(testData.Input, trailContext);
+                trailContext.Trails.Add(newTrail);
+
+                trailContext.SaveChanges();
+                actual = trailContext.Trails.Find(newTrail.Id);
             }
 
             // Assert

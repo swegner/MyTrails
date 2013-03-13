@@ -40,5 +40,15 @@
         /// </summary>
         [Required]
         public virtual ICollection<DrivingDirections> Directions { get; private set; }
+
+        /// <summary>
+        /// Returns a string representation of the address.
+        /// </summary>
+        /// <returns>A string representation of the address.</returns>
+        /// <seealso cref="object.ToString"/>
+        public override string ToString()
+        {
+            return this.Location;
+        }
     }
 }

@@ -38,5 +38,15 @@
         /// Trails that require the associated pass.
         /// </summary>
         public virtual ICollection<Trail> Trails { get; private set; }
+
+        /// <summary>
+        /// Retrieve a string representation of the pass requirement.
+        /// </summary>
+        /// <returns>A string representation of the pass requirement.</returns>
+        /// <seealso cref="object.ToString"/>
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

@@ -144,16 +144,6 @@
 
             // Assert
             Assert.IsNotNull(region);
-
-            // Act
-            Guid expectedGuid = Guid.Parse("637634387ca38685f89162475c7fc1d2");
-            Region subRegion = region.SubRegions
-                .Where(sr => sr.WtaId == expectedGuid)
-                .FirstOrDefault();
-
-            // Assert
-            Assert.IsNotNull(subRegion);
-            Assert.AreEqual("Stevens Pass - West", subRegion.Name);
         }
 
         /// <summary>

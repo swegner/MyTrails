@@ -88,7 +88,6 @@
         /// <summary>
         /// The type of hike for the report.
         /// </summary>
-        [Required]
         public virtual TripType TripType { get; set; }
 
         /// <summary>

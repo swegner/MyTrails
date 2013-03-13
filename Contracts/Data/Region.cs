@@ -1,8 +1,6 @@
 ﻿namespace MyTrails.Contracts.Data
 {
     using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
@@ -10,14 +8,6 @@
     /// </summary>
     public class Region
     {
-        /// <summary>
-        /// Construct a new <see cref="Region"/> instance.
-        /// </summary>
-        public Region()
-        {
-            this.SubRegions = new Collection<Region>();
-        }
-
         /// <summary>
         /// The ID of the region in the datastore.
         /// </summary>
@@ -35,8 +25,13 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// List of sub-regions for in region.
+        /// Return a string representation of the region.
         /// </summary>
-        public virtual ICollection<Region> SubRegions { get; private set; }
+        /// <returns>A string representation of the region.</returns>
+        /// <seealso cref="object.ToString"/>
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

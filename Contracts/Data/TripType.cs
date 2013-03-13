@@ -38,5 +38,15 @@
         /// Trip reports with the associated trip type.
         /// </summary>
         public virtual ICollection<TripReport> Trips { get; private set; }
+
+        /// <summary>
+        /// Retrieve a string representation of the trip type.
+        /// </summary>
+        /// <returns>A string representation of the trip type.</returns>
+        /// <seealso cref="object.ToString"/>
+        public override string ToString()
+        {
+            return this.Description;
+        }
     }
 }
