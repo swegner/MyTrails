@@ -54,6 +54,11 @@
         public DbSet<TripReport> TripReports { get; set; }
 
         /// <summary>
+        /// Registered trip types.
+        /// </summary>
+        public DbSet<TripType> TripTypes { get; set; }
+
+        /// <summary>
         /// Registered users.
         /// </summary>
         public DbSet<User> Users { get; set; }

@@ -102,6 +102,16 @@
         }
 
         /// <summary>
+        /// Verify that <see cref="MyTrailsContext.TripTypes"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessTripTypes()
+        {
+            // Act
+            this.TestAccess(this._context.TripTypes);
+        }
+
+        /// <summary>
         /// Verify that <see cref="MyTrailsContext.Users"/> is accessible.
         /// </summary>
         [TestMethod]
@@ -189,6 +199,22 @@
 
             // Assert
             Assert.IsNotNull(characteristic);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="MyTrailsContext.TripTypes"/> is seeded with data.
+        /// </summary>
+        [TestMethod]
+        public void TripTypesHasSeedData()
+        {
+            // Act
+            TripType tripType = this._context.TripTypes
+                .Where(tt => tt.WtaId == "overnight")
+                .FirstOrDefault();
+
+            // Assert
+            Assert.IsNotNull(tripType);
+            Assert.AreEqual("Overnight Backpack", tripType.Description);
         }
 
         /// <summary>

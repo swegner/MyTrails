@@ -46,7 +46,7 @@
         /// <summary>
         /// Dictionary of trail characteristics, keyed by WTA ID.
         /// </summary>
-        private Dictionary<WtaUserInfo, int> _characteristicDictionary; 
+        private Dictionary<WtaUserInfo, int> _characteristicDictionary;
 
         /// <summary>
         /// Whether entity caches has been initialized.

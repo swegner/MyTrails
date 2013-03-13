@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
     using log4net;
@@ -21,6 +20,11 @@
         /// Lock object to synchronize initialization.
         /// </summary>
         private readonly object _initSyncObject;
+
+        /// <summary>
+        /// Dictionary of trip types, keyed by WTA ID.
+        /// </summary>
+        private Dictionary<string, int> _tripTypeDictionary; 
 
         /// <summary>
         /// Maximum date of previously stored trip reports.
@@ -61,7 +65,7 @@
         /// <seealso cref="ITrailExtender.Extend"/>
         public async Task Extend(Trail trail, MyTrailsContext context)
         {
-            this.InitializeMaxTripReportDate(context.TripReports);
+            this.Initialize(context);
 
             string wtaTrailId = trail.WtaId;
             IList<WtaTripReport> reports = await this.WtaClient.FetchTripReports(wtaTrailId);
@@ -88,10 +92,10 @@
         }
 
         /// <summary>
-        /// Initialize the maximum date of previously stored trip reports.
+        /// Initialize caches and the maximum date of previously stored trip reports.
         /// </summary>
-        /// <param name="tripReports">Registered trip reports.</param>
-        private void InitializeMaxTripReportDate(DbSet<TripReport> tripReports)
+        /// <param name="context">Datastore context..</param>
+        private void Initialize(MyTrailsContext context)
         {
             if (!this._initialized)
             {
@@ -99,8 +103,11 @@
                 {
                     if (!this._initialized)
                     {
-                        this._maxTripReportDate = tripReports.Any() ?
-                            tripReports.Max(tr => tr.Date) :
+                        this.Logger.Debug("Initializing trip type dictionary");
+                        this._tripTypeDictionary = context.TripTypes.ToDictionary(tt => tt.WtaId, tt => tt.Id);
+
+                        this._maxTripReportDate = context.TripReports.Any() ?
+                            context.TripReports.Max(tr => tr.Date) :
                             DateTime.MinValue;
 
                         this.Logger.InfoFormat("Adding trip reports on or after {0}.", this._maxTripReportDate);
@@ -128,6 +135,8 @@
         /// <returns>An initialized <see cref="TripReport"/>.</returns>
         private TripReport CreateReport(string wtaReportId, WtaTripReport wtaReport)
         {
+            int tripTypeId = this._tripTypeDictionary[wtaReport.HikeType];
+
             return new TripReport
             {
                 WtaId = wtaReportId,
@@ -135,7 +144,7 @@
                 Author = wtaReport.Author,
                 Date = wtaReport.Date,
                 Url = wtaReport.FullReportUrl,
-                TripType = wtaReport.HikeType,
+                TripTypeId = tripTypeId,
                 Text = wtaReport.BodyText,
             };
         }

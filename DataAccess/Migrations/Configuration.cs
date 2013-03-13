@@ -36,6 +36,7 @@ namespace MyTrails.DataAccess.Migrations
             this.SeedPasses(context.Passes);
             this.SeedTrailFeatures(context.TrailFeatures);
             this.SeedTrailCharacteristics(context.TrailCharacteristics);
+            this.SeedTripTypes(context.TripTypes);
 
             base.Seed(context);
         }
@@ -239,6 +240,21 @@ namespace MyTrails.DataAccess.Migrations
                 new TrailCharacteristic { WtaId = 1 << 5, Description = "May Encounter Mountain Bikes" },
                 new TrailCharacteristic { WtaId = 1 << 6, Description = "May Encounter Motorized Vehicles" },
                 new TrailCharacteristic { WtaId = 1 << 7, Description = "Permit or Pass Required" },
+            });
+        }
+
+        /// <summary>
+        /// Seed the <see cref="MyTrailsContext.TripTypes"/> data with predefined types.
+        /// </summary>
+        /// <param name="tripTypes">The <see cref="DbSet{TEntity}"/> to seed.</param>
+        private void SeedTripTypes(DbSet<TripType> tripTypes)
+        {
+            tripTypes.AddOrUpdate(tt => tt.WtaId, new[]
+            {
+                new TripType { WtaId = "day-hike", Description = "Day Hike" },
+                new TripType { WtaId = "overnight", Description = "Overnight Backpack" },
+                new TripType { WtaId = "multi-night-backpack", Description = "Multi-Night Backpack" },
+                new TripType { WtaId = "Snowshoe-xc-ski", Description = "Snowshoe / Cross-country Ski" },
             });
         }
     }

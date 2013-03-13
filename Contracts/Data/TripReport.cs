@@ -50,12 +50,6 @@
         public string Author { get; set; }
 
         /// <summary>
-        /// The type of hike for the report.
-        /// </summary>
-        [Required]
-        public string TripType { get; set; }
-
-        /// <summary>
         /// URL for the full report.
         /// </summary>
         [NotMapped]
@@ -85,6 +79,17 @@
         /// The text of the trip report.
         /// </summary>
         public string Text { get; set; }
+
+        /// <summary>
+        /// Datastore ID of the associated <see cref="TripType"/>.
+        /// </summary>
+        public int TripTypeId { get; set; }
+
+        /// <summary>
+        /// The type of hike for the report.
+        /// </summary>
+        [Required]
+        public virtual TripType TripType { get; set; }
 
         /// <summary>
         /// Trails included in the trip report.
