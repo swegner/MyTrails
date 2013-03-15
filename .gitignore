@@ -1,3 +1,4 @@
+/.nuget
 /packages/*
 !/packages/repositories.config
 /TestResults/

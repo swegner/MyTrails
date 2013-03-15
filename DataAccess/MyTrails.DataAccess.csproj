@@ -7,6 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MyTrails.DataAccess</RootNamespace>
     <AssemblyName>MyTrails.DataAccess</AssemblyName>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -69,4 +70,5 @@
   <PropertyGroup>
     <PrepareForBuildDependsOn Condition="!Exists('$(StyleCopMSBuildTargetsFile)')">StyleCopMSBuildTargetsNotFound;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
