@@ -65,9 +65,8 @@
         /// <summary>
         /// Entry point to the application.
         /// </summary>
-        /// <param name="args">Commandline arguments.</param>
         /// <returns>0 on success, or non-zero otherwise.</returns>
-        internal static int Main(string[] args)
+        internal static int Main()
         {
             int returnCode;
 

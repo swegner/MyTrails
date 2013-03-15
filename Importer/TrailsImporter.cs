@@ -57,9 +57,30 @@
         /// <seealso cref="ITrailsImporter.Run"/>
         public async Task Run()
         {
+            this.Logger.Info("Fetching existing trail IDs");
+            List<string> existingTrailIds;
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                existingTrailIds = context.Trails
+                    .Select(t => t.WtaId)
+                    .ToList();
+            }
+
+            Task importTask = this.ImportNewTrails(existingTrailIds);
+
+            await Task.WhenAll(importTask);
+        }
+
+        /// <summary>
+        /// Import new trails from WTA.
+        /// </summary>
+        /// <param name="existingTrailIds">WTA IDs of existing trails.</param>
+        /// <returns>Task for asynchronous completion.</returns>
+        private async Task ImportNewTrails(List<string> existingTrailIds)
+        {
             this.Logger.Debug("Importing new trails.");
             IList<WtaTrail> wtaTrails = await this.WtaClient.FetchTrails();
-            IEnumerable<WtaTrail> newWtaTrails = this.DeDupeWtaTrails(wtaTrails);
+            IEnumerable<WtaTrail> newWtaTrails = this.DeDupeWtaTrails(wtaTrails, existingTrailIds);
 
             this.Logger.Debug("Creating new trail entries.");
             Task[] trailTasks = newWtaTrails
@@ -74,8 +95,9 @@
         /// Search imported trails for duplicates, and return a unique set of new trails.
         /// </summary>
         /// <param name="wtaTrails">Trails fetched from WTA.</param>
+        /// <param name="existingTrailIds">WTA IDs of existing trails.</param>
         /// <returns>Sequence of uniuqe, new trails.</returns>
-        private IEnumerable<WtaTrail> DeDupeWtaTrails(ICollection<WtaTrail> wtaTrails)
+        private IEnumerable<WtaTrail> DeDupeWtaTrails(ICollection<WtaTrail> wtaTrails, List<string> existingTrailIds)
         {
             this.Logger.DebugFormat("Deduping {0} imported against existing trails.", wtaTrails.Count);
 
@@ -94,17 +116,9 @@
                 }
             }
 
-            List<string> importedIds = wtaTrails.Select(wt => wt.Uid).ToList();
-            HashSet<string> existingTrailIds;
-            using (MyTrailsContext context = new MyTrailsContext())
-            {
-                existingTrailIds = new HashSet<string>(context.Trails
-                    .Where(t => importedIds.Contains(t.WtaId))
-                    .Select(t => t.WtaId));
-            }
-
+            HashSet<string> existingTrailIdSet = new HashSet<string>(existingTrailIds);
             IEnumerable<WtaTrail> newWtaTrails = wtaTrails
-                .Where(wt => !existingTrailIds.Contains(wt.Uid));
+                .Where(wt => !existingTrailIdSet.Contains(wt.Uid));
 
             return newWtaTrails;
         }
