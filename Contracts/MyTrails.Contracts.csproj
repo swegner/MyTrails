@@ -32,7 +32,6 @@
     <Compile Include="Data\TrailCharacteristic.cs" />
     <Compile Include="Data\TrailFeature.cs" />
     <Compile Include="Data\TripReport.cs" />
-    <Compile Include="Data\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

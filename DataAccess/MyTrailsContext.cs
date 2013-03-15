@@ -59,11 +59,6 @@
         public DbSet<TripType> TripTypes { get; set; }
 
         /// <summary>
-        /// Registered users.
-        /// </summary>
-        public DbSet<User> Users { get; set; }
-
-        /// <summary>
         /// Registered user addresses.
         /// </summary>
         public DbSet<Address> Addresses { get; set; }

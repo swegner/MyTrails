@@ -112,16 +112,6 @@
         }
 
         /// <summary>
-        /// Verify that <see cref="MyTrailsContext.Users"/> is accessible.
-        /// </summary>
-        [TestMethod]
-        public void CanAccessUsers()
-        {
-            // Act
-            this.TestAccess(this._context.Users);
-        }
-
-        /// <summary>
         /// Verify that <see cref="MyTrailsContext.Addresses"/> is accessible.
         /// </summary>
         [TestMethod]
