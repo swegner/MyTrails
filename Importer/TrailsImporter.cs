@@ -27,12 +27,6 @@
         }
 
         /// <summary>
-        /// The run mode for the importer.
-        /// </summary>
-        /// <seealso cref="ITrailsImporter.Modes"/>
-        public ImportModes Modes { get; set; }
-
-        /// <summary>
         /// Interface for communicating with WTA.
         /// </summary>
         [Import]
@@ -57,18 +51,12 @@
         public ILog Logger { get; set; }
 
         /// <summary>
-        /// Import and update trails according to the configured <see cref="Modes"/>
+        /// Import and update trails.
         /// </summary>
         /// <returns>Task for asynchronous completion.</returns>
         /// <seealso cref="ITrailsImporter.Run"/>
         public async Task Run()
         {
-            ImportModes modes = this.Modes;
-            if (!Enum.IsDefined(typeof(ImportModes), modes) || modes == ImportModes.None)
-            {
-                throw new InvalidOperationException(string.Format("Invalid ImportModes specified: {0}.", modes));
-            }
-
             this.Logger.Debug("Importing new trails.");
             IList<WtaTrail> wtaTrails = await this.WtaClient.FetchTrails();
             IEnumerable<WtaTrail> newWtaTrails = this.DeDupeWtaTrails(wtaTrails);

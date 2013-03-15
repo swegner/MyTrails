@@ -95,7 +95,6 @@
 
             this._importer = new TrailsImporter
             {
-                Modes = ImportModes.ImportAndUpdate,
                 WtaClient = this._wtaClientMock.Object,
                 TrailFactory = this._trailFactoryMock.Object,
                 TrailExtenders =
@@ -127,20 +126,6 @@
             // Act
             Task t = this._importer.Run();
             t.Wait();
-        }
-
-        /// <summary>
-        /// Verify that <see cref="TrailsImporter.Run"/> validates <see cref="TrailsImporter.Modes"/>
-        /// </summary>
-        [TestMethod, TestCategory(TestCategory.Unit)]
-        public void ValidatesModes()
-        {
-            // Arrange
-            this._importer.Modes = ImportModes.None;
-            Action act = () => this._importer.Run().Wait();
-
-            // Act / Assert
-            act.ShouldThrow<Exception>();
         }
 
         /// <summary>

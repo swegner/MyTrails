@@ -4,7 +4,6 @@
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Threading.Tasks;
-    using CommandLine;
     using log4net;
 
     /// <summary>
@@ -37,17 +36,10 @@
         /// <summary>
         /// Parse commandline options and execute the trails importer.
         /// </summary>
-        /// <param name="options">Execution options.</param>
-        public void Run(ExecutionOptions options)
+        public void Run()
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
-
             this.Logger.Info("Beginning execution.");
 
-            this.TrailsImporter.Modes = options.Modes;
             const string errorStringFormat = "Errors encountered during execution:\n{0}";
             try
             {
@@ -81,13 +73,11 @@
 
             try
             {
-                ExecutionOptions options = ParseCommandLine(args);
-
                 using (ApplicationCatalog catalog = BuildCompositionCatalog())
                 using (CompositionContainer container = new CompositionContainer(catalog))
                 {
                     Program p = container.GetExportedValue<Program>();
-                    p.Run(options);
+                    p.Run();
                 }
 
                 returnCode = 0;
@@ -98,28 +88,6 @@
             }
 
             return returnCode;
-        }
-
-        /// <summary>
-        /// Parse execution options from the command line.
-        /// </summary>
-        /// <param name="args">Command line arguments.</param>
-        /// <returns>Parsed commandline options.</returns>
-        private static ExecutionOptions ParseCommandLine(string[] args)
-        {
-            bool parserSuccess;
-            ExecutionOptions options = new ExecutionOptions();
-            using (Parser parser = new Parser())
-            {
-                parserSuccess = parser.ParseArguments(args, options);
-            }
-
-            if (!parserSuccess)
-            {
-                throw new InvalidOperationException("Error parsing command line arguments.");
-            }
-
-            return options;
         }
     }
 }

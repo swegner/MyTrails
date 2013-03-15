@@ -15,7 +15,6 @@
     using MyTrails.Importer.BingMaps;
     using MyTrails.Importer.BingMaps.Routing;
     using MyTrails.Importer.Wta;
-    using ExecutionOptions = MyTrails.Importer.ExecutionOptions;
 
     /// <summary>
     /// End-to-end tests for the importer.
@@ -43,11 +42,6 @@
         public void CanImportSampleData()
         {
             // Arrange
-            ExecutionOptions options = new ExecutionOptions
-            {
-                Modes = ImportModes.ImportOnly,
-            };
-
             string httpClientFactoryContract = AttributedModelServices.GetContractName(typeof(IHttpClientFactory));
             string routeServiceFactoryContract = AttributedModelServices.GetContractName(typeof(IRouteServiceFactory));
 
@@ -60,7 +54,7 @@
             {
                 // Act
                 Program p = container.GetExportedValue<Program>();
-                p.Run(options);
+                p.Run();
             }
         }
 

@@ -15,10 +15,6 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -53,11 +49,9 @@
     <Compile Include="DbGeographyPointComparer.cs" />
     <Compile Include="E2ETests.cs" />
     <Compile Include="Extenders\DrivingDistanceExtenderTests.cs" />
-    <Compile Include="ImportModeTests.cs" />
     <Compile Include="Logging\StubLog.cs" />
     <Compile Include="MyTrailsContextExtensions.cs" />
     <Compile Include="TestCategory.cs" />
-    <Compile Include="ProgramTests.cs" />
     <Compile Include="TaskExt.cs" />
     <Compile Include="TestAssembly.cs" />
     <Compile Include="TrailFactoryTests.cs" />

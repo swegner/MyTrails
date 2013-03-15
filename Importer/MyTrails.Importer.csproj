@@ -10,10 +10,6 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -47,11 +43,9 @@
     <Compile Include="BingMaps\IRouteServiceFactory.cs" />
     <Compile Include="BingMaps\RouteServiceFactory.cs" />
     <Compile Include="DbGeographyExt.cs" />
-    <Compile Include="ExecutionOptions.cs" />
     <Compile Include="Extenders\DrivingDistanceExtender.cs" />
     <Compile Include="Extenders\ITrailExtender.cs" />
     <Compile Include="Extenders\TripReportExtender.cs" />
-    <Compile Include="ImportModes.cs" />
     <Compile Include="Composition\Exports.cs" />
     <Compile Include="ITrailFactory.cs" />
     <Compile Include="ITrailsImporter.cs" />

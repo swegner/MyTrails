@@ -1,7 +1,6 @@
 ﻿namespace MyTrails.Importer.Composition
 {
     using System.ComponentModel.Composition;
-    using CommandLine;
     using log4net;
     using log4net.Core;
 

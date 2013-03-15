@@ -8,12 +8,7 @@
     public interface ITrailsImporter
     {
         /// <summary>
-        /// The run mode for the importer.
-        /// </summary>
-        ImportModes Modes { get; set; }
-
-        /// <summary>
-        /// Import and update trails according to the configured <see cref="Modes"/>
+        /// Import and update trails.
         /// </summary>
         /// <returns>Task for asynchronous completion.</returns>
         Task Run();
