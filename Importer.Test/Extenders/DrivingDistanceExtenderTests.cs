@@ -48,6 +48,8 @@
         [TestInitialize]
         public void TestInitialize()
         {
+            this.ClearDatabase();
+
             this._anyAddress = new Address
             {
                 Location = "any location string",
@@ -82,6 +84,15 @@
                 BingMapsCredentials = this._credentialsMock.Object,
                 Logger = new StubLog(),
             };
+        }
+
+        /// <summary>
+        /// Clean up test helper objects.
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            this.ClearDatabase();
         }
 
         /// <summary>
@@ -162,6 +173,43 @@
 
             // Assert
             this._routeServiceMock.Verify(rs => rs.CalculateRouteAsync(It.IsAny<RouteRequest>()), Times.Never());
+        }
+
+        /// <summary>
+        /// Verify that <see cref="DrivingDistanceExtender.Extend"/> skips
+        /// trails that already have driving details.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void SkipsTrailsWithExistingDrivingDistance()
+        {
+            // Arrange
+            this._anyAddress.Directions.Add(new DrivingDirections
+            {
+                Address = this._anyAddress,
+                Trail = this._anyTrail,
+                DrivingTimeSeconds = 12345,
+            });
+            int trailId = this.RegisterTestData(this._anyTrail, this._anyAddress);
+
+            // Act
+            this.RunExtender(trailId);
+
+            // Assert
+            this._routeServiceMock.Verify(rs => rs.CalculateRouteAsync(It.IsAny<RouteRequest>()), Times.Never());
+        }
+
+        /// <summary>
+        /// Clear test data from the database.
+        /// </summary>
+        private void ClearDatabase()
+        {
+            using (MyTrailsContext trailContext = new MyTrailsContext())
+            {
+                trailContext.ClearDatabase();
+                trailContext.Addresses.Truncate();
+
+                trailContext.SaveChanges();
+            }
         }
 
         /// <summary>

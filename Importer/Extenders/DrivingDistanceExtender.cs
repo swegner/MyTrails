@@ -49,6 +49,7 @@
                 this.Logger.InfoFormat("Looking up driving directions for trail: {0}", trail.Name);
 
                 Task[] addDirectionsTasks = context.Addresses
+                    .Where(a => !a.Directions.Any(d => d.TrailId == trail.Id))
                     .ToList() // Needed to force the EF query.
                     .Select(a => this.AddDrivingDirections(a, trail))
                     .ToArray();
