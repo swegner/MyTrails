@@ -16,5 +16,13 @@
         /// <param name="context">Trail context data.</param>
         /// <returns>A new <see cref="Trail"/> instance.</returns>
         Trail CreateTrail(WtaTrail wtaTrail, MyTrailsContext context);
+
+        /// <summary>
+        /// Update an existing <see cref="Trail"/> with data from WTA.
+        /// </summary>
+        /// <param name="trail">The trail to update.</param>
+        /// <param name="wtaTrail">The imported WTA  trail to use for updates.</param>
+        /// <param name="context">Trail context data.</param>
+        void UpdateTrail(Trail trail, WtaTrail wtaTrail, MyTrailsContext context);
     }
 }

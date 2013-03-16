@@ -73,84 +73,40 @@
                 throw new ArgumentNullException("wtaTrail");
             }
 
-            this.InitializeCaches(context);
-
-            WtaLocation wtaLocation = wtaTrail.Location ?? new WtaLocation();
-            DbGeography location = wtaLocation.Latitude.HasValue && wtaLocation.Longitude.HasValue ?
-                DbGeographyExt.PointFromCoordinates(wtaLocation.Latitude.Value, wtaLocation.Longitude.Value) :
-                null;
-            int? regionId = wtaLocation.RegionId.HasValue ?
-                this._regionDictionary[wtaLocation.RegionId.Value] :
-                (int?)null;
-
-            WtaGuidebook wtaGuidebook = wtaTrail.Guidebook;
-            int? guidebookId;
-            if (wtaGuidebook != null)
-            {
-                GuideBookKey key = new GuideBookKey(wtaGuidebook);
-                guidebookId = this._guideBookDictionary.GetOrAdd(key, k =>
-                {
-                    Guidebook gb = new Guidebook
-                    {
-                        Author = k.Author,
-                        Title = k.Title,
-                    };
-                    context.Guidebooks.AddOrUpdate(g => new { g.Author, g.Title }, gb);
-                    context.SaveChanges();
-                    return gb.Id;
-                });
-            }
-            else
-            {
-                guidebookId = null;
-            }
-
-            int? requiredPassId = !string.IsNullOrEmpty(wtaTrail.RequiredPass) ?
-                this._passDictionary[wtaTrail.RequiredPass] :
-                (int?)null;
-
-            IEnumerable<string> photoLinks = wtaTrail.Photos
-                .Select(u => u.AbsoluteUri);
-
-            IEnumerable<TrailFeature> features = this._trailFeatureDictionary
-                .Where(kvp => wtaTrail.Statistics.Features.HasFlag(kvp.Key))
-                .Select(kvp => context.TrailFeatures.Find(kvp.Value));
-
-            IEnumerable<TrailCharacteristic> characteristics = this._characteristicDictionary
-                .Where(kvp => wtaTrail.Statistics.UserInfo.HasFlag(kvp.Key))
-                .Select(kvp => context.TrailCharacteristics.Find(kvp.Value));
-
             Trail trail = new Trail
             {
                 Name = wtaTrail.Title, 
                 WtaId = wtaTrail.Uid, 
                 Url = wtaTrail.Url, 
-                Location = location, 
-                WtaRating = wtaTrail.Rating,
-                RegionId = regionId, 
-                ElevationGain = wtaTrail.Statistics.ElevationGain, 
-                Mileage = wtaTrail.Statistics.Mileage, 
-                HighPoint = wtaTrail.Statistics.HighPoint,
-                GuidebookId = guidebookId,
-                RequiredPassId = requiredPassId,
             };
 
-            foreach (TrailFeature feature in features)
-            {
-                trail.Features.Add(feature);
-            }
-
-            foreach (TrailCharacteristic characteristic in characteristics)
-            {
-                trail.Characteristics.Add(characteristic);
-            }
-
-            foreach (string link in photoLinks)
-            {
-                trail.PhotoLinks.Add(link);
-            }
+            this.UpdateTrail(trail, wtaTrail, context);
 
             return trail;
+        }
+
+        /// <summary>
+        /// Update an existing <see cref="Trail"/> with data from WTA.
+        /// </summary>
+        /// <param name="trail">The trail to update.</param>
+        /// <param name="wtaTrail">The imported WTA  trail to use for updates.</param>
+        /// <param name="context">Trail context data.</param>
+        /// <seealso cref="ITrailFactory.UpdateTrail"/>
+        public void UpdateTrail(Trail trail, WtaTrail wtaTrail, MyTrailsContext context)
+        {
+            this.InitializeCaches(context);
+
+            this.ExtractLocation(wtaTrail, trail);
+            this.ExtractRegion(wtaTrail, trail);
+            this.ExtractRequiredPass(wtaTrail, trail);
+            this.ExtractRating(wtaTrail, trail);
+            this.ExtractElevationGain(wtaTrail, trail);
+            this.ExtractMileage(wtaTrail, trail);
+            this.ExtractHighPoint(wtaTrail, trail);
+            this.ExtractGuidebook(wtaTrail, trail, context);
+            this.ExtractPhotoLinks(wtaTrail, trail);
+            this.ExtractTrailFeatures(wtaTrail, trail, context);
+            this.ExtractTrailCharacteristics(wtaTrail, trail, context);
         }
 
         /// <summary>
@@ -186,6 +142,218 @@
                         this._cachesInitialized = true;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Extract the latitude and longitude from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        private void ExtractLocation(WtaTrail wtaTrail, Trail trail)
+        {
+            WtaLocation wtaLocation = wtaTrail.Location ?? new WtaLocation();
+            DbGeography location = wtaLocation.Latitude.HasValue && wtaLocation.Longitude.HasValue ?
+                DbGeographyExt.PointFromCoordinates(wtaLocation.Latitude.Value, wtaLocation.Longitude.Value) :
+                null;
+
+            trail.Location = location;
+        }
+
+        /// <summary>
+        /// Extract the region ID from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        private void ExtractRegion(WtaTrail wtaTrail, Trail trail)
+        {
+            WtaLocation wtaLocation = wtaTrail.Location ?? new WtaLocation();
+            int? regionId = wtaLocation.RegionId.HasValue ?
+                this._regionDictionary[wtaLocation.RegionId.Value] :
+                (int?)null;
+
+            trail.RegionId = regionId;
+        }
+
+        /// <summary>
+        /// Extract the required pass ID from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        private void ExtractRequiredPass(WtaTrail wtaTrail, Trail trail)
+        {
+            int? requiredPassId = !string.IsNullOrEmpty(wtaTrail.RequiredPass) ?
+                this._passDictionary[wtaTrail.RequiredPass] :
+                (int?)null;
+
+            trail.RequiredPassId = requiredPassId;
+        }
+
+        /// <summary>
+        /// Extract the trail rating from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        private void ExtractRating(WtaTrail wtaTrail, Trail trail)
+        {
+            trail.WtaRating = wtaTrail.Rating;
+        }
+
+        /// <summary>
+        /// Extract the elevation gain from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        private void ExtractElevationGain(WtaTrail wtaTrail, Trail trail)
+        {
+            trail.ElevationGain = wtaTrail.Statistics.ElevationGain;
+        }
+
+        /// <summary>
+        /// Extract the mileage from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        private void ExtractMileage(WtaTrail wtaTrail, Trail trail)
+        {
+            trail.Mileage = wtaTrail.Statistics.Mileage;
+        }
+
+        /// <summary>
+        /// Extract the trail high point from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        private void ExtractHighPoint(WtaTrail wtaTrail, Trail trail)
+        {
+            trail.HighPoint = wtaTrail.Statistics.HighPoint;
+        }
+
+        /// <summary>
+        /// Extract the <see cref="Guidebook"/> ID from a <see cref="WtaTrail."/>, adding it to
+        /// the context if it doesn't exist.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        /// <param name="context">The datastore context.</param>
+        private void ExtractGuidebook(WtaTrail wtaTrail, Trail trail, MyTrailsContext context)
+        {
+            WtaGuidebook wtaGuidebook = wtaTrail.Guidebook;
+            int? guidebookId;
+            if (wtaGuidebook != null)
+            {
+                GuideBookKey key = new GuideBookKey(wtaGuidebook);
+                guidebookId = this._guideBookDictionary.GetOrAdd(key, k =>
+                {
+                    Guidebook gb = new Guidebook
+                    {
+                        Author = k.Author,
+                        Title = k.Title,
+                    };
+                    context.Guidebooks.AddOrUpdate(g => new { g.Author, g.Title }, gb);
+                    context.SaveChanges();
+                    return gb.Id;
+                });
+            }
+            else
+            {
+                guidebookId = null;
+            }
+
+            trail.GuidebookId = guidebookId;
+        }
+
+        /// <summary>
+        /// Extract photo links from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        private void ExtractPhotoLinks(WtaTrail wtaTrail, Trail trail)
+        {
+            List<string> photoLinks = wtaTrail.Photos
+                .Select(u => u.AbsoluteUri)
+                .ToList();
+
+            List<string> photosToAdd = photoLinks
+                .Except(trail.PhotoLinks)
+                .ToList();
+
+            List<string> photosToRemove = trail.PhotoLinks
+                .Except(photoLinks)
+                .ToList();
+
+            foreach (string photoLink in photosToRemove)
+            {
+                trail.PhotoLinks.Remove(photoLink);
+            }
+
+            foreach (string photoLink in photosToAdd)
+            {
+                trail.PhotoLinks.Add(photoLink);
+            }
+        }
+
+        /// <summary>
+        /// Extract trail features from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        /// <param name="context">The datastore context.</param>
+        private void ExtractTrailFeatures(WtaTrail wtaTrail, Trail trail, MyTrailsContext context)
+        {
+            List<TrailFeature> features = this._trailFeatureDictionary
+                .Where(kvp => wtaTrail.Statistics.Features.HasFlag(kvp.Key))
+                .Select(kvp => context.TrailFeatures.Find(kvp.Value))
+                .ToList();
+
+            List<TrailFeature> featuresToAdd = features
+                .Except(trail.Features)
+                .ToList();
+
+            List<TrailFeature> featuresToRemove = trail.Features
+                .Except(features)
+                .ToList();
+
+            foreach (TrailFeature feature in featuresToRemove)
+            {
+                trail.Features.Remove(feature);
+            }
+
+            foreach (TrailFeature feature in featuresToAdd)
+            {
+                trail.Features.Add(feature);
+            }
+        }
+
+        /// <summary>
+        /// Extract trail characteristics from a <see cref="WtaTrail"/>.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to extract from.</param>
+        /// <param name="trail">The <see cref="Trail"/> to update.</param>
+        /// <param name="context">The datastore context.</param>
+        private void ExtractTrailCharacteristics(WtaTrail wtaTrail, Trail trail, MyTrailsContext context)
+        {
+            List<TrailCharacteristic> characteristics = this._characteristicDictionary
+                .Where(kvp => wtaTrail.Statistics.UserInfo.HasFlag(kvp.Key))
+                .Select(kvp => context.TrailCharacteristics.Find(kvp.Value))
+                .ToList();
+
+            List<TrailCharacteristic> characteristicsToAdd = characteristics
+                .Except(trail.Characteristics)
+                .ToList();
+
+            List<TrailCharacteristic> characteristicsToRemove = trail.Characteristics
+                .Except(characteristics)
+                .ToList();
+
+            foreach (TrailCharacteristic characteristic in characteristicsToRemove)
+            {
+                trail.Characteristics.Remove(characteristic);
+            }
+
+            foreach (TrailCharacteristic characteristic in characteristicsToAdd)
+            {
+                trail.Characteristics.Add(characteristic);
             }
         }
 
