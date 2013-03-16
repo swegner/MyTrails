@@ -29,17 +29,17 @@
         /// <summary>
         /// Sample <see cref="Trail"/> to use during testing.
         /// </summary>
-        private static readonly Trail AnyTrail = new Trail
-        {
-            Name = "Any Trail Name",
-            WtaId = "any-wta-id",
-            Url = new Uri("http://any/trail/uri"),
-        };
+        private Trail _anyTrail;
 
         /// <summary>
         /// Sample <see cref="TripType"/> ID to use during testing.
         /// </summary>
-        private string _anyTripTypeId;
+        private int _anyTripTypeId;
+
+        /// <summary>
+        /// Sample <see cref="TripType"/> WTA ID to use during testing.
+        /// </summary>
+        private string _anyTripTypeWtaId;
 
         /// <summary>
         /// The <see cref="TripReportExtender"/> instance to test against.
@@ -62,8 +62,17 @@
                 context.ClearDatabase();
                 context.SaveChanges();
 
-                this._anyTripTypeId = context.TripTypes.First().WtaId;
+                TripType tripType = context.TripTypes.First();
+                this._anyTripTypeId = tripType.Id;
+                this._anyTripTypeWtaId = tripType.WtaId;
             }
+
+            this._anyTrail = new Trail
+            {
+                Name = "Any Trail Name",
+                WtaId = "any-wta-id",
+                Url = new Uri("http://any/trail/uri"),
+            };
 
             this._wtaClientMock = new Mock<IWtaClient>(MockBehavior.Strict);
             this._wtaClientMock
@@ -76,7 +85,7 @@
                         Author = "Any author",
                         Date = DateTime.Now,
                         FullReportUrl = new Uri(new Uri("http://any.base.url"), AnyWtaTripReportId),
-                        HikeType = this._anyTripTypeId,
+                        HikeType = this._anyTripTypeWtaId,
                     }
                 }));
 
@@ -107,7 +116,7 @@
         public void AddsTripReport()
         {
             // Arrange
-            int trailId = this.AddTestData(AnyTrail);
+            int trailId = this.AddTestData(this._anyTrail);
 
             // Act
             this.RunExtender(trailId).Wait();
@@ -122,6 +131,41 @@
             }
 
             Assert.IsNotNull(report);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="TripReportExtender.Extends"/> doesn't add the trip report
+        /// if it is already present.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void SkipsIfAlreadyAdded()
+        {
+            // Arrange
+            this._anyTrail.TripReports.Add(new TripReport
+            {
+                WtaId = AnyWtaTripReportId,
+                Title = "Any trip title",
+                Author = "any author",
+                Url = new Uri("http://any/url"),
+                Date = DateTime.Now,
+                TripTypeId = this._anyTripTypeId,
+            });
+
+            int trailId = this.AddTestData(this._anyTrail);
+
+            // Act
+            this.RunExtender(trailId).Wait();
+
+            // Assert
+            int numReports;
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                numReports = context.TripReports
+                    .Where(tr => tr.Trails.Any(t => t.Id == trailId))
+                    .Count();
+            }
+
+            Assert.AreEqual(1, numReports);
         }
 
         /// <summary>

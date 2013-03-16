@@ -91,7 +91,6 @@
             foreach (WtaTripReport wtaReport in potentialReports)
             {
                 string wtaReportId = this.ParseWtaReportId(wtaReport);
-
                 Lazy<bool> firstToAdd = new Lazy<bool>(() => this._tripReportDictionary.TryAdd(wtaReportId, null));
                 TripReport report;
                 do
