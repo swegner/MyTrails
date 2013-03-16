@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
@@ -49,6 +50,7 @@
     <Compile Include="DbGeographyPointComparer.cs" />
     <Compile Include="E2ETests.cs" />
     <Compile Include="Extenders\DrivingDistanceExtenderTests.cs" />
+    <Compile Include="Extenders\TripReportExtenderTests.cs" />
     <Compile Include="Logging\StubLog.cs" />
     <Compile Include="MyTrailsContextExtensions.cs" />
     <Compile Include="TestCategory.cs" />

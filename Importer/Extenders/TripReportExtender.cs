@@ -1,8 +1,10 @@
 ﻿namespace MyTrails.Importer.Extenders
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
+    using System.Data.Entity.Migrations;
     using System.Linq;
     using System.Threading.Tasks;
     using log4net;
@@ -16,6 +18,11 @@
     [Export(typeof(ITrailExtender))]
     public class TripReportExtender : ITrailExtender
     {
+        /// <summary>
+        /// Delay period to wait if a trip report is being added the the data store.
+        /// </summary>
+        private static readonly TimeSpan ConcurrentTripReportDelay = TimeSpan.FromMilliseconds(100);
+
         /// <summary>
         /// Lock object to synchronize initialization.
         /// </summary>
@@ -32,6 +39,13 @@
         private DateTime _maxTripReportDate;
 
         /// <summary>
+        /// Synchronization dictionary to ensure trip reports are not duplicated on concurrent threads.
+        /// A trip report is added to the dictionary when another thread begins to add it to the datastore.
+        /// Other threads will wait for the datastore to be updated with the new trip report.
+        /// </summary>
+        private ConcurrentDictionary<string, object> _tripReportDictionary;
+
+        /// <summary>
         /// Whether the maximum trip report date has been initialized.
         /// </summary>
         private bool _initialized;
@@ -42,6 +56,7 @@
         public TripReportExtender()
         {
             this._initSyncObject = new object();
+            this._tripReportDictionary = new ConcurrentDictionary<string, object>();
         }
 
         /// <summary>
@@ -75,17 +90,32 @@
 
             foreach (WtaTripReport wtaReport in potentialReports)
             {
-                string wtaReportId = this.GetWtaReportId(wtaReport);
+                string wtaReportId = this.ParseWtaReportId(wtaReport);
 
-                TripReport report = context.TripReports
-                    .Where(tr => tr.WtaId == wtaReportId)
-                    .FirstOrDefault();
-
-                if (report == null)
+                Lazy<bool> firstToAdd = new Lazy<bool>(() => this._tripReportDictionary.TryAdd(wtaReportId, null));
+                TripReport report;
+                do
                 {
-                    this.Logger.InfoFormat("Found new trip report: {0}", wtaReportId);
-                    report = this.CreateReport(wtaReportId, wtaReport);
+                    report = context.TripReports
+                        .Where(tr => tr.WtaId == wtaReportId)
+                        .FirstOrDefault();
+
+                    if (report == null)
+                    {
+                        if (firstToAdd.Value)
+                        {
+                            // First thread to access new trip report, create it.
+                            this.Logger.InfoFormat("Found new trip report: {0}", wtaReportId);
+                            report = this.CreateReport(wtaReportId, wtaReport);
+                        }
+                        else
+                        {
+                            this.Logger.DebugFormat("Waiting for other thread to create trip report: {0}.", wtaReportId);
+                            await Task.Delay(ConcurrentTripReportDelay);
+                        }
+                    }
                 }
+                while (report == null);
 
                 trail.TripReports.Add(report);
             }
@@ -122,7 +152,7 @@
         /// </summary>
         /// <param name="report">The report to retrieve the ID of.</param>
         /// <returns>The unique ID of the trip report.</returns>
-        private string GetWtaReportId(WtaTripReport report)
+        private string ParseWtaReportId(WtaTripReport report)
         {
             return report.FullReportUrl.Segments.Last();
         }
