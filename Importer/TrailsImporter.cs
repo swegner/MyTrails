@@ -57,6 +57,9 @@
         /// <seealso cref="ITrailsImporter.Run"/>
         public async Task Run()
         {
+            this.Logger.Debug("Importing new trails.");
+            Task<IList<WtaTrail>> fetchTrailTask = this.WtaClient.FetchTrails();
+
             this.Logger.Info("Fetching existing trail IDs");
             List<string> existingTrailIds;
             using (MyTrailsContext context = new MyTrailsContext())
@@ -66,25 +69,14 @@
                     .ToList();
             }
 
-            Task importTask = this.ImportNewTrails(existingTrailIds);
+            IList<WtaTrail> wtaTrails = await fetchTrailTask;
+            this.DeDupeWtaTrails(wtaTrails);
 
-            await Task.WhenAll(importTask);
-        }
-
-        /// <summary>
-        /// Import new trails from WTA.
-        /// </summary>
-        /// <param name="existingTrailIds">WTA IDs of existing trails.</param>
-        /// <returns>Task for asynchronous completion.</returns>
-        private async Task ImportNewTrails(List<string> existingTrailIds)
-        {
-            this.Logger.Debug("Importing new trails.");
-            IList<WtaTrail> wtaTrails = await this.WtaClient.FetchTrails();
-            IEnumerable<WtaTrail> newWtaTrails = this.DeDupeWtaTrails(wtaTrails, existingTrailIds);
+            IEnumerable<Tuple<WtaTrail, bool>> wtaTrailTuples = this.MatchExistingTrails(wtaTrails, existingTrailIds);
 
             this.Logger.Debug("Creating new trail entries.");
-            Task[] trailTasks = newWtaTrails
-                .Select(this.ImportNewTrail)
+            Task[] trailTasks = wtaTrailTuples
+                .Select(tt => this.ImportOrUpdateTrail(tt.Item1, tt.Item2))
                 .ToArray();
             await Task.WhenAll(trailTasks);
 
@@ -92,12 +84,10 @@
         }
 
         /// <summary>
-        /// Search imported trails for duplicates, and return a unique set of new trails.
+        /// Search and remove duplicates from the set of WTA trails.
         /// </summary>
         /// <param name="wtaTrails">Trails fetched from WTA.</param>
-        /// <param name="existingTrailIds">WTA IDs of existing trails.</param>
-        /// <returns>Sequence of uniuqe, new trails.</returns>
-        private IEnumerable<WtaTrail> DeDupeWtaTrails(ICollection<WtaTrail> wtaTrails, List<string> existingTrailIds)
+        private void DeDupeWtaTrails(ICollection<WtaTrail> wtaTrails)
         {
             this.Logger.DebugFormat("Deduping {0} imported against existing trails.", wtaTrails.Count);
 
@@ -115,26 +105,46 @@
                     wtaTrails.Remove(dupe);
                 }
             }
-
-            HashSet<string> existingTrailIdSet = new HashSet<string>(existingTrailIds);
-            IEnumerable<WtaTrail> newWtaTrails = wtaTrails
-                .Where(wt => !existingTrailIdSet.Contains(wt.Uid));
-
-            return newWtaTrails;
         }
 
         /// <summary>
-        /// Import a new <see cref="WtaTrail"/>.
+        /// Determine whether fetched WTA trails exist in the database.
         /// </summary>
-        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to import.</param>
+        /// <param name="wtaTrails">Fetched trails from WTA.</param>
+        /// <param name="existingTrailIds">Trail IDs from the WTA database.</param>
+        /// <returns>Pairs of trails and a boolean of whether the trail exists in the database.</returns>
+        private IEnumerable<Tuple<WtaTrail, bool>> MatchExistingTrails(IList<WtaTrail> wtaTrails, List<string> existingTrailIds)
+        {
+            IEnumerable<Tuple<WtaTrail, bool>> trailTuples = wtaTrails
+                .GroupJoin(existingTrailIds, wt => wt.Uid, id => id, (wt, ids) => Tuple.Create(wt, ids.Any()));
+
+            return trailTuples;
+        }
+
+        /// <summary>
+        /// Import a new <see cref="WtaTrail"/>, or update an existing one.
+        /// </summary>
+        /// <param name="wtaTrail">The <see cref="WtaTrail"/> to import or update.</param>
+        /// <param name="exists">Whether the trail already exists in the database.</param>
         /// <returns>Task for asynchronous completion.</returns>
-        private async Task ImportNewTrail(WtaTrail wtaTrail)
+        private async Task ImportOrUpdateTrail(WtaTrail wtaTrail, bool exists)
         {
             int trailId;
             using (MyTrailsContext trailContext = new MyTrailsContext())
             {
-                Trail trail = this.TrailFactory.CreateTrail(wtaTrail, trailContext);
-                trailContext.Trails.Add(trail);
+                Trail trail;
+                if (exists)
+                {
+                    trail = trailContext.Trails
+                        .Where(t => t.WtaId == wtaTrail.Uid)
+                        .First();
+                    this.TrailFactory.UpdateTrail(trail, wtaTrail, trailContext);
+                }
+                else
+                {
+                    trail = this.TrailFactory.CreateTrail(wtaTrail, trailContext);
+                    trailContext.Trails.Add(trail);
+                }
 
                 trailContext.SaveChanges(this.Logger);
                 trailId = trail.Id;

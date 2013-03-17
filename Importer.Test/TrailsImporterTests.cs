@@ -50,7 +50,12 @@
         /// List of trails to return when importing new trails.
         /// </summary>
         private static readonly IList<WtaTrail> TrailsToImport = ExistingTrails
-            .Select(t => new WtaTrail { Uid = t.WtaId })
+            .Select(t => new WtaTrail
+            {
+                Title = t.Name,
+                Url = t.Url,
+                Uid = t.WtaId,
+            })
             .Concat(NewTrails)
             .ToList();
 
@@ -174,23 +179,21 @@
         }
 
         /// <summary>
-        /// Verify that existing trails in the database are deduped before sending them through
-        /// the <see cref="TrailsImporter.TrailFactory"/>.
+        /// Verify that existing trails in the database are updated.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
-        public void ExistingTrailsDeduped()
+        public void ExistingTrailsUpdated()
         {
             // Arrange
-            WtaTrail existingTrail = ExistingTrails
-                .Join(TrailsToImport, t => t.WtaId, wt => wt.Uid, (t, wt) => wt)
-                .First();
+            this._trailFactoryMock
+                .Setup(tf => tf.UpdateTrail(It.IsAny<Trail>(), It.IsAny<WtaTrail>(), It.IsAny<MyTrailsContext>()))
+                .Verifiable();
 
             // Act
             this._importer.Run().Wait();
 
             // Assert
-            this._trailFactoryMock.Verify(tf => tf.CreateTrail(existingTrail, It.IsAny<MyTrailsContext>()),
-                Times.Never());
+            this._trailFactoryMock.Verify();
         }
 
         /// <summary>
@@ -299,6 +302,8 @@
                         WtaId = wt.Uid,
                         Url = wt.Url,
                     });
+            this._trailFactoryMock
+                .Setup(tf => tf.UpdateTrail(It.IsAny<Trail>(), It.IsAny<WtaTrail>(), It.IsAny<MyTrailsContext>()));
 
             this._trailExtenderMock = new Mock<ITrailExtender>(MockBehavior.Strict);
             this._trailExtenderMock
