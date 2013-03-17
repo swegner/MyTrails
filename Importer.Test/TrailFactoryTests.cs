@@ -86,7 +86,7 @@
 
             this._trailData = new TestData
             {
-                Input = new WtaTrail
+                WtaTrail = new WtaTrail
                 {
                     Uid = anyWtaId,
                     Title = anyTrailTitle,
@@ -122,6 +122,12 @@
                     },
                     RequiredPass = requiredPass.Description,
                     Photos = { new Uri(anyTrailPhotoLink) },
+                },
+                OriginalTrail = new Trail
+                {
+                    WtaId = anyWtaId,
+                    Name = anyTrailTitle,
+                    Url = anyTrailUrl,
                 },
                 ExpectedOutput = new Trail
                 {
@@ -166,7 +172,7 @@
         public void AssignsWtaId()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.WtaId);
+            this.TestCreateTrail(this._trailData, t => t.WtaId);
         }
 
         /// <summary>
@@ -176,7 +182,7 @@
         public void AssignsName()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Name);
+            this.TestCreateTrail(this._trailData, t => t.Name);
         }
 
         /// <summary>
@@ -186,27 +192,47 @@
         public void AssignsUrl()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Url);
+            this.TestCreateTrail(this._trailData, t => t.Url);
         }
 
         /// <summary>
-        /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.WtaRating"/>
+        /// Verify that the factory assigns the <see cref="MyTrails.Contracts.Data.Trail.WtaRating"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsRating()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.WtaRating);
+            this.TestCreateTrail(this._trailData, t => t.WtaRating);
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="MyTrails.Contracts.Data.Trail.Location"/>
+        /// Verify that the factory updates the <see cref="MyTrails.Contracts.Data.Trail.WtaRating"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesRating()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.WtaRating);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="MyTrails.Contracts.Data.Trail.Location"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsLocation()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Location, new DbGeographyPointComparer());
+            this.TestCreateTrail(this._trailData, t => t.Location, new DbGeographyPointComparer());
+        }
+
+        /// <summary>
+        /// Verify that the factory updates <see cref="MyTrails.Contracts.Data.Trail.Location"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesLocation()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.Location, new DbGeographyPointComparer());
         }
 
         /// <summary>
@@ -216,11 +242,11 @@
         public void SkipsNullLocation()
         {
             // Arrange
-            this._trailData.Input.Location = null;
+            this._trailData.WtaTrail.Location = null;
             this._trailData.ExpectedOutput.Location = null;
 
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Location);
+            this.TestCreateTrail(this._trailData, t => t.Location);
         }
 
         /// <summary>
@@ -230,12 +256,32 @@
         public void HandlesNullLatitudeLongitude()
         {
             // Arrange
-            this._trailData.Input.Location.Latitude = null;
-            this._trailData.Input.Location.Longitude = null;
+            this._trailData.WtaTrail.Location.Latitude = null;
+            this._trailData.WtaTrail.Location.Longitude = null;
             this._trailData.ExpectedOutput.Location = null;
 
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Location);
+            this.TestCreateTrail(this._trailData, t => t.Location);
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.Region"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void AssignsRegion()
+        {
+            // Act / Assert
+            this.TestCreateTrail(this._trailData, t => t.RegionId);
+        }
+
+        /// <summary>
+        /// Verify that the factory updates <see cref="Trail.Region"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesRegion()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.RegionId);
         }
 
         /// <summary>
@@ -245,31 +291,31 @@
         public void HandlesNullRegion()
         {
             // Arrange
-            this._trailData.Input.Location.RegionId = null;
+            this._trailData.WtaTrail.Location.RegionId = null;
             this._trailData.ExpectedOutput.Region = null;
 
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Region);
+            this.TestCreateTrail(this._trailData, t => t.Region);
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.Region"/>
-        /// </summary>
-        [TestMethod, TestCategory(TestCategory.Unit)]
-        public void AssignsRegion()
-        {
-            // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.RegionId);
-        }
-
-        /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.ElevationGain"/>
+        /// Verify that the factory assigns <see cref="Trail.ElevationGain"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsElevationGain()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.ElevationGain);
+            this.TestCreateTrail(this._trailData, t => t.ElevationGain);
+        }
+
+        /// <summary>
+        /// Verify that the factory updates <see cref="Trail.ElevationGain"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesElevationGain()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.ElevationGain);
         }
 
         /// <summary>
@@ -279,21 +325,31 @@
         public void HandlesNullElevationGain()
         {
             // Arrange
-            this._trailData.Input.Statistics.ElevationGain = null;
+            this._trailData.WtaTrail.Statistics.ElevationGain = null;
             this._trailData.ExpectedOutput.ElevationGain = null;
 
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.ElevationGain);
+            this.TestCreateTrail(this._trailData, t => t.ElevationGain);
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.Mileage"/>
+        /// Verify that the factory assigns <see cref="Trail.Mileage"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsMileage()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Mileage);
+            this.TestCreateTrail(this._trailData, t => t.Mileage);
+        }
+
+        /// <summary>
+        /// Verify that the factory updates <see cref="Trail.Mileage"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesMileage()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.Mileage);
         }
 
         /// <summary>
@@ -303,21 +359,31 @@
         public void HandlesNullMileage()
         {
             // Arrange
-            this._trailData.Input.Statistics.Mileage = null;
+            this._trailData.WtaTrail.Statistics.Mileage = null;
             this._trailData.ExpectedOutput.Mileage = null;
 
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Mileage);
+            this.TestCreateTrail(this._trailData, t => t.Mileage);
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.HighPoint"/>
+        /// Verify that the factory assigns <see cref="Trail.HighPoint"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsHighPoint()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.HighPoint);
+            this.TestCreateTrail(this._trailData, t => t.HighPoint);
+        }
+
+        /// <summary>
+        /// Verify that the factory updates <see cref="Trail.HighPoint"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesHighPoint()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.HighPoint);
         }
 
         /// <summary>
@@ -327,21 +393,31 @@
         public void HandlesNullHighPoint()
         {
             // Arrange
-            this._trailData.Input.Statistics.HighPoint = null;
+            this._trailData.WtaTrail.Statistics.HighPoint = null;
             this._trailData.ExpectedOutput.HighPoint = null;
 
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.HighPoint);
+            this.TestCreateTrail(this._trailData, t => t.HighPoint);
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.HighPoint"/>
+        /// Verify that the factory assigns <see cref="Trail.HighPoint"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsGuidebook()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.GuidebookId);
+            this.TestCreateTrail(this._trailData, t => t.GuidebookId);
+        }
+
+        /// <summary>
+        /// Verify that the factory updates <see cref="Trail.HighPoint"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesGuidebook()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.GuidebookId);
         }
 
         /// <summary>
@@ -351,21 +427,31 @@
         public void HandlesNullGuidebook()
         {
             // Arrange
-            this._trailData.Input.Guidebook = null;
+            this._trailData.WtaTrail.Guidebook = null;
             this._trailData.ExpectedOutput.Guidebook = null;
 
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Guidebook);
+            this.TestCreateTrail(this._trailData, t => t.Guidebook);
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.RequiredPass"/>
+        /// Verify that the factory assigns <see cref="Trail.RequiredPass"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsRequiredPass()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.RequiredPassId);
+            this.TestCreateTrail(this._trailData, t => t.RequiredPassId);
+        }
+
+        /// <summary>
+        /// Verify that the factory updates <see cref="Trail.RequiredPass"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesRequiredPass()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.RequiredPassId);
         }
 
         /// <summary>
@@ -375,42 +461,75 @@
         public void HandlesNullRequiredPass()
         {
             // Arrange
-            this._trailData.Input.RequiredPass = null;
+            this._trailData.WtaTrail.RequiredPass = null;
             this._trailData.ExpectedOutput.RequiredPass = null;
 
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.RequiredPass);
+            this.TestCreateTrail(this._trailData, t => t.RequiredPass);
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.PhotoLinks"/>
+        /// Verify that the factory assigns <see cref="Trail.PhotoLinks"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsPhotoLinks()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.PhotoLinks.FirstOrDefault());
+            this.TestCreateTrail(this._trailData, t => t.PhotoLinks.FirstOrDefault());
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.Features"/>
+        /// Verify that the factory updates <see cref="Trail.PhotoLinks"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesPhotoLinks()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.PhotoLinks.FirstOrDefault());
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.Features"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsFeatures()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Features, new ProjectionComparer<ICollection<TrailFeature>, ICollection<int>>(
+            this.TestCreateTrail(this._trailData, t => t.Features, new ProjectionComparer<ICollection<TrailFeature>, ICollection<int>>(
                     tfs => tfs.Select(tf => tf.Id).ToList(), new CollectionComparer<int>()));
         }
 
         /// <summary>
-        /// Verify that the factory assigns <see cref="Trail.Characteristics"/>
+        /// Verify that the factory updates <see cref="Trail.Features"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesFeatures()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.Features, new ProjectionComparer<ICollection<TrailFeature>, ICollection<int>>(
+                    tfs => tfs.Select(tf => tf.Id).ToList(), new CollectionComparer<int>()));
+        }
+
+        /// <summary>
+        /// Verify that the factory assigns <see cref="Trail.Characteristics"/>.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AssignsCharacteristics()
         {
             // Act / Assert
-            this.TestFactoryMethod(this._trailData, t => t.Characteristics,
+            this.TestCreateTrail(this._trailData, t => t.Characteristics,
+                new ProjectionComparer<ICollection<TrailCharacteristic>, ICollection<int>>(
+                    cs => cs.Select(c => c.Id).ToList(), new CollectionComparer<int>()));
+        }
+
+        /// <summary>
+        /// Verify that the factory updates <see cref="Trail.Characteristics"/>.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void UpdatesCharacteristics()
+        {
+            // Act / Assert
+            this.TestUpdateTrail(this._trailData, t => t.Characteristics,
                 new ProjectionComparer<ICollection<TrailCharacteristic>, ICollection<int>>(
                     cs => cs.Select(c => c.Id).ToList(), new CollectionComparer<int>()));
         }
@@ -423,22 +542,71 @@
         /// <param name="testData">The test data set.</param>
         /// <param name="propertySelector">Method to select the output property to verify.</param>
         /// <param name="comparer">Equality comparer to use, or null to use the default comparer.</param>
-        private void TestFactoryMethod<TProperty>(TestData testData, Func<Trail, TProperty> propertySelector,
+        private void TestCreateTrail<TProperty>(TestData testData, Func<Trail, TProperty> propertySelector,
             IEqualityComparer<TProperty> comparer = null)
         {
             // Act
             Trail actual;
             using (MyTrailsContext trailContext = new MyTrailsContext())
             {
-                Trail newTrail = this._factory.CreateTrail(testData.Input, trailContext);
+                Trail newTrail = this._factory.CreateTrail(testData.WtaTrail, trailContext);
                 trailContext.Trails.Add(newTrail);
 
                 trailContext.SaveChanges();
                 actual = trailContext.Trails.Find(newTrail.Id);
+
+                // Assert
+                this.VerifyTrailProperty(testData.ExpectedOutput, actual, propertySelector, comparer);
+            }
+        }
+
+        /// <summary>
+        /// Call <see cref="TrailFactory.UpdateTrail"/> on the test data and compare the property
+        /// selected in <see cref="propertySelector"/> to the expected value.
+        /// </summary>
+        /// <typeparam name="TProperty">The type of the property to select for verification.</typeparam>
+        /// <param name="testData">The test data set.</param>
+        /// <param name="propertySelector">Method to select the output property to verify.</param>
+        /// <param name="comparer">Equality comparer to use, or null to use the default comparer.</param>
+        private void TestUpdateTrail<TProperty>(TestData testData, Func<Trail, TProperty> propertySelector,
+            IEqualityComparer<TProperty> comparer = null)
+        {
+            // Arrange
+            int trailId;
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                context.Trails.Add(testData.OriginalTrail);
+                context.SaveChanges();
+
+                trailId = testData.OriginalTrail.Id;
             }
 
-            // Assert
-            TProperty expectedProperty = propertySelector(testData.ExpectedOutput);
+            // Act
+            Trail actual;
+            using (MyTrailsContext trailContext = new MyTrailsContext())
+            {
+                actual = trailContext.Trails.Find(trailId);
+                this._factory.UpdateTrail(actual, testData.WtaTrail, trailContext);
+
+                trailContext.SaveChanges();
+
+                // Assert
+                this.VerifyTrailProperty(testData.ExpectedOutput, actual, propertySelector, comparer);
+            }
+        }
+
+        /// <summary>
+        /// Compare the property selected in <see cref="propertySelector"/> to the expected value.
+        /// </summary>
+        /// <typeparam name="TProperty">The type of the property to select for verification.</typeparam>
+        /// <param name="expected">The expected test data set.</param>
+        /// <param name="actual">The actual test output.</param>
+        /// <param name="propertySelector">Method to select the output property to verify.</param>
+        /// <param name="comparer">Equality comparer to use, or null to use the default comparer.</param>
+        private void VerifyTrailProperty<TProperty>(Trail expected, Trail actual, Func<Trail, TProperty> propertySelector,
+            IEqualityComparer<TProperty> comparer)
+        {
+            TProperty expectedProperty = propertySelector(expected);
             TProperty actualProperty = propertySelector(actual);
             if (comparer == null)
             {
@@ -458,7 +626,12 @@
             /// <summary>
             /// The input <see cref="WtaTrail"/>
             /// </summary>
-            public WtaTrail Input { get; set; }
+            public WtaTrail WtaTrail { get; set; }
+
+            /// <summary>
+            /// Original trail to update.
+            /// </summary>
+            public Trail OriginalTrail { get; set; }
 
             /// <summary>
             /// The expected <see cref="Trail"/> output.

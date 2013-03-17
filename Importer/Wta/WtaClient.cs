@@ -52,7 +52,7 @@
         static WtaClient()
         {
             WtaEndpoint = new Uri("http://www.wta.org");
-            SearchEndpoint = new Uri(WtaEndpoint, "@@WindowsPhone/Search");
+            SearchEndpoint = new Uri(WtaEndpoint, "@@WindowsPhone/Search?StartIndex=0&EndIndex=50");
         }
 
         /// <summary>
