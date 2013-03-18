@@ -40,9 +40,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BingMaps\BingMapsCredentials.cs" />
-    <Compile Include="BingMaps\GeocodeServiceFactory.cs" />
     <Compile Include="BingMaps\IBingMapsCredentials.cs" />
-    <Compile Include="BingMaps\IGeocodeServiceFactory.cs" />
     <Compile Include="BingMaps\IRouteServiceFactory.cs" />
     <Compile Include="BingMaps\RouteServiceFactory.cs" />
     <Compile Include="DbGeographyExt.cs" />
@@ -54,11 +52,6 @@
     <Compile Include="ITrailsImporter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Retry\HttpErrorDetectionStrategy.cs" />
-    <Compile Include="Service References\BingMaps.Geocoding\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\BingMaps.Routing\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -87,26 +80,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Service References\BingMaps.Geocoding\Arrays.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMaps.Geocoding\common.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMaps.Geocoding\contracts.wsdl" />
-    <None Include="Service References\BingMaps.Geocoding\contracts.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMaps.Geocoding\geocode.wsdl" />
-    <None Include="Service References\BingMaps.Geocoding\geocode.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMaps.Geocoding\MyTrails.Importer.BingMaps.Geocoding.GeocodeResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\BingMaps.Geocoding\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\BingMaps.Routing\common.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -142,7 +115,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\BingMaps.Geocoding\" />
     <WCFMetadataStorage Include="Service References\BingMaps.Routing\" />
   </ItemGroup>
   <ItemGroup>
@@ -153,18 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\BingMaps.Routing\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\BingMaps.Geocoding\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\BingMaps.Geocoding\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\BingMaps.Geocoding\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
