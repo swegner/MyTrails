@@ -7,6 +7,8 @@
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Practices.TransientFaultHandling;
+    using MyTrails.Importer.Retry;
     using log4net;
     using Newtonsoft.Json;
 
@@ -117,7 +119,7 @@
         /// <seealso cref="IWtaClient.FetchTripReports"/>
         public async Task<IList<WtaTripReport>> FetchTripReports(string wtaTrailId)
         {
-            Uri trailReportUri = new Uri(WtaEndpoint, string.Format("{0}{1}", TripReportsEndpointFormat, wtaTrailId));
+            Uri trailReportUri = new Uri(WtaEndpoint, String.Format("{0}{1}", TripReportsEndpointFormat, wtaTrailId));
 
             IList<WtaTripReport> tripReports;
             using (ManagedConcurentResource<IHttpClient> httpClientResource =
@@ -297,6 +299,27 @@
                     this._disposed = true;
                 }
             }
+        }
+
+        /// <summary>
+        /// Build the retry policy to use when querying WTA.
+        /// </summary>
+        /// <param name="logger">Logging interface to log retries to.</param>
+        /// <returns>An initialized retry policy.</returns>
+        public static RetryPolicy BuildWtaRetryPolicy(ILog logger)
+        {
+            RetryStrategy strategy = new ExponentialBackoff(
+                retryCount: 5, 
+                minBackoff: TimeSpan.FromMilliseconds(100), 
+                maxBackoff: TimeSpan.FromSeconds(5),
+                deltaBackoff: TimeSpan.FromMilliseconds(500))
+            {
+                FastFirstRetry = true,
+            };
+            RetryPolicy policy = new RetryPolicy(new HttpErrorDetectionStrategy(), strategy);
+            policy.Retrying += (sender, args) => logger.WarnFormat("Retrying fetch trails due to exception: {0}", args.LastException);
+
+            return policy;
         }
     }
 }

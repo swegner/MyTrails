@@ -4,10 +4,10 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Data.Entity.Migrations;
     using System.Linq;
     using System.Threading.Tasks;
     using log4net;
+    using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer.Wta;
@@ -29,6 +29,13 @@
         private readonly object _initSyncObject;
 
         /// <summary>
+        /// Synchronization dictionary to ensure trip reports are not duplicated on concurrent threads.
+        /// A trip report is added to the dictionary when another thread begins to add it to the datastore.
+        /// Other threads will wait for the datastore to be updated with the new trip report.
+        /// </summary>
+        private readonly ConcurrentDictionary<string, object> _tripReportDictionary;
+
+        /// <summary>
         /// Dictionary of trip types, keyed by WTA ID.
         /// </summary>
         private Dictionary<string, int> _tripTypeDictionary; 
@@ -37,13 +44,6 @@
         /// Maximum date of previously stored trip reports.
         /// </summary>
         private DateTime _maxTripReportDate;
-
-        /// <summary>
-        /// Synchronization dictionary to ensure trip reports are not duplicated on concurrent threads.
-        /// A trip report is added to the dictionary when another thread begins to add it to the datastore.
-        /// Other threads will wait for the datastore to be updated with the new trip report.
-        /// </summary>
-        private ConcurrentDictionary<string, object> _tripReportDictionary;
 
         /// <summary>
         /// Whether the maximum trip report date has been initialized.
@@ -83,7 +83,8 @@
             this.Initialize(context);
 
             string wtaTrailId = trail.WtaId;
-            IList<WtaTripReport> reports = await this.WtaClient.FetchTripReports(wtaTrailId);
+            RetryPolicy policy = Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
+            IList<WtaTripReport> reports = await policy.ExecuteAsync(() => this.WtaClient.FetchTripReports(wtaTrailId));
 
             IEnumerable<WtaTripReport> potentialReports = reports
                 .Where(tr => tr.Date >= this._maxTripReportDate);

@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using log4net;
+    using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer.Extenders;
@@ -58,7 +59,8 @@
         public async Task Run()
         {
             this.Logger.Debug("Importing new trails.");
-            Task<IList<WtaTrail>> fetchTrailTask = this.WtaClient.FetchTrails();
+            RetryPolicy policy = Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
+            Task<IList<WtaTrail>> fetchTrailTask = policy.ExecuteAsync(() => this.WtaClient.FetchTrails());
 
             this.Logger.Info("Fetching existing trail IDs");
             List<string> existingTrailIds;
