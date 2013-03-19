@@ -41,11 +41,6 @@
         private Dictionary<string, int> _tripTypeDictionary; 
 
         /// <summary>
-        /// Maximum date of previously stored trip reports.
-        /// </summary>
-        private DateTime _maxTripReportDate;
-
-        /// <summary>
         /// Whether the maximum trip report date has been initialized.
         /// </summary>
         private bool _initialized;
@@ -86,10 +81,7 @@
             RetryPolicy policy = Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
             IList<WtaTripReport> reports = await policy.ExecuteAsync(() => this.WtaClient.FetchTripReports(wtaTrailId));
 
-            IEnumerable<WtaTripReport> potentialReports = reports
-                .Where(tr => tr.Date >= this._maxTripReportDate);
-
-            foreach (WtaTripReport wtaReport in potentialReports)
+            foreach (WtaTripReport wtaReport in reports)
             {
                 string wtaReportId = this.ParseWtaReportId(wtaReport);
                 Lazy<bool> firstToAdd = new Lazy<bool>(() => this._tripReportDictionary.TryAdd(wtaReportId, null));
@@ -136,11 +128,6 @@
                         this.Logger.Debug("Initializing trip type dictionary");
                         this._tripTypeDictionary = context.TripTypes.ToDictionary(tt => tt.WtaId, tt => tt.Id);
 
-                        this._maxTripReportDate = context.TripReports.Any() ?
-                            context.TripReports.Max(tr => tr.Date) :
-                            DateTime.MinValue;
-
-                        this.Logger.InfoFormat("Adding trip reports on or after {0}.", this._maxTripReportDate);
                         this._initialized = true;
                     }
                 }
