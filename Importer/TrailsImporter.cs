@@ -62,7 +62,7 @@
             RetryPolicy policy = Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
             Task<IList<WtaTrail>> fetchTrailTask = policy.ExecuteAsync(() => this.WtaClient.FetchTrails());
 
-            this.Logger.Info("Fetching existing trail IDs");
+            this.Logger.Info("Fetching existing trail IDs.");
             List<string> existingTrailIds;
             using (MyTrailsContext context = new MyTrailsContext())
             {
@@ -115,7 +115,7 @@
         /// <param name="wtaTrails">Fetched trails from WTA.</param>
         /// <param name="existingTrailIds">Trail IDs from the WTA database.</param>
         /// <returns>Pairs of trails and a boolean of whether the trail exists in the database.</returns>
-        private IEnumerable<Tuple<WtaTrail, bool>> MatchExistingTrails(IList<WtaTrail> wtaTrails, List<string> existingTrailIds)
+        private IEnumerable<Tuple<WtaTrail, bool>> MatchExistingTrails(IEnumerable<WtaTrail> wtaTrails, IEnumerable<string> existingTrailIds)
         {
             IEnumerable<Tuple<WtaTrail, bool>> trailTuples = wtaTrails
                 .GroupJoin(existingTrailIds, wt => wt.Uid, id => id, (wt, ids) => Tuple.Create(wt, ids.Any()));

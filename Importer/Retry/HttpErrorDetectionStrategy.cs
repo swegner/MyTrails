@@ -16,7 +16,17 @@
         /// <seealso cref="ITransientErrorDetectionStrategy.IsTransient"/>
         public bool IsTransient(Exception ex)
         {
-            return false;
+            bool isTransient;
+            if (ex is TimeoutException)
+            {
+                isTransient = true;
+            }
+            else
+            {
+                isTransient = false;
+            }
+
+            return isTransient;
         }
     }
 }

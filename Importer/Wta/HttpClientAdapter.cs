@@ -52,7 +52,17 @@
         /// <seealso cref="IHttpClient.SendGetRequest"/>
         public async Task<HttpResponseMessage> SendGetRequest()
         {
-            return await this._innerClient.GetAsync(this._endpoint);
+            HttpResponseMessage response;
+            try
+            {
+                response = await this._innerClient.GetAsync(this._endpoint);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new TimeoutException("HTTP request timed out", ex);
+            }
+
+            return response;
         }
 
         /// <summary>

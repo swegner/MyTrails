@@ -5,10 +5,12 @@
     using System.Linq;
     using System.Threading.Tasks;
     using log4net;
+    using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer.BingMaps;
     using MyTrails.Importer.BingMaps.Routing;
+    using MyTrails.Importer.Retry;
 
     /// <summary>
     /// Trail extender which adds driving directions between each trail
@@ -49,7 +51,7 @@
                 this.Logger.InfoFormat("Looking up driving directions for trail: {0}", trail.Name);
 
                 Task[] addDirectionsTasks = context.Addresses
-                    .Where(a => !a.Directions.Any(d => d.TrailId == trail.Id))
+                    .Where(a => a.Directions.All(d => d.TrailId != trail.Id))
                     .ToList() // Needed to force the EF query.
                     .Select(a => this.AddDrivingDirections(a, trail))
                     .ToArray();
@@ -96,10 +98,11 @@
             };
 
             RouteResponse response;
+            RetryPolicy policy = this.BuildRetryPolicy();
             IRouteService routeService = this.RouteServiceFactory.CreateRouteService();
             try
             {
-                response = await routeService.CalculateRouteAsync(request);
+                response = await policy.ExecuteAsync(() => routeService.CalculateRouteAsync(request));
             }
             finally
             {
@@ -116,6 +119,22 @@
                 Trail = trail,
                 DrivingTimeSeconds = (int)response.Result.Summary.TimeInSeconds,
             });
+        }
+
+        /// <summary>
+        /// Build a retry policy for querying Bing Maps.
+        /// </summary>
+        /// <returns>An initialized retry policy.</returns>
+        private RetryPolicy BuildRetryPolicy()
+        {
+            RetryStrategy strategy = new ExponentialBackoff(
+                retryCount: 5, minBackoff: TimeSpan.FromMilliseconds(100), maxBackoff: TimeSpan.FromSeconds(5), deltaBackoff: TimeSpan.FromMilliseconds(500))
+            {
+                FastFirstRetry = true,
+            };
+            RetryPolicy policy = new RetryPolicy(new HttpErrorDetectionStrategy(), strategy);
+            policy.Retrying += (sender, args) => this.Logger.WarnFormat("Retrying Bing Maps request due to exception: {0}", args.LastException);
+            return policy;
         }
     }
 }
