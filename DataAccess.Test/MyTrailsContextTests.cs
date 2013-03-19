@@ -198,6 +198,21 @@
         }
 
         /// <summary>
+        /// Verify that <see cref="MyTrailsContext.Addresses"/> is seeded with data.
+        /// </summary>
+        [TestMethod]
+        public void AddressesHasSeedData()
+        {
+            // Act
+            Address address = this._context.Addresses
+                .Where(a => a.Location == "Seattle")
+                .FirstOrDefault();
+
+            // Assert
+            Assert.IsNotNull(address);
+        }
+
+        /// <summary>
         /// Dispose of object references.
         /// </summary>
         /// <seealso cref="IDisposable.Dispose"/>

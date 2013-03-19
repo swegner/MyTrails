@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer
+namespace MyTrails.DataAccess
 {
     using System.Data.Spatial;
     using System.Globalization;

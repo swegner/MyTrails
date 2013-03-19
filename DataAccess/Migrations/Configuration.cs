@@ -37,6 +37,7 @@ namespace MyTrails.DataAccess.Migrations
             this.SeedTrailFeatures(context.TrailFeatures);
             this.SeedTrailCharacteristics(context.TrailCharacteristics);
             this.SeedTripTypes(context.TripTypes);
+            this.SeedAddresses(context.Addresses);
 
             base.Seed(context);
         }
@@ -131,6 +132,24 @@ namespace MyTrails.DataAccess.Migrations
                 new TripType { WtaId = "overnight", Description = "Overnight Backpack" },
                 new TripType { WtaId = "multi-night-backpack", Description = "Multi-Night Backpack" },
                 new TripType { WtaId = "snowshoe-xc-ski", Description = "Snowshoe / Cross-country Ski" },
+            });
+        }
+
+        /// <summary>
+        /// Seed the <see cref="MyTrailsContext.Addresses"/> data with predefined addresses.
+        /// </summary>
+        /// <param name="addresses">The <see cref="DbSet{TEntity}"/> to seed.</param>
+        private void SeedAddresses(DbSet<Address> addresses)
+        {
+            addresses.AddOrUpdate(a => a.Location, new[]
+            {
+                new Address { Location = "Seattle", Coordinate = DbGeographyExt.PointFromCoordinates(47.618739, -122.326731) },
+                new Address { Location = "Bellevue", Coordinate = DbGeographyExt.PointFromCoordinates(47.614806, -122.194124) },
+                new Address { Location = "Redmond", Coordinate = DbGeographyExt.PointFromCoordinates(47.675659, -122.137863) },
+                new Address { Location = "Kirkland", Coordinate = DbGeographyExt.PointFromCoordinates(47.674545, -122.203903) },
+                new Address { Location = "Bothell", Coordinate = DbGeographyExt.PointFromCoordinates(47.725922, -122.211571) },
+                new Address { Location = "Federal Way", Coordinate = DbGeographyExt.PointFromCoordinates(47.299667, -122.328997) },
+                new Address { Location = "Auburn", Coordinate = DbGeographyExt.PointFromCoordinates(47.3074, -122.230408) },
             });
         }
     }
