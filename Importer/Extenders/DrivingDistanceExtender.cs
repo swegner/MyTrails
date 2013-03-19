@@ -1,6 +1,7 @@
 ﻿namespace MyTrails.Importer.Extenders
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Threading.Tasks;
@@ -50,13 +51,13 @@
             {
                 this.Logger.InfoFormat("Looking up driving directions for trail: {0}", trail.Name);
 
-                Task[] addDirectionsTasks = context.Addresses
-                    .Where(a => a.Directions.All(d => d.TrailId != trail.Id))
-                    .ToList() // Needed to force the EF query.
-                    .Select(a => this.AddDrivingDirections(a, trail))
-                    .ToArray();
+                IEnumerable<Address> addresses = context.Addresses
+                    .Where(a => a.Directions.All(d => d.TrailId != trail.Id));
 
-                await Task.WhenAll(addDirectionsTasks);
+                foreach (Address address in addresses)
+                {
+                    await this.AddDrivingDirections(address, trail);
+                }
             }
         }
 

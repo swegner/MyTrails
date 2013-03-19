@@ -36,7 +36,7 @@
         /// <summary>
         /// Maximum number of HTTP requests to send to WTA at once.
         /// </summary>
-        private const int ConcurrentHttpRequests = 25;
+        private const int ConcurrentHttpRequests = 15;
 
         /// <summary>
         /// Manager to control concurrent HTTP requests.
