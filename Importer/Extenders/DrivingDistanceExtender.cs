@@ -51,8 +51,9 @@
             {
                 this.Logger.InfoFormat("Looking up driving directions for trail: {0}", trail.Name);
 
-                IEnumerable<Address> addresses = context.Addresses
-                    .Where(a => a.Directions.All(d => d.TrailId != trail.Id));
+                List<Address> addresses = context.Addresses
+                    .Where(a => a.Directions.All(d => d.TrailId != trail.Id))
+                    .ToList(); // Force EF query to avoid multiple active results sets on enumeration.
 
                 foreach (Address address in addresses)
                 {
