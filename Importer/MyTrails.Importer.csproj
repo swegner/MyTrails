@@ -110,6 +110,10 @@
       <Project>{35f56f3a-5e01-4d67-9e03-03f1c0b3ed2a}</Project>
       <Name>MyTrails.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceLib\MyTrails.ServiceLib.csproj">
+      <Project>{861ff147-cdfe-41db-b8d5-857802557bba}</Project>
+      <Name>MyTrails.ServiceLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

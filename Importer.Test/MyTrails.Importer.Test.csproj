@@ -72,6 +72,10 @@
       <Project>{d1daf444-4cce-42ce-8998-c920d174556e}</Project>
       <Name>MyTrails.Importer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceLib\MyTrails.ServiceLib.csproj">
+      <Project>{861ff147-cdfe-41db-b8d5-857802557bba}</Project>
+      <Name>MyTrails.ServiceLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SampleData\trails.js" />

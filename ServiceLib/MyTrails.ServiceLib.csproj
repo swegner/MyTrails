@@ -22,6 +22,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\MyTrails.Contracts.csproj">
+      <Project>{9f153728-51ac-45da-ba15-d4befd4741e9}</Project>
+      <Name>MyTrails.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\MyTrails.DataAccess.csproj">
+      <Project>{35f56f3a-5e01-4d67-9e03-03f1c0b3ed2a}</Project>
+      <Name>MyTrails.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
