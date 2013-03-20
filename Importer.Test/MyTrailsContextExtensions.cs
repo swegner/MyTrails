@@ -22,6 +22,7 @@
             @this.Trails.Truncate();
             @this.Guidebooks.Truncate();
             @this.TripReports.Truncate();
+            @this.ImportLog.Truncate();
         }
     }
 }

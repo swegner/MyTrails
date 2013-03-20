@@ -25,6 +25,7 @@
     <Compile Include="Data\DrivingDirections.cs" />
     <Compile Include="Data\GuideBook.cs" />
     <Compile Include="Data\Address.cs" />
+    <Compile Include="Data\ImportLogEntry.cs" />
     <Compile Include="Data\TripType.cs" />
     <Compile Include="Data\Region.cs" />
     <Compile Include="Data\RequiredPass.cs" />

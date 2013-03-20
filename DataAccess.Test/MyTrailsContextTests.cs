@@ -122,6 +122,16 @@
         }
 
         /// <summary>
+        /// Verify that <see cref="MyTrailsContext.ImportLog"/> is accessible.
+        /// </summary>
+        [TestMethod]
+        public void CanAccessImportLog()
+        {
+            // Act
+            this.TestAccess(this._context.ImportLog);
+        }
+
+        /// <summary>
         /// Verify that <see cref="MyTrailsContext.Regions"/> is seeded with data.
         /// </summary>
         [TestMethod]

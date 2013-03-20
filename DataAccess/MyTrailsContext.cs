@@ -62,5 +62,10 @@
         /// Registered user addresses.
         /// </summary>
         public DbSet<Address> Addresses { get; set; }
+
+        /// <summary>
+        /// Journal log of import run statistics.
+        /// </summary>
+        public DbSet<ImportLogEntry> ImportLog { get; set; }
     }
 }

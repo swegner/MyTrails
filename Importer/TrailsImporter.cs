@@ -5,6 +5,7 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel.Composition;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using log4net;
     using Microsoft.Practices.TransientFaultHandling;
@@ -19,6 +20,11 @@
     [Export(typeof(ITrailsImporter))]
     public class TrailsImporter : ITrailsImporter
     {
+        /// <summary>
+        /// Cumulative number of errors encountered while importing new or updated trails.b
+        /// </summary>
+        private int _numImportErrors;
+
         /// <summary>
         /// Construct a new <see cref="TrailsImporter"/> instance.
         /// </summary>
@@ -59,6 +65,62 @@
         public async Task Run()
         {
             this.Logger.Debug("Importing new trails.");
+            ImportLogEntry logEntry = this.CreateImportLog();
+
+            try
+            {
+                await this.RunInternal();
+            }
+            finally
+            {
+                this.FinalizeAndCommitLog(logEntry);
+            }
+        }
+
+        /// <summary>
+        /// Create a new <see cref="ImportLogEntry"/> for the import run.
+        /// </summary>
+        /// <returns>A new <see cref="ImportLogEntry"/>.</returns>
+        private ImportLogEntry CreateImportLog()
+        {
+            ImportLogEntry logEntry;
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                logEntry = new ImportLogEntry
+                {
+                    StartTime = DateTime.Now,
+                    StartTrailsCount = context.Trails.Count(),
+                    StartTripReportsCount = context.TripReports.Count(),
+                };
+            }
+
+            return logEntry;
+        }
+
+        /// <summary>
+        /// Add completion statistics to the import log and save it to the datastore.
+        /// </summary>
+        /// <param name="logEntry">The log entry to finalize.</param>
+        private void FinalizeAndCommitLog(ImportLogEntry logEntry)
+        {
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                logEntry.CompletedTrailsCount = context.Trails.Count();
+                logEntry.CompletedTripReportsCount = context.TripReports.Count();
+                logEntry.CompletedTime = DateTime.Now;
+                logEntry.ErrorsCount = this._numImportErrors;
+
+                context.ImportLog.Add(logEntry);
+                context.SaveChanges(this.Logger);
+            }
+        }
+
+        /// <summary>
+        /// Run the importer.
+        /// </summary>
+        /// <returns>Task for asynchronous completion.</returns>
+        private async Task RunInternal()
+        {
             RetryPolicy policy = Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
             Task<IList<WtaTrail>> fetchTrailTask = policy.ExecuteAsync(() => this.WtaClient.FetchTrails());
 
@@ -80,9 +142,8 @@
             Task[] trailTasks = wtaTrailTuples
                 .Select(tt => this.ImportOrUpdateTrail(tt.Item1, tt.Item2))
                 .ToArray();
-            await Task.WhenAll(trailTasks);
 
-            this.Logger.DebugFormat("Created {0} new trails.", trailTasks.Length);
+            await Task.WhenAll(trailTasks);
         }
 
         /// <summary>
@@ -131,31 +192,41 @@
         /// <returns>Task for asynchronous completion.</returns>
         private async Task ImportOrUpdateTrail(WtaTrail wtaTrail, bool exists)
         {
-            int trailId;
-            using (MyTrailsContext trailContext = new MyTrailsContext())
+            try
             {
-                Trail trail;
-                if (exists)
+                int trailId;
+                using (MyTrailsContext trailContext = new MyTrailsContext())
                 {
-                    trail = trailContext.Trails
-                        .Where(t => t.WtaId == wtaTrail.Uid)
-                        .First();
-                    this.TrailFactory.UpdateTrail(trail, wtaTrail, trailContext);
-                }
-                else
-                {
-                    trail = this.TrailFactory.CreateTrail(wtaTrail, trailContext);
-                    trailContext.Trails.Add(trail);
+                    Trail trail;
+                    if (exists)
+                    {
+                        trail = trailContext.Trails
+                            .Where(t => t.WtaId == wtaTrail.Uid)
+                            .First();
+                        this.TrailFactory.UpdateTrail(trail, wtaTrail, trailContext);
+                    }
+                    else
+                    {
+                        trail = this.TrailFactory.CreateTrail(wtaTrail, trailContext);
+                        trailContext.Trails.Add(trail);
+                    }
+
+                    trailContext.SaveChanges(this.Logger);
+                    trailId = trail.Id;
                 }
 
-                trailContext.SaveChanges(this.Logger);
-                trailId = trail.Id;
+                IEnumerable<Task> extenderTasks = this.TrailExtenders
+                    .Select(te => this.RunExtender(te, trailId));
+
+                await Task.WhenAll(extenderTasks);
             }
+            catch (Exception ex)
+            {
+                Interlocked.Increment(ref this._numImportErrors);
+                this.Logger.ErrorFormat("Error importing trail '{0}': {1}", wtaTrail, ex);
 
-            IEnumerable<Task> extenderTasks = this.TrailExtenders
-                .Select(te => this.RunExtender(te, trailId));
-
-            await Task.WhenAll(extenderTasks);
+                throw;
+            }
         }
 
         /// <summary>
