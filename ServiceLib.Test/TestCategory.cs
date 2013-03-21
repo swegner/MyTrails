@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Test
+namespace MyTrails.ServiceLib.Test
 {
     /// <summary>
     /// Test type for categorization.

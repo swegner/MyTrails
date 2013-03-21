@@ -2,7 +2,6 @@
 {
     using System.ComponentModel.Composition;
     using log4net;
-    using log4net.Core;
 
     /// <summary>
     /// MEF exports to make available for composition.

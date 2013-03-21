@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Test
+namespace MyTrails.ServiceLib.Test
 {
     using System;
     using System.Collections.Generic;
@@ -7,9 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer;
-    using MyTrails.Importer.Test.Logging;
-    using MyTrails.ServiceLib;
+    using MyTrails.ServiceLib.Test.Logging;
     using MyTrails.ServiceLib.Wta;
 
     /// <summary>

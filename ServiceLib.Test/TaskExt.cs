@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Test
+namespace MyTrails.ServiceLib.Test
 {
     using System;
     using System.Threading.Tasks;

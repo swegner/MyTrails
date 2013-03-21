@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Test.Logging
+namespace MyTrails.ServiceLib.Test.Logging
 {
     using System;
     using log4net;

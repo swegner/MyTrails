@@ -14,6 +14,7 @@
     using MyTrails.Importer;
     using MyTrails.ServiceLib.BingMaps;
     using MyTrails.ServiceLib.BingMaps.Routing;
+    using MyTrails.ServiceLib.Test;
     using MyTrails.ServiceLib.Wta;
 
     /// <summary>

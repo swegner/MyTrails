@@ -23,11 +23,14 @@
     <Reference Include="System.Data.Entity" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyTrailsContextTests.cs" />
+    <Compile Include="TestAssembly.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\MyTrails.Contracts.csproj">

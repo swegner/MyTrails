@@ -47,17 +47,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbGeographyPointComparer.cs" />
     <Compile Include="E2ETests.cs" />
-    <Compile Include="Extenders\DrivingDistanceExtenderTests.cs" />
-    <Compile Include="Extenders\TripReportExtenderTests.cs" />
-    <Compile Include="Logging\StubLog.cs" />
-    <Compile Include="MyTrailsContextExtensions.cs" />
-    <Compile Include="TestCategory.cs" />
-    <Compile Include="TaskExt.cs" />
     <Compile Include="TestAssembly.cs" />
-    <Compile Include="TrailFactoryTests.cs" />
-    <Compile Include="TrailsImporterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\MyTrails.Contracts.csproj">
@@ -71,6 +62,10 @@
     <ProjectReference Include="..\Importer\MyTrails.Importer.csproj">
       <Project>{d1daf444-4cce-42ce-8998-c920d174556e}</Project>
       <Name>MyTrails.Importer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceLib.Test\MyTrails.ServiceLib.Test.csproj">
+      <Project>{2288861a-a932-4a3e-91dd-88bcfb518069}</Project>
+      <Name>MyTrails.ServiceLib.Test</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceLib\MyTrails.ServiceLib.csproj">
       <Project>{861ff147-cdfe-41db-b8d5-857802557bba}</Project>

@@ -1,18 +1,16 @@
-﻿namespace MyTrails.Importer.Test.Extenders
+namespace MyTrails.ServiceLib.Test.Extenders
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Data.Entity.Validation;
     using System.Linq;
-    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.Test.Logging;
     using MyTrails.ServiceLib.Extenders;
+    using MyTrails.ServiceLib.Test.Logging;
     using MyTrails.ServiceLib.Wta;
 
     /// <summary>

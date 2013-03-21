@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Test.Extenders
+namespace MyTrails.ServiceLib.Test.Extenders
 {
     using System;
     using System.Linq;
@@ -6,10 +6,10 @@
     using Moq;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.Test.Logging;
     using MyTrails.ServiceLib.BingMaps;
     using MyTrails.ServiceLib.BingMaps.Routing;
     using MyTrails.ServiceLib.Extenders;
+    using MyTrails.ServiceLib.Test.Logging;
 
     /// <summary>
     /// Unit tests for the <see cref="DrivingDistanceExtender"/> class.
