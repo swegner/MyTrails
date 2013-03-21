@@ -12,9 +12,9 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.DataAccess;
     using MyTrails.Importer;
-    using MyTrails.Importer.Wta;
     using MyTrails.ServiceLib.BingMaps;
     using MyTrails.ServiceLib.BingMaps.Routing;
+    using MyTrails.ServiceLib.Wta;
 
     /// <summary>
     /// End-to-end tests for the importer.

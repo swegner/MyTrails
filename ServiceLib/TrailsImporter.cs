@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer
+namespace MyTrails.ServiceLib
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +11,6 @@
     using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.Wta;
     using MyTrails.ServiceLib.Extenders;
     using MyTrails.ServiceLib.Wta;
 
@@ -22,7 +21,7 @@
     public class TrailsImporter : ITrailsImporter
     {
         /// <summary>
-        /// Cumulative number of errors encountered while importing new or updated trails.b
+        /// Cumulative number of errors encountered while importing new or updated trails.
         /// </summary>
         private int _numImportErrors;
 
@@ -122,7 +121,7 @@
         /// <returns>Task for asynchronous completion.</returns>
         private async Task RunInternal()
         {
-            RetryPolicy policy = Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
+            RetryPolicy policy = ServiceLib.Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
             Task<IList<WtaTrail>> fetchTrailTask = policy.ExecuteAsync(() => this.WtaClient.FetchTrails());
 
             this.Logger.Info("Fetching existing trail IDs.");

@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer
+namespace MyTrails.ServiceLib
 {
     using System;
     using System.Collections.Concurrent;

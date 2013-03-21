@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Retry
+namespace MyTrails.ServiceLib.Retry
 {
     using System;
     using Microsoft.Practices.TransientFaultHandling;

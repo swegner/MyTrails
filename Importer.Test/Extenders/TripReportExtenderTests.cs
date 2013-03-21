@@ -11,9 +11,8 @@
     using Moq;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.Extenders;
     using MyTrails.Importer.Test.Logging;
-    using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.Extenders;
     using MyTrails.ServiceLib.Wta;
 
     /// <summary>

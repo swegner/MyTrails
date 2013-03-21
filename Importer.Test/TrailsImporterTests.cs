@@ -10,7 +10,7 @@
     using MyTrails.DataAccess;
     using MyTrails.Importer;
     using MyTrails.Importer.Test.Logging;
-    using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib;
     using MyTrails.ServiceLib.Extenders;
     using MyTrails.ServiceLib.Wta;
 

@@ -40,27 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Extenders\DrivingDistanceExtender.cs" />
-    <Compile Include="Extenders\TripReportExtender.cs" />
     <Compile Include="Composition\Exports.cs" />
-    <Compile Include="ITrailFactory.cs" />
-    <Compile Include="ITrailsImporter.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Retry\HttpErrorDetectionStrategy.cs" />
-    <Compile Include="TrailFactory.cs" />
-    <Compile Include="TrailsImporter.cs" />
-    <Compile Include="Wta\HttpClientAdapter.cs" />
-    <Compile Include="Wta\HttpClientFactory.cs" />
-    <Compile Include="Wta\IHttpClient.cs" />
-    <Compile Include="Wta\IHttpClientFactory.cs" />
-    <Compile Include="Wta\IWtaClient.cs" />
-    <Compile Include="Wta\WtaClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="apiKeys.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +60,9 @@
       <Project>{861ff147-cdfe-41db-b8d5-857802557bba}</Project>
       <Name>MyTrails.ServiceLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extenders\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

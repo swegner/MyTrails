@@ -77,12 +77,25 @@
     <Compile Include="BingMaps\IBingMapsCredentials.cs" />
     <Compile Include="BingMaps\IRouteServiceFactory.cs" />
     <Compile Include="BingMaps\RouteServiceFactory.cs" />
+    <Compile Include="Extenders\DrivingDistanceExtender.cs" />
     <Compile Include="Extenders\ITrailExtender.cs" />
+    <Compile Include="Extenders\TripReportExtender.cs" />
+    <Compile Include="ITrailFactory.cs" />
+    <Compile Include="ITrailsImporter.cs" />
+    <Compile Include="Retry\HttpErrorDetectionStrategy.cs" />
     <Compile Include="Service References\BingMaps.Routing\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="TrailFactory.cs" />
+    <Compile Include="TrailsImporter.cs" />
+    <Compile Include="Wta\HttpClientAdapter.cs" />
+    <Compile Include="Wta\HttpClientFactory.cs" />
+    <Compile Include="Wta\IHttpClient.cs" />
+    <Compile Include="Wta\IHttpClientFactory.cs" />
+    <Compile Include="Wta\IWtaClient.cs" />
+    <Compile Include="Wta\WtaClient.cs" />
     <Compile Include="Wta\WtaFeatures.cs" />
     <Compile Include="Wta\WtaGuideBook.cs" />
     <Compile Include="Wta\WtaGuidebookMerchant.cs" />

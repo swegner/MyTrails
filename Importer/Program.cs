@@ -5,6 +5,7 @@
     using System.ComponentModel.Composition.Hosting;
     using System.Threading.Tasks;
     using log4net;
+    using MyTrails.ServiceLib;
 
     /// <summary>
     /// Pulls new and updated trail information from the WTA website.

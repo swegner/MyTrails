@@ -1,18 +1,17 @@
-﻿namespace MyTrails.Importer.Extenders
+namespace MyTrails.ServiceLib.Extenders
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Threading.Tasks;
-    using MyTrails.ServiceLib.BingMaps;
     using log4net;
     using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.Retry;
+    using MyTrails.ServiceLib.BingMaps;
     using MyTrails.ServiceLib.BingMaps.Routing;
-    using MyTrails.ServiceLib.Extenders;
+    using MyTrails.ServiceLib.Retry;
 
     /// <summary>
     /// Trail extender which adds driving directions between each trail

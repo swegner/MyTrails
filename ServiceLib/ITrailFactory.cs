@@ -1,8 +1,7 @@
-﻿namespace MyTrails.Importer
+namespace MyTrails.ServiceLib
 {
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.Wta;
     using MyTrails.ServiceLib.Wta;
 
     /// <summary>

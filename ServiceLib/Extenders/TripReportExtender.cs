@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Extenders
+namespace MyTrails.ServiceLib.Extenders
 {
     using System;
     using System.Collections.Concurrent;
@@ -10,8 +10,6 @@
     using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.Wta;
-    using MyTrails.ServiceLib.Extenders;
     using MyTrails.ServiceLib.Wta;
 
     /// <summary>
@@ -80,7 +78,7 @@
             this.Initialize(context);
 
             string wtaTrailId = trail.WtaId;
-            RetryPolicy policy = Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
+            RetryPolicy policy = ServiceLib.Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
             IList<WtaTripReport> reports = await policy.ExecuteAsync(() => this.WtaClient.FetchTripReports(wtaTrailId));
 
             foreach (WtaTripReport wtaReport in reports)

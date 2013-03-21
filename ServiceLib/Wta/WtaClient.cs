@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Wta
+namespace MyTrails.ServiceLib.Wta
 {
     using System;
     using System.Collections.Generic;
@@ -9,8 +9,7 @@
     using System.Threading.Tasks;
     using log4net;
     using Microsoft.Practices.TransientFaultHandling;
-    using MyTrails.Importer.Retry;
-    using MyTrails.ServiceLib.Wta;
+    using MyTrails.ServiceLib.Retry;
     using Newtonsoft.Json;
 
     /// <summary>
