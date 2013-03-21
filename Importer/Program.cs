@@ -35,35 +35,6 @@
         }
 
         /// <summary>
-        /// Parse commandline options and execute the trails importer.
-        /// </summary>
-        public void Run()
-        {
-            this.Logger.Info("Beginning execution.");
-
-            const string errorStringFormat = "Errors encountered during execution:\n{0}";
-            try
-            {
-                Task t = this.TrailsImporter.Run();
-                t.Wait();
-            }
-            catch (AggregateException ae)
-            {
-                this.Logger.ErrorFormat(errorStringFormat, string.Join(Environment.NewLine, ae.Flatten().InnerExceptions));
-                throw;
-            }
-            catch (Exception ex)
-            {
-                this.Logger.ErrorFormat(errorStringFormat, ex);
-                throw;
-            }
-            finally
-            {
-                this.Logger.Info("Done!");
-            }
-        }
-
-        /// <summary>
         /// Entry point to the application.
         /// </summary>
         /// <returns>0 on success, or non-zero otherwise.</returns>
@@ -76,8 +47,8 @@
                 using (ApplicationCatalog catalog = BuildCompositionCatalog())
                 using (CompositionContainer container = new CompositionContainer(catalog))
                 {
-                    Program p = container.GetExportedValue<Program>();
-                    p.Run();
+                    ITrailsImporter importer = container.GetExportedValue<ITrailsImporter>();
+                    importer.Run().Wait();
                 }
 
                 returnCode = 0;

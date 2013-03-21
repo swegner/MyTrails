@@ -67,13 +67,29 @@ namespace MyTrails.ServiceLib
             this.Logger.Debug("Importing new trails.");
             ImportLogEntry logEntry = this.CreateImportLog();
 
+            string exceptionString = null;
+            const string errorStringFormat = "Errors encountered during execution:\n{0}";
             try
             {
                 await this.RunInternal();
             }
+            catch (AggregateException ae)
+            {
+                exceptionString = string.Join(Environment.NewLine, ae.Flatten().InnerExceptions);
+                this.Logger.ErrorFormat(errorStringFormat, exceptionString);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                exceptionString = ex.ToString();
+                this.Logger.ErrorFormat(errorStringFormat, exceptionString);
+                throw;
+            }
             finally
             {
+                logEntry.ErrorString = exceptionString;
                 this.FinalizeAndCommitLog(logEntry);
+                this.Logger.Info("Done!");
             }
         }
 

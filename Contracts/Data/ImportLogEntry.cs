@@ -46,5 +46,10 @@
         /// Number of errors encountered while importing new or updated trails.
         /// </summary>
         public int ErrorsCount { get; set; }
+        
+        /// <summary>
+        /// Exception string from execution, or null if no errors were encountered.
+        /// </summary>
+        public string ErrorString { get; set; }
     }
 }

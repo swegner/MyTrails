@@ -12,6 +12,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.DataAccess;
     using MyTrails.Importer;
+    using MyTrails.ServiceLib;
     using MyTrails.ServiceLib.BingMaps;
     using MyTrails.ServiceLib.BingMaps.Routing;
     using MyTrails.ServiceLib.Test;
@@ -54,8 +55,8 @@
             using (CompositionContainer container = new CompositionContainer(aggregateCatalog))
             {
                 // Act
-                Program p = container.GetExportedValue<Program>();
-                p.Run();
+                ITrailsImporter importer = container.GetExportedValue<ITrailsImporter>();
+                importer.Run();
             }
         }
 
