@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.BingMaps
+namespace MyTrails.ServiceLib.BingMaps
 {
     /// <summary>
     /// Credential settings for Bing Maps API.

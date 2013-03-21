@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.BingMaps
+namespace MyTrails.ServiceLib.BingMaps
 {
     using MyTrails.ServiceLib.BingMaps.Routing;
 

@@ -12,8 +12,8 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MyTrails.DataAccess;
     using MyTrails.Importer;
-    using MyTrails.Importer.BingMaps;
     using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.BingMaps;
     using MyTrails.ServiceLib.BingMaps.Routing;
 
     /// <summary>

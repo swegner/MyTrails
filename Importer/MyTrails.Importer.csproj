@@ -40,10 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="BingMaps\BingMapsCredentials.cs" />
-    <Compile Include="BingMaps\IBingMapsCredentials.cs" />
-    <Compile Include="BingMaps\IRouteServiceFactory.cs" />
-    <Compile Include="BingMaps\RouteServiceFactory.cs" />
     <Compile Include="Extenders\DrivingDistanceExtender.cs" />
     <Compile Include="Extenders\TripReportExtender.cs" />
     <Compile Include="Composition\Exports.cs" />

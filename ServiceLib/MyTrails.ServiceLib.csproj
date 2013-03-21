@@ -26,6 +26,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Net.Http" />
@@ -72,6 +73,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BingMaps\BingMapsCredentials.cs" />
+    <Compile Include="BingMaps\IBingMapsCredentials.cs" />
+    <Compile Include="BingMaps\IRouteServiceFactory.cs" />
+    <Compile Include="BingMaps\RouteServiceFactory.cs" />
     <Compile Include="Extenders\ITrailExtender.cs" />
     <Compile Include="Service References\BingMaps.Routing\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -87,9 +92,7 @@
     <Compile Include="Wta\WtaTripReport.cs" />
     <Compile Include="Wta\WtaUserInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BingMaps\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>

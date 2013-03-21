@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.BingMaps
+namespace MyTrails.ServiceLib.BingMaps
 {
     using System.ComponentModel.Composition;
     using System.Configuration;

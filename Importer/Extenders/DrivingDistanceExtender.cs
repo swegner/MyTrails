@@ -5,11 +5,11 @@
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Threading.Tasks;
+    using MyTrails.ServiceLib.BingMaps;
     using log4net;
     using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.BingMaps;
     using MyTrails.Importer.Retry;
     using MyTrails.ServiceLib.BingMaps.Routing;
     using MyTrails.ServiceLib.Extenders;
