@@ -11,6 +11,8 @@
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.Extenders;
+    using MyTrails.ServiceLib.Wta;
 
     /// <summary>
     /// Associate trip reports with a trail.

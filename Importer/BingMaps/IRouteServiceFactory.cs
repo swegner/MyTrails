@@ -1,6 +1,6 @@
 ﻿namespace MyTrails.Importer.BingMaps
 {
-    using MyTrails.Importer.BingMaps.Routing;
+    using MyTrails.ServiceLib.BingMaps.Routing;
 
     /// <summary>
     /// Factory for creating <see cref="IRouteService"/> instances.

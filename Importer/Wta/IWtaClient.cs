@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using MyTrails.ServiceLib.Wta;
 
     /// <summary>
     /// Interface for communicating with wta.org

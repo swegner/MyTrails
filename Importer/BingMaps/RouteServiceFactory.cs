@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.Composition;
     using System.Diagnostics.CodeAnalysis;
-    using MyTrails.Importer.BingMaps.Routing;
+    using MyTrails.ServiceLib.BingMaps.Routing;
 
     /// <summary>
     /// Factory for creating <see cref="IRouteService"/> instances.

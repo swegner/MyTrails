@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Extenders
+namespace MyTrails.ServiceLib.Extenders
 {
     using System.Threading.Tasks;
     using MyTrails.Contracts.Data;

@@ -10,6 +10,7 @@
     using log4net;
     using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Importer.Retry;
+    using MyTrails.ServiceLib.Wta;
     using Newtonsoft.Json;
 
     /// <summary>

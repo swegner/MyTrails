@@ -4,15 +4,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer;
-    using MyTrails.Importer.Extenders;
     using MyTrails.Importer.Test.Logging;
     using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.Extenders;
+    using MyTrails.ServiceLib.Wta;
 
     /// <summary>
     /// Unit tests for the <see cref="TrailsImporter"/> class.

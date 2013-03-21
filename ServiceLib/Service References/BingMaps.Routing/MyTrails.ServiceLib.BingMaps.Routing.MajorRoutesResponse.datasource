@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="MajorRoutesResponse" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>MyTrails.Importer.BingMaps.Routing.MajorRoutesResponse, Service References.BingMaps.Routing.Reference.cs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesResponse, Service References.BingMaps.Routing.Reference.cs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

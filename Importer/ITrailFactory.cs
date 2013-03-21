@@ -3,6 +3,7 @@
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.Wta;
 
     /// <summary>
     /// Creates new <see cref="Trail"/> instances from an imported <see cref="WtaTrail"/>.

@@ -45,18 +45,12 @@
     <Compile Include="BingMaps\IRouteServiceFactory.cs" />
     <Compile Include="BingMaps\RouteServiceFactory.cs" />
     <Compile Include="Extenders\DrivingDistanceExtender.cs" />
-    <Compile Include="Extenders\ITrailExtender.cs" />
     <Compile Include="Extenders\TripReportExtender.cs" />
     <Compile Include="Composition\Exports.cs" />
     <Compile Include="ITrailFactory.cs" />
     <Compile Include="ITrailsImporter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Retry\HttpErrorDetectionStrategy.cs" />
-    <Compile Include="Service References\BingMaps.Routing\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="TrailFactory.cs" />
     <Compile Include="TrailsImporter.cs" />
     <Compile Include="Wta\HttpClientAdapter.cs" />
@@ -65,14 +59,6 @@
     <Compile Include="Wta\IHttpClientFactory.cs" />
     <Compile Include="Wta\IWtaClient.cs" />
     <Compile Include="Wta\WtaClient.cs" />
-    <Compile Include="Wta\WtaFeatures.cs" />
-    <Compile Include="Wta\WtaGuideBook.cs" />
-    <Compile Include="Wta\WtaGuidebookMerchant.cs" />
-    <Compile Include="Wta\WtaLocation.cs" />
-    <Compile Include="Wta\WtaStatistics.cs" />
-    <Compile Include="Wta\WtaTrail.cs" />
-    <Compile Include="Wta\WtaTripReport.cs" />
-    <Compile Include="Wta\WtaUserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -80,26 +66,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Service References\BingMaps.Routing\common.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMaps.Routing\contracts.wsdl" />
-    <None Include="Service References\BingMaps.Routing\contracts.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMaps.Routing\MyTrails.Importer.BingMaps.Routing.MajorRoutesResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\BingMaps.Routing\MyTrails.Importer.BingMaps.Routing.RouteResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\BingMaps.Routing\route.wsdl" />
-    <None Include="Service References\BingMaps.Routing\route.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMaps.Routing\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\MyTrails.Contracts.csproj">
@@ -114,24 +80,6 @@
       <Project>{861ff147-cdfe-41db-b8d5-857802557bba}</Project>
       <Name>MyTrails.ServiceLib</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\BingMaps.Routing\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\BingMaps.Routing\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\BingMaps.Routing\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\BingMaps.Routing\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Wta
+namespace MyTrails.ServiceLib.Wta
 {
     /// <summary>
     /// Trail statistics from the WTA website.

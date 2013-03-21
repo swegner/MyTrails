@@ -1,4 +1,4 @@
-﻿namespace MyTrails.Importer.Wta
+namespace MyTrails.ServiceLib.Wta
 {
     using System;
     using System.Diagnostics.CodeAnalysis;

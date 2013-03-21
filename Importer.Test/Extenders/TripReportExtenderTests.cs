@@ -14,6 +14,7 @@
     using MyTrails.Importer.Extenders;
     using MyTrails.Importer.Test.Logging;
     using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.Wta;
 
     /// <summary>
     /// Unit tests for the <see cref="TripReportExtender"/> class.

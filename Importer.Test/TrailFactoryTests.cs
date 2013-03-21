@@ -10,6 +10,7 @@
     using MyTrails.Importer;
     using MyTrails.Importer.Test.Logging;
     using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.Wta;
 
     /// <summary>
     /// Unit tests for the <see cref="TrailFactory"/> class.

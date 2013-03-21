@@ -11,8 +11,9 @@
     using Microsoft.Practices.TransientFaultHandling;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
-    using MyTrails.Importer.Extenders;
     using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.Extenders;
+    using MyTrails.ServiceLib.Wta;
 
     /// <summary>
     /// Imports trails from WTA into the MyTrails data store.

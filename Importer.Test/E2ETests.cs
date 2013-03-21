@@ -13,8 +13,8 @@
     using MyTrails.DataAccess;
     using MyTrails.Importer;
     using MyTrails.Importer.BingMaps;
-    using MyTrails.Importer.BingMaps.Routing;
     using MyTrails.Importer.Wta;
+    using MyTrails.ServiceLib.BingMaps.Routing;
 
     /// <summary>
     /// End-to-end tests for the importer.

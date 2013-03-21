@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyTrails.Importer.BingMaps.Routing {
+namespace MyTrails.ServiceLib.BingMaps.Routing {
     using System.Runtime.Serialization;
     using System;
     
@@ -17,24 +17,24 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RequestBase", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.MajorRoutesRequest))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.RouteRequest))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesRequest))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.RouteRequest))]
     public partial class RequestBase : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Credentials CredentialsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Credentials CredentialsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CultureField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ExecutionOptions ExecutionOptionsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ExecutionOptions ExecutionOptionsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.UserProfile UserProfileField;
+        private MyTrails.ServiceLib.BingMaps.Routing.UserProfile UserProfileField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -47,7 +47,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Credentials Credentials {
+        public MyTrails.ServiceLib.BingMaps.Routing.Credentials Credentials {
             get {
                 return this.CredentialsField;
             }
@@ -73,7 +73,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ExecutionOptions ExecutionOptions {
+        public MyTrails.ServiceLib.BingMaps.Routing.ExecutionOptions ExecutionOptions {
             get {
                 return this.ExecutionOptionsField;
             }
@@ -86,7 +86,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.UserProfile UserProfile {
+        public MyTrails.ServiceLib.BingMaps.Routing.UserProfile UserProfile {
             get {
                 return this.UserProfileField;
             }
@@ -224,25 +224,25 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Heading CurrentHeadingField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Heading CurrentHeadingField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.UserLocation CurrentLocationField;
+        private MyTrails.ServiceLib.BingMaps.Routing.UserLocation CurrentLocationField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.DeviceType DeviceTypeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.DeviceType DeviceTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.DistanceUnit DistanceUnitField;
+        private MyTrails.ServiceLib.BingMaps.Routing.DistanceUnit DistanceUnitField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string IPAddressField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ShapeBase MapViewField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ShapeBase MapViewField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.SizeOfint ScreenSizeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.SizeOfint ScreenSizeField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -255,7 +255,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Heading CurrentHeading {
+        public MyTrails.ServiceLib.BingMaps.Routing.Heading CurrentHeading {
             get {
                 return this.CurrentHeadingField;
             }
@@ -268,7 +268,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.UserLocation CurrentLocation {
+        public MyTrails.ServiceLib.BingMaps.Routing.UserLocation CurrentLocation {
             get {
                 return this.CurrentLocationField;
             }
@@ -281,7 +281,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.DeviceType DeviceType {
+        public MyTrails.ServiceLib.BingMaps.Routing.DeviceType DeviceType {
             get {
                 return this.DeviceTypeField;
             }
@@ -294,7 +294,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.DistanceUnit DistanceUnit {
+        public MyTrails.ServiceLib.BingMaps.Routing.DistanceUnit DistanceUnit {
             get {
                 return this.DistanceUnitField;
             }
@@ -320,7 +320,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ShapeBase MapView {
+        public MyTrails.ServiceLib.BingMaps.Routing.ShapeBase MapView {
             get {
                 return this.MapViewField;
             }
@@ -333,7 +333,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.SizeOfint ScreenSize {
+        public MyTrails.ServiceLib.BingMaps.Routing.SizeOfint ScreenSize {
             get {
                 return this.ScreenSizeField;
             }
@@ -359,16 +359,16 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MajorRoutesRequest", Namespace="http://dev.virtualearth.net/webservices/v1/route")]
     [System.SerializableAttribute()]
-    public partial class MajorRoutesRequest : MyTrails.Importer.BingMaps.Routing.RequestBase {
+    public partial class MajorRoutesRequest : MyTrails.ServiceLib.BingMaps.Routing.RequestBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Waypoint DestinationField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Waypoint DestinationField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.MajorRoutesOptions OptionsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesOptions OptionsField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Waypoint Destination {
+        public MyTrails.ServiceLib.BingMaps.Routing.Waypoint Destination {
             get {
                 return this.DestinationField;
             }
@@ -381,7 +381,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.MajorRoutesOptions Options {
+        public MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesOptions Options {
             get {
                 return this.OptionsField;
             }
@@ -398,16 +398,16 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RouteRequest", Namespace="http://dev.virtualearth.net/webservices/v1/route")]
     [System.SerializableAttribute()]
-    public partial class RouteRequest : MyTrails.Importer.BingMaps.Routing.RequestBase {
+    public partial class RouteRequest : MyTrails.ServiceLib.BingMaps.Routing.RequestBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RouteOptions OptionsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RouteOptions OptionsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Waypoint[] WaypointsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Waypoint[] WaypointsField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RouteOptions Options {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteOptions Options {
             get {
                 return this.OptionsField;
             }
@@ -420,7 +420,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Waypoint[] Waypoints {
+        public MyTrails.ServiceLib.BingMaps.Routing.Waypoint[] Waypoints {
             get {
                 return this.WaypointsField;
             }
@@ -437,23 +437,23 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RouteOptions", Namespace="http://dev.virtualearth.net/webservices/v1/route")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.MajorRoutesOptions))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesOptions))]
     public partial class RouteOptions : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.TravelMode ModeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.TravelMode ModeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RouteOptimization OptimizationField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RouteOptimization OptimizationField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RoutePathType RoutePathTypeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RoutePathType RoutePathTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.TrafficUsage TrafficUsageField;
+        private MyTrails.ServiceLib.BingMaps.Routing.TrafficUsage TrafficUsageField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -466,7 +466,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.TravelMode Mode {
+        public MyTrails.ServiceLib.BingMaps.Routing.TravelMode Mode {
             get {
                 return this.ModeField;
             }
@@ -479,7 +479,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RouteOptimization Optimization {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteOptimization Optimization {
             get {
                 return this.OptimizationField;
             }
@@ -492,7 +492,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RoutePathType RoutePathType {
+        public MyTrails.ServiceLib.BingMaps.Routing.RoutePathType RoutePathType {
             get {
                 return this.RoutePathTypeField;
             }
@@ -505,7 +505,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.TrafficUsage TrafficUsage {
+        public MyTrails.ServiceLib.BingMaps.Routing.TrafficUsage TrafficUsage {
             get {
                 return this.TrafficUsageField;
             }
@@ -540,7 +540,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private string DescriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location LocationField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location LocationField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -566,7 +566,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location Location {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location Location {
             get {
                 return this.LocationField;
             }
@@ -637,13 +637,13 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserLocation", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    public partial class UserLocation : MyTrails.Importer.BingMaps.Routing.Location {
+    public partial class UserLocation : MyTrails.ServiceLib.BingMaps.Routing.Location {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Confidence ConfidenceField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Confidence ConfidenceField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Confidence Confidence {
+        public MyTrails.ServiceLib.BingMaps.Routing.Confidence Confidence {
             get {
                 return this.ConfidenceField;
             }
@@ -660,9 +660,9 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ShapeBase", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.Rectangle))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.Circle))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.Polygon))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.Rectangle))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.Circle))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.Polygon))]
     public partial class ShapeBase : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -775,8 +775,8 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Location", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.GeocodeLocation))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.UserLocation))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.GeocodeLocation))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.UserLocation))]
     public partial class Location : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -854,7 +854,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="GeocodeLocation", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    public partial class GeocodeLocation : MyTrails.Importer.BingMaps.Routing.Location {
+    public partial class GeocodeLocation : MyTrails.ServiceLib.BingMaps.Routing.Location {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CalculationMethodField;
@@ -891,16 +891,16 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Rectangle", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    public partial class Rectangle : MyTrails.Importer.BingMaps.Routing.ShapeBase {
+    public partial class Rectangle : MyTrails.ServiceLib.BingMaps.Routing.ShapeBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location NortheastField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location NortheastField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location SouthwestField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location SouthwestField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location Northeast {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location Northeast {
             get {
                 return this.NortheastField;
             }
@@ -913,7 +913,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location Southwest {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location Southwest {
             get {
                 return this.SouthwestField;
             }
@@ -930,19 +930,19 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Circle", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    public partial class Circle : MyTrails.Importer.BingMaps.Routing.ShapeBase {
+    public partial class Circle : MyTrails.ServiceLib.BingMaps.Routing.ShapeBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location CenterField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location CenterField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.DistanceUnit DistanceUnitField;
+        private MyTrails.ServiceLib.BingMaps.Routing.DistanceUnit DistanceUnitField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double RadiusField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location Center {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location Center {
             get {
                 return this.CenterField;
             }
@@ -955,7 +955,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.DistanceUnit DistanceUnit {
+        public MyTrails.ServiceLib.BingMaps.Routing.DistanceUnit DistanceUnit {
             get {
                 return this.DistanceUnitField;
             }
@@ -985,13 +985,13 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Polygon", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    public partial class Polygon : MyTrails.Importer.BingMaps.Routing.ShapeBase {
+    public partial class Polygon : MyTrails.ServiceLib.BingMaps.Routing.ShapeBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location[] VerticesField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location[] VerticesField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location[] Vertices {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location[] Vertices {
             get {
                 return this.VerticesField;
             }
@@ -1008,7 +1008,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MajorRoutesOptions", Namespace="http://dev.virtualearth.net/webservices/v1/route")]
     [System.SerializableAttribute()]
-    public partial class MajorRoutesOptions : MyTrails.Importer.BingMaps.Routing.RouteOptions {
+    public partial class MajorRoutesOptions : MyTrails.ServiceLib.BingMaps.Routing.RouteOptions {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool ReturnRoutesField;
@@ -1078,8 +1078,8 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResponseBase", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.MajorRoutesResponse))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.Importer.BingMaps.Routing.RouteResponse))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesResponse))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.RouteResponse))]
     public partial class ResponseBase : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -1089,7 +1089,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Uri BrandLogoUriField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ResponseSummary ResponseSummaryField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ResponseSummary ResponseSummaryField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -1115,7 +1115,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ResponseSummary ResponseSummary {
+        public MyTrails.ServiceLib.BingMaps.Routing.ResponseSummary ResponseSummary {
             get {
                 return this.ResponseSummaryField;
             }
@@ -1147,7 +1147,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.AuthenticationResultCode AuthenticationResultCodeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.AuthenticationResultCode AuthenticationResultCodeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CopyrightField;
@@ -1156,7 +1156,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private string FaultReasonField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ResponseStatusCode StatusCodeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ResponseStatusCode StatusCodeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TraceIdField;
@@ -1172,7 +1172,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.AuthenticationResultCode AuthenticationResultCode {
+        public MyTrails.ServiceLib.BingMaps.Routing.AuthenticationResultCode AuthenticationResultCode {
             get {
                 return this.AuthenticationResultCodeField;
             }
@@ -1211,7 +1211,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ResponseStatusCode StatusCode {
+        public MyTrails.ServiceLib.BingMaps.Routing.ResponseStatusCode StatusCode {
             get {
                 return this.StatusCodeField;
             }
@@ -1250,16 +1250,16 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MajorRoutesResponse", Namespace="http://dev.virtualearth.net/webservices/v1/route")]
     [System.SerializableAttribute()]
-    public partial class MajorRoutesResponse : MyTrails.Importer.BingMaps.Routing.ResponseBase {
+    public partial class MajorRoutesResponse : MyTrails.ServiceLib.BingMaps.Routing.ResponseBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RouteResult[] RoutesField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RouteResult[] RoutesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Waypoint[] StartingPointsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Waypoint[] StartingPointsField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RouteResult[] Routes {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteResult[] Routes {
             get {
                 return this.RoutesField;
             }
@@ -1272,7 +1272,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Waypoint[] StartingPoints {
+        public MyTrails.ServiceLib.BingMaps.Routing.Waypoint[] StartingPoints {
             get {
                 return this.StartingPointsField;
             }
@@ -1289,13 +1289,13 @@ namespace MyTrails.Importer.BingMaps.Routing {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RouteResponse", Namespace="http://dev.virtualearth.net/webservices/v1/route")]
     [System.SerializableAttribute()]
-    public partial class RouteResponse : MyTrails.Importer.BingMaps.Routing.ResponseBase {
+    public partial class RouteResponse : MyTrails.ServiceLib.BingMaps.Routing.ResponseBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RouteResult ResultField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RouteResult ResultField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RouteResult Result {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteResult Result {
             get {
                 return this.ResultField;
             }
@@ -1318,13 +1318,13 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RouteLeg[] LegsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RouteLeg[] LegsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RoutePath RoutePathField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RoutePath RoutePathField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RouteSummary SummaryField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RouteSummary SummaryField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -1337,7 +1337,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RouteLeg[] Legs {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteLeg[] Legs {
             get {
                 return this.LegsField;
             }
@@ -1350,7 +1350,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RoutePath RoutePath {
+        public MyTrails.ServiceLib.BingMaps.Routing.RoutePath RoutePath {
             get {
                 return this.RoutePathField;
             }
@@ -1363,7 +1363,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RouteSummary Summary {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteSummary Summary {
             get {
                 return this.SummaryField;
             }
@@ -1432,7 +1432,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location[] PointsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location[] PointsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -1445,7 +1445,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location[] Points {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location[] Points {
             get {
                 return this.PointsField;
             }
@@ -1477,7 +1477,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Rectangle BoundingRectangleField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Rectangle BoundingRectangleField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double DistanceField;
@@ -1496,7 +1496,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Rectangle BoundingRectangle {
+        public MyTrails.ServiceLib.BingMaps.Routing.Rectangle BoundingRectangle {
             get {
                 return this.BoundingRectangleField;
             }
@@ -1554,16 +1554,16 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location ActualEndField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location ActualEndField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location ActualStartField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location ActualStartField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ItineraryItem[] ItineraryField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ItineraryItem[] ItineraryField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RouteSummary SummaryField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RouteSummary SummaryField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -1576,7 +1576,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location ActualEnd {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location ActualEnd {
             get {
                 return this.ActualEndField;
             }
@@ -1589,7 +1589,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location ActualStart {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location ActualStart {
             get {
                 return this.ActualStartField;
             }
@@ -1602,7 +1602,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ItineraryItem[] Itinerary {
+        public MyTrails.ServiceLib.BingMaps.Routing.ItineraryItem[] Itinerary {
             get {
                 return this.ItineraryField;
             }
@@ -1615,7 +1615,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RouteSummary Summary {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteSummary Summary {
             get {
                 return this.SummaryField;
             }
@@ -1650,22 +1650,22 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private string CompassDirectionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ItineraryItemHint[] HintsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ItineraryItemHint[] HintsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.Location LocationField;
+        private MyTrails.ServiceLib.BingMaps.Routing.Location LocationField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ManeuverType ManeuverTypeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ManeuverType ManeuverTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.RouteSummary SummaryField;
+        private MyTrails.ServiceLib.BingMaps.Routing.RouteSummary SummaryField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TextField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ItineraryItemWarning[] WarningsField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ItineraryItemWarning[] WarningsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -1691,7 +1691,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ItineraryItemHint[] Hints {
+        public MyTrails.ServiceLib.BingMaps.Routing.ItineraryItemHint[] Hints {
             get {
                 return this.HintsField;
             }
@@ -1704,7 +1704,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.Location Location {
+        public MyTrails.ServiceLib.BingMaps.Routing.Location Location {
             get {
                 return this.LocationField;
             }
@@ -1717,7 +1717,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ManeuverType ManeuverType {
+        public MyTrails.ServiceLib.BingMaps.Routing.ManeuverType ManeuverType {
             get {
                 return this.ManeuverTypeField;
             }
@@ -1730,7 +1730,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.RouteSummary Summary {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteSummary Summary {
             get {
                 return this.SummaryField;
             }
@@ -1756,7 +1756,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ItineraryItemWarning[] Warnings {
+        public MyTrails.ServiceLib.BingMaps.Routing.ItineraryItemWarning[] Warnings {
             get {
                 return this.WarningsField;
             }
@@ -1788,7 +1788,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ItineraryItemHintType HintTypeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ItineraryItemHintType HintTypeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TextField;
@@ -1804,7 +1804,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ItineraryItemHintType HintType {
+        public MyTrails.ServiceLib.BingMaps.Routing.ItineraryItemHintType HintType {
             get {
                 return this.HintTypeField;
             }
@@ -2034,13 +2034,13 @@ namespace MyTrails.Importer.BingMaps.Routing {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ItineraryWarningSeverity SeverityField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ItineraryWarningSeverity SeverityField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TextField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MyTrails.Importer.BingMaps.Routing.ItineraryWarningType WarningTypeField;
+        private MyTrails.ServiceLib.BingMaps.Routing.ItineraryWarningType WarningTypeField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -2053,7 +2053,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ItineraryWarningSeverity Severity {
+        public MyTrails.ServiceLib.BingMaps.Routing.ItineraryWarningSeverity Severity {
             get {
                 return this.SeverityField;
             }
@@ -2079,7 +2079,7 @@ namespace MyTrails.Importer.BingMaps.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MyTrails.Importer.BingMaps.Routing.ItineraryWarningType WarningType {
+        public MyTrails.ServiceLib.BingMaps.Routing.ItineraryWarningType WarningType {
             get {
                 return this.WarningTypeField;
             }
@@ -2240,35 +2240,35 @@ namespace MyTrails.Importer.BingMaps.Routing {
         [System.ServiceModel.OperationContractAttribute(Action="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRoute", ReplyAction="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRouteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MyTrails.Importer.BingMaps.Routing.ResponseSummary), Action="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
+        [System.ServiceModel.FaultContractAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.ResponseSummary), Action="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRouteResponseSummaryFault", Name="ResponseSummary", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
-        MyTrails.Importer.BingMaps.Routing.RouteResponse CalculateRoute(MyTrails.Importer.BingMaps.Routing.RouteRequest request);
+        MyTrails.ServiceLib.BingMaps.Routing.RouteResponse CalculateRoute(MyTrails.ServiceLib.BingMaps.Routing.RouteRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRoute", ReplyAction="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRouteResponse")]
-        System.Threading.Tasks.Task<MyTrails.Importer.BingMaps.Routing.RouteResponse> CalculateRouteAsync(MyTrails.Importer.BingMaps.Routing.RouteRequest request);
+        System.Threading.Tasks.Task<MyTrails.ServiceLib.BingMaps.Routing.RouteResponse> CalculateRouteAsync(MyTrails.ServiceLib.BingMaps.Routing.RouteRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRoutesFromMajorRoads", ReplyAction="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRoutesFromMajorRoadsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MyTrails.Importer.BingMaps.Routing.ResponseSummary), Action="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
+        [System.ServiceModel.FaultContractAttribute(typeof(MyTrails.ServiceLib.BingMaps.Routing.ResponseSummary), Action="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRoutesFromMajorRoadsResponseSummaryFault", Name="ResponseSummary", Namespace="http://dev.virtualearth.net/webservices/v1/common")]
-        MyTrails.Importer.BingMaps.Routing.MajorRoutesResponse CalculateRoutesFromMajorRoads(MyTrails.Importer.BingMaps.Routing.MajorRoutesRequest request);
+        MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesResponse CalculateRoutesFromMajorRoads(MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRoutesFromMajorRoads", ReplyAction="http://dev.virtualearth.net/webservices/v1/route/contracts/IRouteService/Calculat" +
             "eRoutesFromMajorRoadsResponse")]
-        System.Threading.Tasks.Task<MyTrails.Importer.BingMaps.Routing.MajorRoutesResponse> CalculateRoutesFromMajorRoadsAsync(MyTrails.Importer.BingMaps.Routing.MajorRoutesRequest request);
+        System.Threading.Tasks.Task<MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesResponse> CalculateRoutesFromMajorRoadsAsync(MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesRequest request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IRouteServiceChannel : MyTrails.Importer.BingMaps.Routing.IRouteService, System.ServiceModel.IClientChannel {
+    public interface IRouteServiceChannel : MyTrails.ServiceLib.BingMaps.Routing.IRouteService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class RouteServiceClient : System.ServiceModel.ClientBase<MyTrails.Importer.BingMaps.Routing.IRouteService>, MyTrails.Importer.BingMaps.Routing.IRouteService {
+    public partial class RouteServiceClient : System.ServiceModel.ClientBase<MyTrails.ServiceLib.BingMaps.Routing.IRouteService>, MyTrails.ServiceLib.BingMaps.Routing.IRouteService {
         
         public RouteServiceClient() {
         }
@@ -2289,19 +2289,19 @@ namespace MyTrails.Importer.BingMaps.Routing {
                 base(binding, remoteAddress) {
         }
         
-        public MyTrails.Importer.BingMaps.Routing.RouteResponse CalculateRoute(MyTrails.Importer.BingMaps.Routing.RouteRequest request) {
+        public MyTrails.ServiceLib.BingMaps.Routing.RouteResponse CalculateRoute(MyTrails.ServiceLib.BingMaps.Routing.RouteRequest request) {
             return base.Channel.CalculateRoute(request);
         }
         
-        public System.Threading.Tasks.Task<MyTrails.Importer.BingMaps.Routing.RouteResponse> CalculateRouteAsync(MyTrails.Importer.BingMaps.Routing.RouteRequest request) {
+        public System.Threading.Tasks.Task<MyTrails.ServiceLib.BingMaps.Routing.RouteResponse> CalculateRouteAsync(MyTrails.ServiceLib.BingMaps.Routing.RouteRequest request) {
             return base.Channel.CalculateRouteAsync(request);
         }
         
-        public MyTrails.Importer.BingMaps.Routing.MajorRoutesResponse CalculateRoutesFromMajorRoads(MyTrails.Importer.BingMaps.Routing.MajorRoutesRequest request) {
+        public MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesResponse CalculateRoutesFromMajorRoads(MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesRequest request) {
             return base.Channel.CalculateRoutesFromMajorRoads(request);
         }
         
-        public System.Threading.Tasks.Task<MyTrails.Importer.BingMaps.Routing.MajorRoutesResponse> CalculateRoutesFromMajorRoadsAsync(MyTrails.Importer.BingMaps.Routing.MajorRoutesRequest request) {
+        public System.Threading.Tasks.Task<MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesResponse> CalculateRoutesFromMajorRoadsAsync(MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesRequest request) {
             return base.Channel.CalculateRoutesFromMajorRoadsAsync(request);
         }
     }

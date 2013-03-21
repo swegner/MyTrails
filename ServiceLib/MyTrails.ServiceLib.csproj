@@ -14,6 +14,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.TransientFaultHandling.Core">
       <HintPath>..\packages\TransientFaultHandling.Core.5.1.1209.1\lib\NET4\Microsoft.Practices.TransientFaultHandling.Core.dll</HintPath>
     </Reference>
@@ -21,9 +24,13 @@
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -31,7 +38,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Service References\BingMaps.Routing\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Routing\contracts.wsdl" />
+    <None Include="Service References\BingMaps.Routing\contracts.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Routing\MyTrails.ServiceLib.BingMaps.Routing.MajorRoutesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BingMaps.Routing\MyTrails.ServiceLib.BingMaps.Routing.RouteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BingMaps.Routing\route.wsdl" />
+    <None Include="Service References\BingMaps.Routing\route.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BingMaps.Routing\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\MyTrails.Contracts.csproj">
@@ -42,6 +70,43 @@
       <Project>{35f56f3a-5e01-4d67-9e03-03f1c0b3ed2a}</Project>
       <Name>MyTrails.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extenders\ITrailExtender.cs" />
+    <Compile Include="Service References\BingMaps.Routing\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Wta\WtaFeatures.cs" />
+    <Compile Include="Wta\WtaGuideBook.cs" />
+    <Compile Include="Wta\WtaGuidebookMerchant.cs" />
+    <Compile Include="Wta\WtaLocation.cs" />
+    <Compile Include="Wta\WtaStatistics.cs" />
+    <Compile Include="Wta\WtaTrail.cs" />
+    <Compile Include="Wta\WtaTripReport.cs" />
+    <Compile Include="Wta\WtaUserInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BingMaps\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\BingMaps.Routing\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Routing\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Routing\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BingMaps.Routing\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

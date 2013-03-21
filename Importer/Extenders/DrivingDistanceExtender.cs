@@ -10,8 +10,9 @@
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer.BingMaps;
-    using MyTrails.Importer.BingMaps.Routing;
     using MyTrails.Importer.Retry;
+    using MyTrails.ServiceLib.BingMaps.Routing;
+    using MyTrails.ServiceLib.Extenders;
 
     /// <summary>
     /// Trail extender which adds driving directions between each trail
