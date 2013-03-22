@@ -1,20 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
-using System.Web.Routing;
-
-namespace MyTrails.Service
+﻿namespace MyTrails.Service
 {
-    public class WebApiApplication : System.Web.HttpApplication
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Http;
+    using System.Web.Routing;
+
+    /// <summary>
+    /// Global web configuration.
+    /// </summary>
+    public class WebApiApplication : HttpApplication
     {
+        /// <summary>
+        /// Entry point for global configuration.
+        /// </summary>
         protected void Application_Start()
         {
             GlobalConfiguration.Configuration.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional });
+                routeTemplate: "api/{controller}");
         }
     }
 }
