@@ -1,9 +1,7 @@
 ﻿namespace MyTrails.Importer
 {
-    using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
-    using System.Threading.Tasks;
     using log4net;
     using MyTrails.ServiceLib;
 

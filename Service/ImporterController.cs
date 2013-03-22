@@ -1,7 +1,9 @@
 ﻿namespace MyTrails.Service
 {
+    using System.ComponentModel.Composition.Hosting;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using MyTrails.ServiceLib;
 
     /// <summary>
     /// MyTrails importer interface.
@@ -14,7 +16,12 @@
         /// <returns>Task for asyncrhonous completion.</returns>
         public async Task Get()
         {
-            await Task.Yield();
+            using (ApplicationCatalog catalog = new ApplicationCatalog())
+            using (CompositionContainer container = new CompositionContainer(catalog))
+            {
+                ITrailsImporter importer = container.GetExportedValue<ITrailsImporter>();
+                await importer.Run();
+            }
         }
     }
 }
