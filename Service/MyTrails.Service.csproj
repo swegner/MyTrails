@@ -9,6 +9,7 @@
     <RootNamespace>MyTrails.Service</RootNamespace>
     <AssemblyName>MyTrails.Service</AssemblyName>
     <UseIISExpress>true</UseIISExpress>
+    <OutputPath>bin\</OutputPath>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />

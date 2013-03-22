@@ -1,9 +1,6 @@
 ﻿namespace MyTrails.Service
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     /// <summary>
@@ -11,5 +8,13 @@
     /// </summary>
     public class ImporterController : ApiController
     {
+        /// <summary>
+        /// Import and update trails.
+        /// </summary>
+        /// <returns>Task for asyncrhonous completion.</returns>
+        public async Task Get()
+        {
+            await Task.Yield();
+        }
     }
 }
