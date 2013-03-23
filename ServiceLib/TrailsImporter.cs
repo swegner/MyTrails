@@ -65,12 +65,13 @@ namespace MyTrails.ServiceLib
         public async Task Run()
         {
             this.Logger.Debug("Importing new trails.");
-            ImportLogEntry logEntry = this.CreateImportLog();
 
             string exceptionString = null;
             const string errorStringFormat = "Errors encountered during execution:\n{0}";
+            ImportLogEntry logEntry;
             try
             {
+                logEntry = this.CreateImportLog();
                 await this.RunInternal();
             }
             catch (AggregateException ae)
