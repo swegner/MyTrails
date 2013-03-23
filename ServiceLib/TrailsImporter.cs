@@ -68,7 +68,7 @@ namespace MyTrails.ServiceLib
 
             string exceptionString = null;
             const string errorStringFormat = "Errors encountered during execution:\n{0}";
-            ImportLogEntry logEntry;
+            ImportLogEntry logEntry = null;
             try
             {
                 logEntry = this.CreateImportLog();
@@ -88,8 +88,12 @@ namespace MyTrails.ServiceLib
             }
             finally
             {
-                logEntry.ErrorString = exceptionString;
-                this.FinalizeAndCommitLog(logEntry);
+                if (logEntry != null)
+                {
+                    logEntry.ErrorString = exceptionString;
+                    this.FinalizeAndCommitLog(logEntry);
+                }
+
                 this.Logger.Info("Done!");
             }
         }
