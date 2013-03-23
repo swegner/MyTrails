@@ -14,7 +14,7 @@
         [Export(typeof(ILog))]
         public static ILog Logger
         {
-            get { return LogManager.GetLogger("MyTrails.Importer"); }
+            get { return LogManager.GetLogger("MyTrails.Service."); }
         }
     }
 }

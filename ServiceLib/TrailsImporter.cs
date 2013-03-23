@@ -71,6 +71,7 @@ namespace MyTrails.ServiceLib
             ImportLogEntry logEntry = null;
             try
             {
+                this.LogConnectionString();
                 logEntry = this.CreateImportLog();
                 await this.RunInternal();
             }
@@ -95,6 +96,18 @@ namespace MyTrails.ServiceLib
                 }
 
                 this.Logger.Info("Done!");
+            }
+        }
+
+        /// <summary>
+        /// Log the connection string for debugging.
+        /// </summary>
+        private void LogConnectionString()
+        {
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                string connectionString = context.Database.Connection.ConnectionString;
+                this.Logger.DebugFormat("Using connection string: {0}", connectionString);
             }
         }
 
