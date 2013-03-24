@@ -115,6 +115,12 @@ namespace MyTrails.ServiceLib.Extenders
                 }
             }
 
+            if (response.ResponseSummary.StatusCode != ResponseStatusCode.Success)
+            {
+                throw new ApplicationException(string.Format("Routing service call failed. {0}: {1}",
+                    response.ResponseSummary.StatusCode, response.ResponseSummary.FaultReason));
+            }
+
             address.Directions.Add(new DrivingDirections
             {
                 Address = address,
