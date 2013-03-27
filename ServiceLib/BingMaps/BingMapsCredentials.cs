@@ -15,7 +15,7 @@ namespace MyTrails.ServiceLib.BingMaps
         /// <seealso cref="IBingMapsCredentials.ApplicationId"/>
         public string ApplicationId
         { 
-            get { return ConfigurationManager.AppSettings["MyTrails.Importer.BingMaps.ApplicationId"]; }
+            get { return ConfigurationManager.AppSettings["MyTrails.ServiceLib.BingMaps.ApplicationId"]; }
         }
     }
 }
