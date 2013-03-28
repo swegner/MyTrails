@@ -78,7 +78,7 @@ namespace MyTrails.ServiceLib.Extenders
             this.Initialize(context);
 
             string wtaTrailId = trail.WtaId;
-            RetryPolicy policy = ServiceLib.Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
+            RetryPolicy policy = this.WtaClient.BuildRetryPolicy(this.Logger);
             IList<WtaTripReport> reports = await policy.ExecuteAsync(() => this.WtaClient.FetchTripReports(wtaTrailId));
 
             foreach (WtaTripReport wtaReport in reports)

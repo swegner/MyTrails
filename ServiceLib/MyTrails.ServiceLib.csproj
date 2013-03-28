@@ -95,7 +95,9 @@
     <Compile Include="Wta\IHttpClient.cs" />
     <Compile Include="Wta\IHttpClientFactory.cs" />
     <Compile Include="Wta\IWtaClient.cs" />
+    <Compile Include="Wta\IWtaConfiguration.cs" />
     <Compile Include="Wta\WtaClient.cs" />
+    <Compile Include="Wta\WtaConfiguration.cs" />
     <Compile Include="Wta\WtaFeatures.cs" />
     <Compile Include="Wta\WtaGuideBook.cs" />
     <Compile Include="Wta\WtaGuidebookMerchant.cs" />

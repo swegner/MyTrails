@@ -16,7 +16,7 @@ namespace MyTrails.ServiceLib.Wta
     /// Interface for communicating with wta.org
     /// </summary>
     [Export(typeof(IWtaClient))]
-    public class WtaClient : IWtaClient
+    public class WtaClient : IWtaClient, IPartImportsSatisfiedNotification
     {
         /// <summary>
         /// Format string to create trip report URIs to query from.
@@ -32,11 +32,6 @@ namespace MyTrails.ServiceLib.Wta
         /// WTA search endpoint.
         /// </summary>
         public static readonly Uri SearchEndpoint;
-
-        /// <summary>
-        /// Maximum number of HTTP requests to send to WTA at once.
-        /// </summary>
-        private const int ConcurrentHttpRequests = 15;
 
         /// <summary>
         /// Manager to control concurrent HTTP requests.
@@ -58,12 +53,10 @@ namespace MyTrails.ServiceLib.Wta
         }
 
         /// <summary>
-        /// Construct a new <see cref="WtaClient"/> instance.
+        /// WTA configuration settings.
         /// </summary>
-        public WtaClient()
-        {
-            this._httpClientManager = new ConcurrentResourceManager<IHttpClient>(ConcurrentHttpRequests);
-        }
+        [Import]
+        public IWtaConfiguration Configuration { get; set; }
 
         /// <summary>
         /// Factory for creating <see cref="IHttpClient"/> instances. 
@@ -82,13 +75,14 @@ namespace MyTrails.ServiceLib.Wta
         /// </summary>
         /// <param name="logger">Logging interface to log retries to.</param>
         /// <returns>An initialized retry policy.</returns>
-        public static RetryPolicy BuildWtaRetryPolicy(ILog logger)
+        /// <seealso cref="IWtaClient.BuildRetryPolicy"/>
+        public RetryPolicy BuildRetryPolicy(ILog logger)
         {
             RetryStrategy strategy = new ExponentialBackoff(
-                retryCount: 5,
-                minBackoff: TimeSpan.FromMilliseconds(100),
-                maxBackoff: TimeSpan.FromSeconds(5),
-                deltaBackoff: TimeSpan.FromMilliseconds(500))
+                retryCount: this.Configuration.RetryCount,
+                minBackoff: this.Configuration.RetryMinBackOff,
+                maxBackoff: this.Configuration.RetryMaxBackOff,
+                deltaBackoff: this.Configuration.RetryDeltaBackOff)
             {
                 FastFirstRetry = true,
             };
@@ -110,7 +104,7 @@ namespace MyTrails.ServiceLib.Wta
                 await this._httpClientManager.ObtainResource(() => this.HttpClientFactory.CreateClient(SearchEndpoint)))
             {
                 this.Logger.Info("Fetching new trails from WTA.");
-                httpClientResource.Resource.Timeout = TimeSpan.FromMinutes(15);
+                httpClientResource.Resource.Timeout = this.Configuration.SearchTimeout;
                 using (HttpResponseMessage response = await httpClientResource.Resource.SendGetRequest())
                 using (HttpResponseMessage successResponse = response.EnsureSuccessStatusCode())
                 {
@@ -146,7 +140,7 @@ namespace MyTrails.ServiceLib.Wta
             using (ManagedConcurentResource<IHttpClient> httpClientResource =
                 await this._httpClientManager.ObtainResource(() => this.HttpClientFactory.CreateClient(trailReportUri)))
             {
-                httpClientResource.Resource.Timeout = TimeSpan.FromSeconds(5);
+                httpClientResource.Resource.Timeout = this.Configuration.TripReportsTimeout;
                 this.Logger.InfoFormat("Fetching trip reports for trail: {0}", wtaTrailId);
 
                 using (HttpResponseMessage response = await httpClientResource.Resource.SendGetRequest())
@@ -166,6 +160,16 @@ namespace MyTrails.ServiceLib.Wta
             }
 
             return tripReports;
+        }
+
+        /// <summary>
+        /// Initialize data members from imported configuration.
+        /// </summary>
+        /// <seealso cref="IPartImportsSatisfiedNotification.OnImportsSatisfied"/>
+        public void OnImportsSatisfied()
+        {
+            int maxConcurrency = this.Configuration.MaxConcurrentRequests;
+            this._httpClientManager = new ConcurrentResourceManager<IHttpClient>(maxConcurrency);
         }
 
         /// <summary>

@@ -155,7 +155,7 @@ namespace MyTrails.ServiceLib
         /// <returns>Task for asynchronous completion.</returns>
         private async Task RunInternal()
         {
-            RetryPolicy policy = ServiceLib.Wta.WtaClient.BuildWtaRetryPolicy(this.Logger);
+            RetryPolicy policy = this.WtaClient.BuildRetryPolicy(this.Logger);
             Task<IList<WtaTrail>> fetchTrailTask = policy.ExecuteAsync(() => this.WtaClient.FetchTrails());
 
             this.Logger.Info("Fetching existing trail IDs.");
