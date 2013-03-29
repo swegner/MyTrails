@@ -1,6 +1,4 @@
-﻿DECLARE @Location NVARCHAR(100) = 'Seattle'
-
-SELECT
+﻿SELECT
 	tra.Name,
 	tra.Url,
 	tra.Location,
@@ -11,7 +9,7 @@ SELECT
 	r.Name Region,
 	rp.Name RequiredPass,
 	g.Title Guidebook,
-	d.DrivingTimeSeconds,
+	dSeattle.DrivingTimeSeconds SeattleDrivingTimeSeconds,
 	ntr.NumTrailReports,
 	ltr.LatestTripReportDate,
 	ltr.LatestTripReportTitle,
@@ -36,17 +34,17 @@ SELECT
 	ISNULL(f.Wildlife, 0) Wildlife,
 	ISNULL(f.RidgesPasses, 0) RidgesPasses,
 	ISNULL(f.EstablishedCampsites, 0) EstablishedCampsites
-FROM Trails (NOLOCK) tra
-	LEFT OUTER JOIN Regions r (NOLOCK) ON tra.RegionId = r.Id
-	LEFT OUTER JOIN RequiredPasses rp (NOLOCK) ON tra.RequiredPassId = rp.Id
-	LEFT OUTER JOIN Guidebooks g (NOLOCK) ON tra.GuidebookId = g.Id
+FROM Trails tra WITH (NOLOCK)
+	LEFT OUTER JOIN Regions r WITH (NOLOCK) ON tra.RegionId = r.Id
+	LEFT OUTER JOIN RequiredPasses rp WITH (NOLOCK) ON tra.RequiredPassId = rp.Id
+	LEFT OUTER JOIN Guidebooks g WITH (NOLOCK) ON tra.GuidebookId = g.Id
 	LEFT OUTER JOIN
 	(
 		SELECT 
 			trt.Trail_Id,
 			COUNT(*) AS NumTrailReports
-		FROM TripReports tr (NOLOCK)
-			JOIN TripReportTrails trt (NOLOCK) ON tr.Id = trt.TripReport_Id
+		FROM TripReports tr WITH (NOLOCK)
+			JOIN TripReportTrails trt WITH (NOLOCK) ON tr.Id = trt.TripReport_Id
 		GROUP BY trt.Trail_Id
 	) ntr ON ntr.Trail_Id = tra.Id
 	LEFT OUTER JOIN
@@ -64,20 +62,20 @@ FROM Trails (NOLOCK) tra
 				tr.Date,
 				tr.Title,
 				tr.Text
-			FROM TripReportTrails trt (NOLOCK)
-				JOIN TripReports tr (NOLOCK) ON trt.TripReport_Id = tr.Id
+			FROM TripReportTrails trt WITH (NOLOCK)
+				JOIN TripReports tr WITH (NOLOCK) ON trt.TripReport_Id = tr.Id
 		) r
 		WHERE r.RowNumber = 1
 	) ltr ON ltr.Trail_Id = tra.Id
-	LEFT OUTER JOIN
+	LEFT OUTER JOIN 
 	(
 		SELECT 
 			dd.TrailId,
 			dd.DrivingTimeSeconds
-		FROM DrivingDirections dd (NOLOCK)
-			JOIN Addresses a (NOLOCK) ON dd.AddressId = a.Id
-		WHERE a.Location = @Location
-	) d ON d.TrailId = tra.Id
+		FROM DrivingDirections dd WITH (NOLOCK)
+			JOIN Addresses a WITH (NOLOCK) ON dd.AddressId = a.Id
+		WHERE a.Location = 'Seattle'
+	) dSeattle ON dSeattle.TrailId = tra.Id
 	LEFT OUTER JOIN
 	(
 		SELECT
@@ -94,8 +92,8 @@ FROM Trails (NOLOCK) tra
 			SUM(CASE WHEN tf.Description = 'Wildlife' THEN 1 ELSE 0 END) AS Wildlife,
 			SUM(CASE WHEN tf.Description = 'Ridges / Passes' THEN 1 ELSE 0 END) AS RidgesPasses,
 			SUM(CASE WHEN tf.Description = 'Established Campsites' THEN 1 ELSE 0 END) AS EstablishedCampsites
-		FROM TrailFeatureTrails tft (NOLOCK)
-			JOIN TrailFeatures tf (NOLOCK) ON tft.TrailFeature_Id = tf.Id
+		FROM TrailFeatureTrails tft WITH (NOLOCK)
+			JOIN TrailFeatures tf WITH (NOLOCK) ON tft.TrailFeature_Id = tf.Id
 		GROUP BY tft.Trail_Id
 	) f ON f.Trail_Id = tra.Id
 	LEFT OUTER JOIN
@@ -110,7 +108,7 @@ FROM Trails (NOLOCK) tra
 			SUM(CASE WHEN tc.Description = 'May Encounter Mountain Bikes' THEN 1 ELSE 0 END) AS MayEncounterMountainBikes,
 			SUM(CASE WHEN tc.Description = 'May Encounter Motorized Vehicles' THEN 1 ELSE 0 END) AS MayEncounterMotorizedVehicles,
 			SUM(CASE WHEN tc.Description = 'Permit or Pass Required' THEN 1 ELSE 0 END) AS PermitOrPassRequired
-		FROM TrailCharacteristicTrails tct (NOLOCK)
-			JOIN TrailCharacteristics tc (NOLOCK) ON tct.TrailCharacteristic_Id = tc.Id
+		FROM TrailCharacteristicTrails tct WITH (NOLOCK)
+			JOIN TrailCharacteristics tc WITH (NOLOCK) ON tct.TrailCharacteristic_Id = tc.Id
 		GROUP BY tct.Trail_Id
 	) c ON c.Trail_Id = tra.Id
