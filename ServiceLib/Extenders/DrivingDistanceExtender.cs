@@ -4,6 +4,7 @@ namespace MyTrails.ServiceLib.Extenders
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
+    using System.ServiceModel;
     using System.Threading.Tasks;
     using log4net;
     using Microsoft.Practices.TransientFaultHandling;
@@ -99,12 +100,20 @@ namespace MyTrails.ServiceLib.Extenders
                 },
             };
 
-            RouteResponse response;
+            ResponseSummary summary;
+            RouteResult result;
             RetryPolicy policy = this.BuildRetryPolicy();
             IRouteService routeService = this.RouteServiceFactory.CreateRouteService();
             try
             {
-                response = await policy.ExecuteAsync(() => routeService.CalculateRouteAsync(request));
+                RouteResponse response = await policy.ExecuteAsync(() => routeService.CalculateRouteAsync(request));
+                summary = response.ResponseSummary;
+                result = response.Result;
+            }
+            catch (FaultException<ResponseSummary> ex)
+            {
+                summary = ex.Detail;
+                result = null;
             }
             finally
             {
@@ -115,17 +124,17 @@ namespace MyTrails.ServiceLib.Extenders
                 }
             }
 
-            if (response.ResponseSummary.StatusCode != ResponseStatusCode.Success)
+            if (summary.StatusCode != ResponseStatusCode.Success)
             {
                 throw new ApplicationException(string.Format("Routing service call failed. {0}: {1}",
-                    response.ResponseSummary.StatusCode, response.ResponseSummary.FaultReason));
+                    summary.StatusCode, summary.FaultReason));
             }
 
             address.Directions.Add(new DrivingDirections
             {
                 Address = address,
                 Trail = trail,
-                DrivingTimeSeconds = (int)response.Result.Summary.TimeInSeconds,
+                DrivingTimeSeconds = (int)result.Summary.TimeInSeconds,
             });
         }
 
