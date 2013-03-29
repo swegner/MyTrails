@@ -18,9 +18,9 @@
         public DateTime StartTime { get; set; }
 
         /// <summary>
-        /// Time that the run completed.
+        /// Time that the run completed, or null if the run has not completed.
         /// </summary>
-        public DateTime CompletedTime { get; set; }
+        public DateTime? CompletedTime { get; set; }
 
         /// <summary>
         /// Number of trails in the datastore at the start of the import.
@@ -28,9 +28,9 @@
         public int StartTrailsCount { get; set; }
 
         /// <summary>
-        /// Numberof trails in the datastore on completion.
+        /// Numberof trails in the datastore on completion, or null if the run has not completed.
         /// </summary>
-        public int CompletedTrailsCount { get; set; }
+        public int? CompletedTrailsCount { get; set; }
 
         /// <summary>
         /// Number of trip reports in the datastore at the start of the import.
@@ -38,14 +38,14 @@
         public int StartTripReportsCount { get; set; }
 
         /// <summary>
-        /// Number of trip reports in the datastore on completion.
+        /// Number of trip reports in the datastore on completion, or null if the run has not completed.
         /// </summary>
-        public int CompletedTripReportsCount { get; set; }
+        public int? CompletedTripReportsCount { get; set; }
 
         /// <summary>
-        /// Number of errors encountered while importing new or updated trails.
+        /// Number of errors encountered while importing new or updated trails, or null if the run has not completed.
         /// </summary>
-        public int ErrorsCount { get; set; }
+        public int? ErrorsCount { get; set; }
         
         /// <summary>
         /// Exception string from execution, or null if no errors were encountered.
