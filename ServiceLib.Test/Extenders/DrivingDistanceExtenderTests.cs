@@ -221,6 +221,10 @@ namespace MyTrails.ServiceLib.Test.Extenders
         {
             return new RouteResponse
             {
+                ResponseSummary = new ResponseSummary
+                {
+                    StatusCode = ResponseStatusCode.Success,
+                },
                 Result = new RouteResult
                 {
                     Summary = new RouteSummary
