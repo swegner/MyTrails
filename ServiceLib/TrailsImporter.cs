@@ -68,11 +68,11 @@ namespace MyTrails.ServiceLib
 
             string exceptionString = null;
             const string errorStringFormat = "Errors encountered during execution:\n{0}";
-            ImportLogEntry logEntry = null;
+            int? logEntryId = null;
             try
             {
                 this.LogConnectionString();
-                logEntry = this.CreateImportLog();
+                logEntryId = this.CreateImportLog();
                 await this.RunInternal();
             }
             catch (AggregateException ae)
@@ -89,10 +89,9 @@ namespace MyTrails.ServiceLib
             }
             finally
             {
-                if (logEntry != null)
+                if (logEntryId.HasValue)
                 {
-                    logEntry.ErrorString = exceptionString;
-                    this.FinalizeAndCommitLog(logEntry);
+                    this.FinalizeAndCommitLog(logEntryId.Value, exceptionString);
                 }
 
                 this.Logger.Info("Done!");
@@ -114,37 +113,45 @@ namespace MyTrails.ServiceLib
         /// <summary>
         /// Create a new <see cref="ImportLogEntry"/> for the import run.
         /// </summary>
-        /// <returns>A new <see cref="ImportLogEntry"/>.</returns>
-        private ImportLogEntry CreateImportLog()
+        /// <returns>The ID of the newly created <see cref="ImportLogEntry"/>.</returns>
+        private int CreateImportLog()
         {
-            ImportLogEntry logEntry;
+            int importLogId;
             using (MyTrailsContext context = new MyTrailsContext())
             {
-                logEntry = new ImportLogEntry
+                ImportLogEntry logEntry = new ImportLogEntry
                 {
                     StartTime = DateTime.Now,
                     StartTrailsCount = context.Trails.Count(),
                     StartTripReportsCount = context.TripReports.Count(),
                 };
+
+                context.ImportLog.Add(logEntry);
+                context.SaveChanges();
+
+                importLogId = logEntry.Id;
             }
 
-            return logEntry;
+            return importLogId;
         }
 
         /// <summary>
         /// Add completion statistics to the import log and save it to the datastore.
         /// </summary>
-        /// <param name="logEntry">The log entry to finalize.</param>
-        private void FinalizeAndCommitLog(ImportLogEntry logEntry)
+        /// <param name="logEntryId">The ID log entry to finalize.</param>
+        /// <param name="errorString">An error string to associate, or null if no error was found.</param>
+        private void FinalizeAndCommitLog(int logEntryId, string errorString)
         {
             using (MyTrailsContext context = new MyTrailsContext())
             {
+                ImportLogEntry logEntry = context.ImportLog.Find(logEntryId);
+
                 logEntry.CompletedTrailsCount = context.Trails.Count();
                 logEntry.CompletedTripReportsCount = context.TripReports.Count();
                 logEntry.CompletedTime = DateTime.Now;
+                logEntry.ErrorString = errorString;
                 logEntry.ErrorsCount = this._numImportErrors;
 
-                context.ImportLog.Add(logEntry);
                 context.SaveChanges(this.Logger);
             }
         }
