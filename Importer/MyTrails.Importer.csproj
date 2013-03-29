@@ -44,7 +44,6 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="apiKeys.config" />
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
