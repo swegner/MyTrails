@@ -4,12 +4,15 @@ namespace MyTrails.ServiceLib.Test
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using log4net;
+    using Microsoft.Practices.TransientFaultHandling;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.ServiceLib.Extenders;
     using MyTrails.ServiceLib.Test.Logging;
+    using MyTrails.ServiceLib.Test.Retry;
     using MyTrails.ServiceLib.Wta;
 
     /// <summary>
@@ -289,6 +292,9 @@ namespace MyTrails.ServiceLib.Test
             this._wtaClientMock
                 .Setup(wc => wc.FetchTrails())
                 .Returns(() => TaskExt.WrapInTask(() => TrailsToImport));
+            this._wtaClientMock
+                .Setup(wc => wc.BuildRetryPolicy(It.IsAny<ILog>()))
+                .Returns(new RetryPolicy(new StubErrorDetectionStrategy(), retryCount: 0));
 
             this._trailFactoryMock = new Mock<ITrailFactory>(MockBehavior.Strict);
             this._trailFactoryMock

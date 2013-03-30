@@ -5,12 +5,15 @@ namespace MyTrails.ServiceLib.Test.Extenders
     using System.Data.Entity.Validation;
     using System.Linq;
     using System.Threading.Tasks;
+    using log4net;
+    using Microsoft.Practices.TransientFaultHandling;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.ServiceLib.Extenders;
     using MyTrails.ServiceLib.Test.Logging;
+    using MyTrails.ServiceLib.Test.Retry;
     using MyTrails.ServiceLib.Wta;
 
     /// <summary>
@@ -86,6 +89,9 @@ namespace MyTrails.ServiceLib.Test.Extenders
                         HikeType = this._anyTripTypeWtaId,
                     }
                 }));
+            this._wtaClientMock
+                .Setup(wc => wc.BuildRetryPolicy(It.IsAny<ILog>()))
+                .Returns(new RetryPolicy(new StubErrorDetectionStrategy(), retryCount: 0));
 
             this._extender = new TripReportExtender
             {
@@ -108,7 +114,7 @@ namespace MyTrails.ServiceLib.Test.Extenders
         }
 
         /// <summary>
-        /// Verify that <see cref="TripReportExtender.Extends"/> adds trip reports for the trail.
+        /// Verify that <see cref="TripReportExtender.Extend"/> adds trip reports for the trail.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]
         public void AddsTripReport()
@@ -132,7 +138,7 @@ namespace MyTrails.ServiceLib.Test.Extenders
         }
 
         /// <summary>
-        /// Verify that <see cref="TripReportExtender.Extends"/> doesn't add the trip report
+        /// Verify that <see cref="TripReportExtender.Extend"/> doesn't add the trip report
         /// if it is already present.
         /// </summary>
         [TestMethod, TestCategory(TestCategory.Unit)]

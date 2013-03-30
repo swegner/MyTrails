@@ -192,8 +192,11 @@ namespace MyTrails.ServiceLib.Wta
             {
                 if (disposing)
                 {
-                    this._httpClientManager.Dispose();
-                    this._httpClientManager = null;
+                    if (this._httpClientManager != null)
+                    {
+                        this._httpClientManager.Dispose();
+                        this._httpClientManager = null;
+                    }
                 }
 
                 this._disposed = true;
