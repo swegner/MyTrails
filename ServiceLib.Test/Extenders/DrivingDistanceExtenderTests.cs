@@ -30,7 +30,7 @@ namespace MyTrails.ServiceLib.Test.Extenders
         /// <summary>
         /// Mock <see cref="IBingMapsConfiguration"/> to inject test behavior.
         /// </summary>
-        private Mock<IBingMapsConfiguration> _credentialsMock;
+        private Mock<IBingMapsConfiguration> _configurationMock;
 
         /// <summary>
         /// Sample address to use during testing.
@@ -73,15 +73,27 @@ namespace MyTrails.ServiceLib.Test.Extenders
                 .Setup(rsf => rsf.CreateRouteService())
                 .Returns(this._routeServiceMock.Object);
 
-            this._credentialsMock = new Mock<IBingMapsConfiguration>(MockBehavior.Strict);
-            this._credentialsMock
+            this._configurationMock = new Mock<IBingMapsConfiguration>(MockBehavior.Strict);
+            this._configurationMock
                 .SetupGet(c => c.ApplicationId)
                 .Returns("anyApplicationId");
+            this._configurationMock
+                .SetupGet(c => c.RetryCount)
+                .Returns(0);
+            this._configurationMock
+                .SetupGet(c => c.RetryMinBackOff)
+                .Returns(TimeSpan.FromMilliseconds(1234));
+            this._configurationMock
+                .SetupGet(c => c.RetryMaxBackOff)
+                .Returns(TimeSpan.FromMilliseconds(2345));
+            this._configurationMock
+                .SetupGet(c => c.RetryDeltaBackOff)
+                .Returns(TimeSpan.FromMilliseconds(456));
 
             this._extender = new DrivingDistanceExtender
             {
                 RouteServiceFactory = routeServiceFactoryMock.Object,
-                Configuration = this._credentialsMock.Object,
+                Configuration = this._configurationMock.Object,
                 Logger = new StubLog(),
             };
         }
@@ -132,7 +144,7 @@ namespace MyTrails.ServiceLib.Test.Extenders
             const string anyApplicationId = "any application id";
 
             // Arrange
-            this._credentialsMock
+            this._configurationMock
                 .SetupGet(c => c.ApplicationId)
                 .Returns(anyApplicationId)
                 .Verifiable();
@@ -153,7 +165,7 @@ namespace MyTrails.ServiceLib.Test.Extenders
             this.RunExtender(trailId);
 
             // Assert
-            this._credentialsMock.Verify();
+            this._configurationMock.Verify();
             Assert.IsTrue(hasAuthentication);
         }
 
