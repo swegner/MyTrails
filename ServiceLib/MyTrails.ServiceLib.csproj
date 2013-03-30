@@ -72,8 +72,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BingMaps\BingMapsCredentials.cs" />
-    <Compile Include="BingMaps\IBingMapsCredentials.cs" />
+    <Compile Include="BingMaps\BingMapsConfiguration.cs" />
+    <Compile Include="BingMaps\IBingMapsConfiguration.cs" />
     <Compile Include="BingMaps\IRouteServiceFactory.cs" />
     <Compile Include="BingMaps\RouteServiceFactory.cs" />
     <Compile Include="Extenders\DrivingDistanceExtender.cs" />

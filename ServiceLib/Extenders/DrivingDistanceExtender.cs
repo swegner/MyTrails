@@ -22,10 +22,10 @@ namespace MyTrails.ServiceLib.Extenders
     public class DrivingDistanceExtender : ITrailExtender
     {
         /// <summary>
-        /// Bing maps API credentials.
+        /// Settings for Bing Maps API.
         /// </summary>
         [Import]
-        public IBingMapsCredentials BingMapsCredentials { get; set; }
+        public IBingMapsConfiguration Configuration { get; set; }
 
         /// <summary>
         /// Factory for creating <see cref="IRouteService"/> instances. 
@@ -75,7 +75,7 @@ namespace MyTrails.ServiceLib.Extenders
             {
                 Credentials = new Credentials
                 {
-                    ApplicationId = this.BingMapsCredentials.ApplicationId,
+                    ApplicationId = this.Configuration.ApplicationId,
                 },
                 Waypoints = new[]
                 {
@@ -145,7 +145,10 @@ namespace MyTrails.ServiceLib.Extenders
         private RetryPolicy BuildRetryPolicy()
         {
             RetryStrategy strategy = new ExponentialBackoff(
-                retryCount: 5, minBackoff: TimeSpan.FromMilliseconds(100), maxBackoff: TimeSpan.FromSeconds(5), deltaBackoff: TimeSpan.FromMilliseconds(500))
+                retryCount: this.Configuration.RetryCount,
+                minBackoff: this.Configuration.RetryMinBackOff, 
+                maxBackoff: this.Configuration.RetryMaxBackOff, 
+                deltaBackoff: this.Configuration.RetryDeltaBackOff)
             {
                 FastFirstRetry = true,
             };

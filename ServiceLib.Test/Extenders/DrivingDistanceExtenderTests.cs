@@ -28,9 +28,9 @@ namespace MyTrails.ServiceLib.Test.Extenders
         private Mock<IRouteService> _routeServiceMock;
 
         /// <summary>
-        /// Mock <see cref="IBingMapsCredentials"/> to inject test behavior.
+        /// Mock <see cref="IBingMapsConfiguration"/> to inject test behavior.
         /// </summary>
-        private Mock<IBingMapsCredentials> _credentialsMock;
+        private Mock<IBingMapsConfiguration> _credentialsMock;
 
         /// <summary>
         /// Sample address to use during testing.
@@ -73,7 +73,7 @@ namespace MyTrails.ServiceLib.Test.Extenders
                 .Setup(rsf => rsf.CreateRouteService())
                 .Returns(this._routeServiceMock.Object);
 
-            this._credentialsMock = new Mock<IBingMapsCredentials>(MockBehavior.Strict);
+            this._credentialsMock = new Mock<IBingMapsConfiguration>(MockBehavior.Strict);
             this._credentialsMock
                 .SetupGet(c => c.ApplicationId)
                 .Returns("anyApplicationId");
@@ -81,7 +81,7 @@ namespace MyTrails.ServiceLib.Test.Extenders
             this._extender = new DrivingDistanceExtender
             {
                 RouteServiceFactory = routeServiceFactoryMock.Object,
-                BingMapsCredentials = this._credentialsMock.Object,
+                Configuration = this._credentialsMock.Object,
                 Logger = new StubLog(),
             };
         }
