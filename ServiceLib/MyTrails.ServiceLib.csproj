@@ -79,6 +79,8 @@
     <Compile Include="Extenders\DrivingDistanceExtender.cs" />
     <Compile Include="Extenders\ITrailExtender.cs" />
     <Compile Include="Extenders\TripReportExtender.cs" />
+    <Compile Include="IImporterConfiguration.cs" />
+    <Compile Include="ImporterConfiguration.cs" />
     <Compile Include="ITrailFactory.cs" />
     <Compile Include="ITrailsImporter.cs" />
     <Compile Include="Retry\HttpErrorDetectionStrategy.cs" />

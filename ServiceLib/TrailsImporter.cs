@@ -52,6 +52,12 @@ namespace MyTrails.ServiceLib
         public ICollection<ITrailExtender> TrailExtenders { get; private set; }
 
         /// <summary>
+        /// Configuration for the trails importer.
+        /// </summary>
+        [Import]
+        public IImporterConfiguration Configuration { get; set; }
+
+        /// <summary>
         /// Logging interface.
         /// </summary>
         [Import]
@@ -73,7 +79,7 @@ namespace MyTrails.ServiceLib
             {
                 this.LogConnectionString();
                 logEntryId = this.CreateImportLog();
-                await this.RunInternal();
+                await this.RunInternal(logEntryId.Value);
             }
             catch (AggregateException ae)
             {
@@ -93,9 +99,9 @@ namespace MyTrails.ServiceLib
                 {
                     this.FinalizeAndCommitLog(logEntryId.Value, exceptionString);
                 }
-
-                this.Logger.Info("Done!");
             }
+
+            this.Logger.Info("Done!");
         }
 
         /// <summary>
@@ -159,32 +165,41 @@ namespace MyTrails.ServiceLib
         /// <summary>
         /// Run the importer.
         /// </summary>
+        /// <param name="logEntryId">The associated <see cref="ImportLogEntry"/> ID for the import run.</param>
         /// <returns>Task for asynchronous completion.</returns>
-        private async Task RunInternal()
+        private async Task RunInternal(int logEntryId)
         {
-            RetryPolicy policy = this.WtaClient.BuildRetryPolicy(this.Logger);
-            Task<IList<WtaTrail>> fetchTrailTask = policy.ExecuteAsync(() => this.WtaClient.FetchTrails());
-
-            this.Logger.Info("Fetching existing trail IDs.");
-            List<string> existingTrailIds;
-            using (MyTrailsContext context = new MyTrailsContext())
+            using (CancellationTokenSource heartbeatTokenSource = new CancellationTokenSource())
             {
-                existingTrailIds = context.Trails
-                    .Select(t => t.WtaId)
-                    .ToList();
+                Task heartbeatTask = this.SendHeartbeats(logEntryId, heartbeatTokenSource.Token);
+
+                RetryPolicy policy = this.WtaClient.BuildRetryPolicy(this.Logger);
+                Task<IList<WtaTrail>> fetchTrailTask = policy.ExecuteAsync(() => this.WtaClient.FetchTrails());
+
+                this.Logger.Info("Fetching existing trail IDs.");
+                List<string> existingTrailIds;
+                using (MyTrailsContext context = new MyTrailsContext())
+                {
+                    existingTrailIds = context.Trails
+                        .Select(t => t.WtaId)
+                        .ToList();
+                }
+
+                IList<WtaTrail> wtaTrails = await fetchTrailTask;
+                this.DeDupeWtaTrails(wtaTrails);
+
+                IEnumerable<Tuple<WtaTrail, bool>> wtaTrailTuples = this.MatchExistingTrails(wtaTrails, existingTrailIds);
+
+                this.Logger.Debug("Creating new trail entries.");
+                Task[] trailTasks = wtaTrailTuples
+                    .Select(tt => this.ImportOrUpdateTrail(tt.Item1, tt.Item2))
+                    .ToArray();
+
+                await Task.WhenAll(trailTasks);
+
+                heartbeatTokenSource.Cancel();
+                await heartbeatTask;
             }
-
-            IList<WtaTrail> wtaTrails = await fetchTrailTask;
-            this.DeDupeWtaTrails(wtaTrails);
-
-            IEnumerable<Tuple<WtaTrail, bool>> wtaTrailTuples = this.MatchExistingTrails(wtaTrails, existingTrailIds);
-
-            this.Logger.Debug("Creating new trail entries.");
-            Task[] trailTasks = wtaTrailTuples
-                .Select(tt => this.ImportOrUpdateTrail(tt.Item1, tt.Item2))
-                .ToArray();
-
-            await Task.WhenAll(trailTasks);
         }
 
         /// <summary>
@@ -285,6 +300,40 @@ namespace MyTrails.ServiceLib
 
                 trailContext.SaveChanges(this.Logger);
             }
+        }
+
+        /// <summary>
+        /// Attach heartbeats to the import log entry that the importer is running until cancellation is requested.
+        /// </summary>
+        /// <param name="entryId">Log entry ID to append heartbeats to.</param>
+        /// <param name="token">Cancellation token to stop heartbeats.</param>
+        /// <returns>Task for asynchronous runtime.</returns>
+        private async Task SendHeartbeats(int entryId, CancellationToken token)
+        {
+            TimeSpan interval = this.Configuration.HeartbeatInterval;
+            this.Logger.DebugFormat("Sending heartbeats at interval: {0}", interval);
+
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    await Task.Delay(interval, token);
+
+                    using (MyTrailsContext context = new MyTrailsContext())
+                    {
+                        ImportLogEntry logEntry = context.ImportLog.Find(entryId);
+                        logEntry.LastHeartbeat = DateTime.Now;
+
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Cancellation requested.
+            }
+
+            this.Logger.Debug("Finished heartbeating.");
         }
     }
 }

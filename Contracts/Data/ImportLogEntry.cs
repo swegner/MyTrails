@@ -23,6 +23,11 @@
         public DateTimeOffset? CompletedTime { get; set; }
 
         /// <summary>
+        /// Last heartbeat time for the import process.
+        /// </summary>
+        public DateTimeOffset LastHeartbeat { get; set; }
+
+        /// <summary>
         /// Number of trails in the datastore at the start of the import.
         /// </summary>
         public int StartTrailsCount { get; set; }

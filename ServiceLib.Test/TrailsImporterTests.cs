@@ -99,6 +99,11 @@ namespace MyTrails.ServiceLib.Test
             this.InitializeDatabase();
             this.InitializeMocks();
 
+            Mock<IImporterConfiguration> configurationMock = new Mock<IImporterConfiguration>(MockBehavior.Strict);
+            configurationMock
+                .SetupGet(c => c.HeartbeatInterval)
+                .Returns(TimeSpan.FromMilliseconds(1234));
+
             this._importer = new TrailsImporter
             {
                 WtaClient = this._wtaClientMock.Object,
@@ -107,6 +112,7 @@ namespace MyTrails.ServiceLib.Test
                 {
                     this._trailExtenderMock.Object,
                 },
+                Configuration = configurationMock.Object,
                 Logger = new StubLog(),
             };
         }
