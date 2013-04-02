@@ -15,12 +15,12 @@
         /// <summary>
         /// Start time of the run.
         /// </summary>
-        public DateTime StartTime { get; set; }
+        public DateTimeOffset StartTime { get; set; }
 
         /// <summary>
         /// Time that the run completed, or null if the run has not completed.
         /// </summary>
-        public DateTime? CompletedTime { get; set; }
+        public DateTimeOffset? CompletedTime { get; set; }
 
         /// <summary>
         /// Number of trails in the datastore at the start of the import.
