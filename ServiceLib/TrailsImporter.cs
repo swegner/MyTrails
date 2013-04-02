@@ -127,7 +127,7 @@ namespace MyTrails.ServiceLib
             {
                 ImportLogEntry logEntry = new ImportLogEntry
                 {
-                    StartTime = DateTime.Now,
+                    StartTime = DateTimeOffset.Now,
                     StartTrailsCount = context.Trails.Count(),
                     StartTripReportsCount = context.TripReports.Count(),
                 };
@@ -154,7 +154,7 @@ namespace MyTrails.ServiceLib
 
                 logEntry.CompletedTrailsCount = context.Trails.Count();
                 logEntry.CompletedTripReportsCount = context.TripReports.Count();
-                logEntry.CompletedTime = DateTime.Now;
+                logEntry.CompletedTime = DateTimeOffset.Now;
                 logEntry.ErrorString = errorString;
                 logEntry.ErrorsCount = this._numImportErrors;
 
@@ -322,7 +322,7 @@ namespace MyTrails.ServiceLib
                     using (MyTrailsContext context = new MyTrailsContext())
                     {
                         ImportLogEntry logEntry = context.ImportLog.Find(entryId);
-                        logEntry.LastHeartbeat = DateTime.Now;
+                        logEntry.LastHeartbeat = DateTimeOffset.Now;
 
                         context.SaveChanges();
                     }
