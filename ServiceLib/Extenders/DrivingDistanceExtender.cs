@@ -126,16 +126,25 @@ namespace MyTrails.ServiceLib.Extenders
 
             if (summary.StatusCode != ResponseStatusCode.Success)
             {
-                throw new ApplicationException(string.Format("Routing service call failed. {0}: {1}",
-                    summary.StatusCode, summary.FaultReason));
+                if (summary.StatusCode == ResponseStatusCode.BadRequest && 
+                    summary.FaultReason.Contains("No route was found for the waypoints provided."))
+                {
+                    this.Logger.WarnFormat("No route found between trail add address: '{0}', '{1}'", trail, address);
+                }
+                else
+                {
+                    throw new ApplicationException(string.Format("Routing service call failed. {0}: {1}", summary.StatusCode, summary.FaultReason));
+                }
             }
-
-            address.Directions.Add(new DrivingDirections
+            else
             {
-                Address = address,
-                Trail = trail,
-                DrivingTimeSeconds = (int)result.Summary.TimeInSeconds,
-            });
+                address.Directions.Add(new DrivingDirections
+                {
+                    Address = address,
+                    Trail = trail,
+                    DrivingTimeSeconds = (int)result.Summary.TimeInSeconds,
+                });
+            }
         }
 
         /// <summary>
