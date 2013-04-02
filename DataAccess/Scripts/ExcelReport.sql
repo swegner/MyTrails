@@ -12,8 +12,6 @@
 	dSeattle.DrivingTimeSeconds SeattleDrivingTimeSeconds,
 	ntr.NumTrailReports,
 	ltr.LatestTripReportDate,
-	ltr.LatestTripReportTitle,
-	ltr.LatestTripReportText,
 	ISNULL(c.GoodForKids, 0) GoodForKids,
 	ISNULL(c.DogsAllowedOnLeash, 0) DogsAllowedOnLeash,
 	ISNULL(c.DogsAllowedOffLeash, 0) DogsAllowedOffLeash,
@@ -51,17 +49,13 @@ FROM Trails tra WITH (NOLOCK)
 	(
 		SELECT
 			r.Trail_Id,
-			r.Date LatestTripReportDate,
-			r.Title LatestTripReportTitle,
-			r.Text LatestTripReportText
+			r.Date LatestTripReportDate
 		FROM
 		(
 			SELECT
 				ROW_NUMBER() OVER (PARTITION BY trt.Trail_Id ORDER BY tr.Date DESC) RowNumber,
 				trt.Trail_Id,
-				tr.Date,
-				tr.Title,
-				tr.Text
+				tr.Date
 			FROM TripReportTrails trt WITH (NOLOCK)
 				JOIN TripReports tr WITH (NOLOCK) ON trt.TripReport_Id = tr.Id
 		) r
