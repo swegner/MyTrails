@@ -129,6 +129,7 @@ namespace MyTrails.ServiceLib
                 ImportLogEntry logEntry = new ImportLogEntry
                 {
                     StartTime = DateTimeOffset.Now,
+                    LastHeartbeat = DateTimeOffset.Now,
                     StartTrailsCount = context.Trails.Count(),
                     StartTripReportsCount = context.TripReports.Count(),
                 };
