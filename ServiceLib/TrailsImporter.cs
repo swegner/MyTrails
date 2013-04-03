@@ -4,6 +4,7 @@ namespace MyTrails.ServiceLib
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel.Composition;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -169,6 +170,9 @@ namespace MyTrails.ServiceLib
         /// <returns>Task for asynchronous completion.</returns>
         private async Task RunInternal(int logEntryId)
         {
+            // Verify there's not an execution already in progress.
+            this.CheckRecentExecutions(logEntryId);
+
             using (CancellationTokenSource heartbeatTokenSource = new CancellationTokenSource())
             {
                 Task heartbeatTask = this.SendHeartbeats(logEntryId, heartbeatTokenSource.Token);
@@ -199,6 +203,42 @@ namespace MyTrails.ServiceLib
 
                 heartbeatTokenSource.Cancel();
                 await heartbeatTask;
+            }
+        }
+
+        /// <summary>
+        /// Check for recent executions and throw is there is still one in progress. Enforces singleton
+        /// access.
+        /// </summary>
+        /// <param name="currentLogEntryId">The log entry ID for the current execution.</param>
+        private void CheckRecentExecutions(int currentLogEntryId)
+        {
+            const double heartbeatCheckMultiplier = 2.5;
+
+            this.Logger.Info("Checking for recent executions.");
+
+            DateTimeOffset? recentHeartbeat;
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                recentHeartbeat = context.ImportLog
+                    .Where(i => i.Id != currentLogEntryId && !i.CompletedTime.HasValue)
+                    .OrderByDescending(i => i.LastHeartbeat)
+                    .Select(i => i.LastHeartbeat)
+                    .FirstOrDefault();
+            }
+
+            if (recentHeartbeat.HasValue)
+            {
+                TimeSpan heartbeatCheckInterval = TimeSpan.FromTicks((int)(this.Configuration.HeartbeatInterval.Ticks * heartbeatCheckMultiplier));
+                if ((DateTimeOffset.Now - heartbeatCheckInterval) < recentHeartbeat.Value)
+                {
+                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture,
+                        "Detected previous execution, with latest heartbeat: {0}", recentHeartbeat.Value));
+                }
+                else
+                {
+                    this.Logger.WarnFormat("Detected previous execution, but with stale heartbeat: {0}", recentHeartbeat.Value);
+                }
             }
         }
 

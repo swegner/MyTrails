@@ -19,5 +19,14 @@
         {
             get { return TimeSpan.Parse(ConfigurationManager.AppSettings["MyTrails.ServiceLib.HeartbeatInterval"], CultureInfo.InvariantCulture); }
         }
+
+        /// <summary>
+        /// Multiplier to apply when checking for recent heartbeats.
+        /// </summary>
+        /// <seealso cref="IImporterConfiguration.HeartbeatCheckMultiplier"/>
+        public double HeartbeatCheckMultiplier
+        {
+            get { return double.Parse(ConfigurationManager.AppSettings["MyTrails.ServiceLib.HeartbeatCheckMultiplier"], CultureInfo.InvariantCulture); }
+        }
     }
 }

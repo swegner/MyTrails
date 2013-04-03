@@ -4,6 +4,7 @@ namespace MyTrails.ServiceLib.Test
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using FluentAssertions;
     using log4net;
     using Microsoft.Practices.TransientFaultHandling;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -102,7 +103,10 @@ namespace MyTrails.ServiceLib.Test
             Mock<IImporterConfiguration> configurationMock = new Mock<IImporterConfiguration>(MockBehavior.Strict);
             configurationMock
                 .SetupGet(c => c.HeartbeatInterval)
-                .Returns(TimeSpan.FromMilliseconds(1234));
+                .Returns(TimeSpan.FromSeconds(30));
+            configurationMock
+                .SetupGet(c => c.HeartbeatCheckMultiplier)
+                .Returns(1.234);
 
             this._importer = new TrailsImporter
             {
@@ -256,6 +260,36 @@ namespace MyTrails.ServiceLib.Test
 
             // Assert
             this._trailExtenderMock.Verify();
+        }
+
+        /// <summary>
+        /// Verify that <see cref="TrailsImporter"/> checks for current heartbeats before executing.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void ChecksRecentHeartbeat()
+        {
+            // Arrange
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                context.ImportLog.Add(new ImportLogEntry
+                {
+                    StartTime = DateTimeOffset.Now - TimeSpan.FromMinutes(1234),
+                    LastHeartbeat = DateTimeOffset.Now,
+                });
+
+                context.SaveChanges();
+            }
+
+            // Act
+            try
+            {
+                this._importer.Run().Wait();
+            }
+            catch (AggregateException ex)
+            {
+                // Assert - Expect InvalidOperationException
+                ex.Handle(e => e is InvalidOperationException);
+            }
         }
 
         /// <summary>
