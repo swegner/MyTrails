@@ -9,6 +9,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DefaultLanguage>en-US</DefaultLanguage>
 
+	<ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
     
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
