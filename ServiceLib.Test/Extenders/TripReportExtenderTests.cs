@@ -87,6 +87,10 @@ namespace MyTrails.ServiceLib.Test.Extenders
                         Date = DateTime.Now,
                         FullReportUrl = new Uri(new Uri("http://any.base.url"), AnyWtaTripReportId),
                         HikeType = this._anyTripTypeWtaId,
+                        Photos = 
+                        {
+                            new Uri("http://any/domain/photoUrl.jpg"),
+                        },
                     }
                 }));
             this._wtaClientMock
@@ -135,6 +139,31 @@ namespace MyTrails.ServiceLib.Test.Extenders
             }
 
             Assert.IsNotNull(report);
+        }
+
+        /// <summary>
+        /// Verify that <see cref="TripReportExtender.Extend"/> adds photos associated with a trip report.
+        /// </summary>
+        [TestMethod, TestCategory(TestCategory.Unit)]
+        public void AddsTripReportPhotos()
+        {
+            // Arrange
+            int trailId = this.AddTestData(this._anyTrail);
+
+            // Act
+            this.RunExtender(trailId).Wait();
+
+            // Assert
+            TripReportPhoto photo;
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                photo = context.TripReports
+                    .Where(tr => tr.Trails.Any(t => t.Id == trailId))
+                    .SelectMany(tr => tr.Photos)
+                    .FirstOrDefault();
+            }
+
+            Assert.IsNotNull(photo);
         }
 
         /// <summary>

@@ -154,7 +154,7 @@ namespace MyTrails.ServiceLib.Extenders
         {
             int tripTypeId = this._tripTypeDictionary[wtaReport.HikeType];
 
-            return new TripReport
+            TripReport report = new TripReport
             {
                 WtaId = wtaReportId,
                 Title = wtaReport.Title,
@@ -164,6 +164,16 @@ namespace MyTrails.ServiceLib.Extenders
                 TripTypeId = tripTypeId,
                 Text = wtaReport.BodyText,
             };
+
+            foreach (Uri photoUrl in wtaReport.Photos)
+            {
+                report.Photos.Add(new TripReportPhoto
+                {
+                    Url = photoUrl,
+                });
+            }
+
+            return report;
         }
     }
 }
