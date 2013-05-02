@@ -5,6 +5,7 @@
     using System.ComponentModel.Composition.Hosting;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Reflection;
@@ -57,6 +58,15 @@
                 // Act
                 ITrailsImporter importer = container.GetExportedValue<ITrailsImporter>();
                 importer.Run();
+            }
+
+            using (MyTrailsContext context = new MyTrailsContext())
+            {
+                // Assert
+                Assert.IsTrue(context.Trails.Any());
+                Assert.IsTrue(context.Guidebooks.Any());
+                Assert.IsTrue(context.Passes.Any());
+                Assert.IsTrue(context.TripReports.Any());
             }
         }
 
