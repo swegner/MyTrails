@@ -1,5 +1,5 @@
 ﻿[
-// Sample data from: http://www.wta.org/@@WindowsPhone/TripReports?id=discovery-park
+/* Sample data from: http://www.wta.org/@@WindowsPhone/TripReports?id=discovery-park */
 {
     "BodyText": "This was a great arrival day hike for our camping trip; very short and beautiful. It is hard to believe the guide description could be true when coming from the desert-like Entiat area to just 30 miles upstream. The water is really flowing and just about every superlative the guide description uses is right on. Even the name &quot;Silver&quot; Falls fits perfectly. With the sunlight coming through high clouds it really looks beyond white.<br />On a Thursday at 5:30 pm there were 3 other cars in the parking lot but we did not see any others on the trail. With the cool evening temperatures and mist from the falls, we did not need any water. Just to mention, the free falling water is fairly small (as seen in the guide picture) but the cascades are just spectacular. The only negative I can come up with is that the mist from the falls/cascades prevent picture taking from a few spots.<br />There is a nice campground in the same area that was only lightly populated. No bugs was an additional bonus.",
     "Photos": [],

@@ -1,5 +1,5 @@
 ﻿[
-// Sample data from: http://www.wta.org/@@WindowsPhone/TripReports?id=humpback-mountain
+/* Sample data from: http://www.wta.org/@@WindowsPhone/TripReports?id=humpback-mountain */
 {
     "BodyText": "Left the car at the wide hairpin turn at about 2450ft on FR-5510. Followed the side road to the start of the climber's trail.<br /><br />The trail was in good shape (no brush, and no trail erosion, apart from the short section at the start). Some boulder hopping was required near the top.<br /><br />Except for notches cut into blowdowns, and some flagging tape just below the summit ridge, the trail was unmarked, but obvious to follow.<br /><br />Didn't see anyone all day. As with many hikes off I90, there was some noise from I90, and the usual target shooting.<br /><br />Photos: <a href=\"http://picasaweb.google.com/eric.jain/HumpbackMountainSeptember2012\" rel=\"nofollow\">http://picasaweb.google.com/[&hellip;]/HumpbackMountainSeptember2012</a><br />Tracklog: <a href=\"http://connect.garmin.com/activity/227592788\" rel=\"nofollow\">http://connect.garmin.com/activity/227592788</a><br />Panorama: <a href=\"http://photosynth.net/view.aspx?cid=337a703d-4557-4e30-949f-bf703815f6e1\" rel=\"nofollow\">http://photosynth.net/view.[&hellip;]4557-4e30-949f-bf703815f6e1</a><br />",
     "Photos": ["http://www.wta.org/site_images/trip-reports/2012/p1370115.jpg",

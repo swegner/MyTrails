@@ -11,6 +11,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using MyTrails.Contracts.Data;
     using MyTrails.DataAccess;
     using MyTrails.Importer;
     using MyTrails.ServiceLib;
@@ -63,6 +64,14 @@
             using (MyTrailsContext context = new MyTrailsContext())
             {
                 // Assert
+                ImportLogEntry logEntry = context.ImportLog
+                    .OrderByDescending(le => le.Id)
+                    .FirstOrDefault();
+
+                Assert.IsNotNull(logEntry);
+                Assert.IsNull(logEntry.ErrorString, message: logEntry.ErrorString);
+                Assert.AreEqual(0, logEntry.ErrorsCount);
+
                 Assert.IsTrue(context.Trails.Any());
                 Assert.IsTrue(context.Guidebooks.Any());
                 Assert.IsTrue(context.Passes.Any());
@@ -233,6 +242,10 @@
 
                 RouteResponse response = new RouteResponse
                 {
+                    ResponseSummary = new ResponseSummary
+                    {
+                        StatusCode = ResponseStatusCode.Success,
+                    },
                     Result = new RouteResult
                     {
                         Summary = new RouteSummary
