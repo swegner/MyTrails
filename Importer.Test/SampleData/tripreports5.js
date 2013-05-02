@@ -1,96 +1,104 @@
-﻿[{
-    "BodyText": "Combined the Hiram Chittenden locks and Discovery Park in a longer walk Sunday morning.  We parked at the locks lot and crossed over to the south side then walked up Commodore Way to the north entrance to the park. <br /><br />Followed the Loop Trail around the east and south side of the park then dropped down the South Beach trail to the West Point Light house.  The trail around the very tip of the point is closed due to erosion.  The North Beach trail back up to the parade grounds is marked as closed due to erosion/flooding as well - but is passable - just be very careful over one of the pedestrian bridges towards the bottom of the hill.  Looped back around through the north parking lot and back down to the locks.  <br /><br />Starting at the locks adds less than 2 miles to the very nice Discovery Park loop and a bunch of extra views and interesting things to look at.  A beautiful morning!",
-    "Author": "wafflesnfalafel",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2013-02-10.9265938284",
-    "Title": "Discovery Park",
-    "Date": "02-09-2013",
-    "HikeType": "day-hike"
+﻿[
+// Sample data from: http://www.wta.org/@@WindowsPhone/TripReports?id=discovery-park
+{
+    "BodyText": "This was a great arrival day hike for our camping trip; very short and beautiful. It is hard to believe the guide description could be true when coming from the desert-like Entiat area to just 30 miles upstream. The water is really flowing and just about every superlative the guide description uses is right on. Even the name &quot;Silver&quot; Falls fits perfectly. With the sunlight coming through high clouds it really looks beyond white.<br />On a Thursday at 5:30 pm there were 3 other cars in the parking lot but we did not see any others on the trail. With the cool evening temperatures and mist from the falls, we did not need any water. Just to mention, the free falling water is fairly small (as seen in the guide picture) but the cascades are just spectacular. The only negative I can come up with is that the mist from the falls/cascades prevent picture taking from a few spots.<br />There is a nice campground in the same area that was only lightly populated. No bugs was an additional bonus.",
+    "Photos": [],
+    "Title": "Silver Falls",
+    "Date": "06-21-2012",
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2012-06-27.7229265700",
+    "Author": "bb",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
 },
 {
-    "BodyText": "The sun did not shine, it was too wet to play, but it was Sacred Hiking Monday, so we went anyway. We headed to Seattle, it was cloudy and dark, a perfect day to hike downtown, in a park. The trail was wide and sometimes even paved, and we could stand on the bluffs and watch ships, hawks and small waves.  The bluffs are steep, don't cross over the rails, to get to the lighthouse and beach just follow the trails. We ate lunch on the beach, then climbed back up the hill, a little elevation to gain, what a thrill! The main loop around is about 3 miles, there's more little trails, you could spend quite a while. When we reached the car,  we were both wet and cold, and we still had to sit in traffic, which gets real old.  So,if you can't go to the mtn.s and do what you like? Go into the city, and try this short hike!",
-    "Author": "Muledeer",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2013-01-28.9206973947",
-    "Title": "Discovery Park",
-    "Date": "01-28-2013",
-    "HikeType": "day-hike"
+    "BodyText": "What a beautiful hike! Silver Creek and the falls are running full! Much work has been done to create this trail with its stone steps, unique wood bridges and benches along the way. The loop is only 1.8 miles, but we spent over 2 hours enjoying the area. <br /><br /><br /><br /><br />",
+    "Photos": ["http://www.wta.org/site_images/trip-reports/2012/dsc_7496.jpg",
+	"http://www.wta.org/site_images/trip-reports/2012/dsc_7547.jpg",
+	"http://www.wta.org/site_images/trip-reports/2012/dsc_5971.jpg",
+	"http://www.wta.org/site_images/trip-reports/2012/dsc_7570.jpg"],
+    "Title": "Silver Falls",
+    "Date": "06-06-2012",
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2012-06-09.8454678309",
+    "Author": "Bob and Barb",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
 },
 {
-    "BodyText": "This was my first sunset hike to Discovery Park. I parked in the North parking lot. I took the road uphill, starting towards the Northwest, for 1/2 mile, then turned onto the South Beach Trail. I completed a loop to the South Beach, past the West Point lighthouse, to the North Beach, and then back to the road via the North Beach Trail. Couples were enjoying the sunset by the beach. Clouds broke up the sunset over the Olympics, but there were nice views of Rainier, Baker, and the lighthouse at sunset. Sunset took place at about 7:30 pm. In fact, the lighthouse actually is in operation! The trail is in great condition, and there are some wildflowers in bloom. Blackberries are in varying stages of ripeness. Total mileage was about 2, with 150 feet of elevation change.",
-    "Author": "Taum Sauk",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2012-09-01.6460777015",
-    "Title": "Discovery Park",
-    "Date": "09-01-2012",
-    "HikeType": "day-hike"
+    "BodyText": "Started this hike at 4pm from the Silver Falls Campground. Met a couple of people on the trail, but no crowds.<br /><br />The trail is a short loop, but it's easy to spend an hour or two. The trail is very well built (with lots of neat bridges, stairs and benches along the way), but nevertheless not suited for high-heels.<br /><br />Wildflowers: Some Penstemon in sunny spots, not much else (yet?).<br /><br />Photos: <a href=\"http://picasaweb.google.com/eric.jain/SilverFallsJune2012\" rel=\"nofollow\">http://picasaweb.google.com/eric.jain/SilverFallsJune2012</a><br />Tracklog: <a href=\"http://connect.garmin.com/activity/185396155\" rel=\"nofollow\">http://connect.garmin.com/activity/185396155</a><br /><br />",
+    "Photos": ["http://www.wta.org/site_images/trip-reports/2012/p1310992.jpg",
+	"http://www.wta.org/site_images/trip-reports/2012/p1310931.jpg",
+	"http://www.wta.org/site_images/trip-reports/2012/p1320002.jpg",
+	"http://www.wta.org/site_images/trip-reports/2012/p1320007.jpg"],
+    "Title": "Silver Falls",
+    "Date": "06-02-2012",
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2012-06-03.1409026364",
+    "Author": "Eric Jain",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
 },
 {
-    "BodyText": "",
-    "Author": "b_dd",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2012-08-27.1799488554",
-    "Title": "Discovery Park",
-    "Date": "08-22-2012",
-    "HikeType": "day-hike"
+    "BodyText": "Those fortunate enough to live over here may already know about this falls - a worthy destination for a morning or afternoon.<br /><br />Well-constructed granite stair-steps wind up the hill beneath an imposing boulder face, and staggered ponderosa pines provide an inviting canopy for birds.  On this day the falls were positively over-spilling their bounds, and the creek crashing somewhat incongruously between the trunks of second-growth trees.  Hand rails assist on the steep parts and adorn the bridges with curlicued style, and benches beckon at every turn.<br /><br />Washington certainly excels in its waterfalls.",
+    "Photos": ["http://www.wta.org/site_images/trip-reports/2012/5.jpg-1",
+	"http://www.wta.org/site_images/trip-reports/2012/7.jpg-1",
+	"http://www.wta.org/site_images/trip-reports/2012/6.jpg",
+	"http://www.wta.org/site_images/trip-reports/2012/8c.jpg"],
+    "Title": "Silver Falls",
+    "Date": "05-19-2012",
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2012-05-21.5471811427",
+    "Author": "snow Cat",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
 },
 {
-    "BodyText": "A pleasant 2 mile hike on a warm Spring evening to the West Point Lighthouse; to watch the sunset. ",
-    "Author": "YoshiSan",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2012-04-29.0675912774",
-    "Title": "Discovery Park",
-    "Date": "04-21-2012",
-    "HikeType": "day-hike"
-},
-{
-    "BodyText": "Today was wet, Tom and I, even in our rain uniforms, got wet, that was the bad news.  The good news was that the trails (Discovery Park Loop) were in good shape with a few water puddles but nothing that could not be stepped over or around.<br /><br />We started out from 64th and 24th in the City and went downhill to the locks, over the locks and around to the Park and the loop trail.  We did about 4 to 4.5 miles total and at 11:30 stopped at the Lock Spot for lunch with our wives.  No real problems other than the weather. <br /><br />Discovery Park is a great in city walk and crossing the locks adds to the walk.  Spring is happening, even with the wet weather, some plants in the park are beginning to flower.<br /><br />The benefit of the hike included being able to get a warm lunch in a dry spot (today very welcome) and having a warm shower and dry clothes at the end of the morning.",
-    "Author": "Alpine Art",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2012-03-29.5479396677",
-    "Title": "Discovery Park",
-    "Date": "03-29-2012",
-    "HikeType": "day-hike"
-},
-{
-    "BodyText": "For our late morning/early afternoon hike, we were blessed with beautiful weather with warm winter sunshine and temperatures in the 40s. The trip was pleasant, with friends and a cute schnauzer. We did a brief and easy hike from the North Parking Lot to the beach and checked the outside of the Indian Cultural Center along the way. We plan to come back to visit the West Point light house sometime soon!!",
-    "Author": "Taum Sauk",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2011-12-23.2047003134",
-    "Title": "Discovery Park",
-    "Date": "12-17-2011",
-    "HikeType": "day-hike"
-},
-{
-    "BodyText": "From the South Parking Lot we took the Loop Trail down to the South Beach Trail. The trail is well maintained and well traveled. There were quite a few joggers and other hikers out today. The trail is 1.5 miles down to the beach from the parking lot. There are a number of stairs that you go down to get to the beach. Those were a bit slippery so take care with little ones. On your return trip you will have to climb back up all of those stairs, but there are plenty of benches for weary hikers to rest. I was a little disappointed that some of the viewpoints along the trail were overgrown with vegetation that sometimes obstructed the views.<br /><br />This is a great urban hike for those not wanting to drive too far, but wanting to get out and enjoy nature anyway. It's a great hike for all ages and young children should do just fine (although you may want to allot more time for the hike back up the hill). There is plenty of beach to explore and even a beach &quot;fort&quot; for kids to play in. The lighthouse, however, was closed so we were not able to explore it. And of course fantastic scenery of the Sound. I would love to come back on a sunny day. I bet the views of the Sound (and the Olympics) would be fantastic.<br /><br />To see more of our hike visit <a href=\"http://1retromama.blogspot.com/2011/12/discovery-park-seattle-parks-magnolia.html\" rel=\"nofollow\">http://1retromama.blogspot.[&hellip;]seattle-parks-magnolia.html</a> .",
-    "Author": "retromama",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2011-12-04.7402512113",
-    "Title": "Discovery Park",
-    "Date": "12-03-2011",
-    "HikeType": "day-hike"
-},
-{
-    "BodyText": "Discovery Park has so many trails from which to choose, all of which have their charms. We arrived at 10 am with no particular trail in mind. The parking lot near the Visitor Center was full, but the North parking lot was relatively empty when we arrived, though it was about 75% full when we got back at 12:30 pm. We decided upon the Loop Trail, but could not resist the temptation of going on a side-trip to the South Beach Trail, and we ended up enjoying the beach views for most of our hike. We went down to the lighthouse, then back up to the parking lot.<br /><br />Along the way, we saw wildflowers (many getting old, though), berries (mostly past their prime as well), Mt Baker, the Olympics, Mt Rainer, a Pacific banana slug, anemones, and barnacles (it was low-tide). There were some spectacular seashells on the beach, as well. A great outing, especially for a fall day with sun-breaks!",
-    "Author": "Taum Sauk",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2011-10-09.6909501803",
-    "Title": "Discovery Park",
-    "Date": "10-08-2011",
-    "HikeType": "day-hike"
-},
-{
-    "BodyText": "GWEN'S HIKE-A-THON NO.2<br /><br />Since I'm aiming for 50 miles this August for the Hike-A-Thon, I need to average 12.5 miles each weekend.  Friday's hike was delightful and delicious but at only 9 miles, I needed to make some up.  I had things to do in the city so I decided a trip over to Discovery Park was in order.  It used to be one of my &quot;go to&quot; places when I lived in the city, along with Carkeek Park.<br /><br />There are a myriad of trails that loop around and twist through the 534 acres of Discovery Park, the &quot;official&quot; ones fairly well signed and the secret ones not so much. You can wander through forests and meadows or trundle along the beach.  Or, like me, you can choose all of the above.<br /><br />I started out on the Loop trail clockwise from the North parking lot, but quickly got sidetracked by secret trails.  What can I say, I like to explore.  Said exploration ended abruptly, however, when I decided that it was not prudent to do so while wearing shorts and short sleeves as the park is absolutely riddled with stinging nettles and there's absolutely no way of avoiding them on the brushy narrow unmarked trails.  So, back to the Loop.<br /><br />At the junction with the South Beach trail, I descended toward the beach, looped around the lighthouse to the North Beach area, and followed that back up to rejoin the Loop and finish off at 3.9 miles.<br /><br />All the trails in Discovery Park are in good shape and stairs are installed to aid in access to and from the beach.  While the park may be busy on any given day (especially a weekend), it never feels crowded. In fact, some of our wilderness trails have felt more crowded to me at time (Lake 22, for instance). I like (and prefer) Wilderness like many of you, but sometimes, when you'd rather put miles on the feet instead of the car wheels, it's nice to know there's an in-city option.",
-    "Author": "Brighidoon",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2011-08-08.3116888565",
-    "Title": "Discovery Park",
+    "BodyText": "easy fun 2 mile loop with great views of waterfall and even a spot to get a shower",
+    "Photos": ["http://www.wta.org/site_images/trip-reports/2011/img_3455.jpg-1"],
+    "Title": "Silver Falls",
     "Date": "08-07-2011",
-    "HikeType": "day-hike"
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2011-08-09.9271755430",
+    "Author": "digity777",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
 },
 {
-    "BodyText": "I took my boys on this hike on the South Beach trail.  We hiked down to the beach to find sea shells and other items for a science project.  The boys enjoyed the terrain and &quot;break&quot; areas like the sand pit and play ground.  This is the first hike my 4-year old did not complain about his legs hurting and it was about 3 miles!  Great fun!",
-    "Author": "Amanda Franza",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2011-02-16.0876457504",
-    "Title": "Discovery Park",
-    "Date": "01-21-2011",
-    "HikeType": "day-hike"
+    "BodyText": "This is a beautiful little hike tucked away in a sleepy corner of the Northern Cascades. The trail is a loop. I took the trail leading to the right. The first part of the hike has short inclines. At the peak of the small climbs there are pull outs with benches. While the climbs themselves, may not leave one breathless, the views will. Great places to compose photos and rest. The waterfall itself has many stages. At one rest point there is great side view of the water fall just few yards away. There is a rail blocking the trail going behind waterfall, but it looks as if at one time a person could walk out behind the waterfall. I was a good hiker and stayed behind the rail. (I did not want to get my camera equipment wet) After a bit the trail veers right and the sound of the waterfall becomes faint and distant. This long stretch seems fruitless, until a few switchbacks brings back the roaring sound of the rushing water. At the top there is a bridge crossing the stream. This is a great place to reflect on the climb and enjoy the fruit of all the effort put forth. It is also an opportunity for the dogs to get a drink and quinch their thirst with cool water from a mountain stream. The hike down is filled with more breath taking photo opportunities. The bottom of the trail connects back with the original trail. When I go back I will be taking the left side up. I hope to get a different prospective and even more photo opportunities.",
+    "Photos": ["http://www.wta.org/site_images/trip-reports/2010/db15917a755a713a595c8dfce537805e_photo1",
+	"http://www.wta.org/site_images/trip-reports/2010/silver-falls3-copy.jpg",
+	"http://www.wta.org/site_images/trip-reports/2010/db15917a755a713a595c8dfce537805e_photo3",
+	"http://www.wta.org/site_images/trip-reports/2010/db15917a755a713a595c8dfce537805e_photo4"],
+    "Title": "Silver Falls",
+    "Date": "09-04-2010",
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2010-10-16.2345327975",
+    "Author": "photo dude",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
 },
 {
-    "BodyText": "This is a definite walk but one that will astound with the fragile beauties of Puget Sound.<br /><br />On Saturday, there was an extreme low tide in the Elliot Bay allowing one to walk the beach/tide lands area below the Magnolia Bluff/Discovery Park area.  A multitude of sea life was available for viewing including star fish, crab and sea anemones.  <br /><br />While one has to be aware of tides and wear shoes/socks that can and will get wet.  It is a real in city treat.  My sense was that we were at the aquarium with the best views of the living coast.  <br /><br />Total walking was about 1.5 to 2.0 miles and care needs to be taken to avoid getting caught by an incoming tide.",
-    "Author": "Alpine Art",
-    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2010-07-01.2811211776",
-    "Title": "Seattle - Magnolia Area Beach (Discovery Park)",
-    "Date": "06-26-2010",
-    "HikeType": "day-hike"
+    "BodyText": "My wife and I hiked this with our 8- and 10-year old daughters on a warm summer day. Bugs were moderately bad at the parking lot by the road, but as soon as we got up by the falls, the cool breeze from the water kept them away.<br /><br />Neither the hike description above or Ira Spring's guidebook do justice to this hike. I had thought Silver Falls was just going to be a single falls. Instead, you have several hundred feet of cascades down the hillside in addition to the falls themselves. There's something to see at every turn, except when you get into the gentle switchbacks going out from the falls toward the top. Even then, you are rewarded with great views of the Entiat River valley.<br /><br />Silver Falls is a magnificent testament to the hard work of the CCC, with all the great craftsmanship of the stairs and viewpoints.<br /><br />Great day hike and doable with children (who are willing to put in the 600 foot elevation gain).",
+    "Photos": [],
+    "Title": "Silver Falls",
+    "Date": "08-05-2010",
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/trip_report.2010-08-18.1877951939",
+    "Author": "typ993",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
+},
+{
+    "BodyText": "<p>The road and trailhead are clear of snow. There are still some patches near the parking lot for post-hike snowball fights. The trail is clear of snow and blow-downs, is dry and in great shape. The creek is flowing very high with snow melt and the falls are quite spectacular. Hiked the whole loop with 2 5 year olds and a dad with a bad ankle with no issues. Weather was perfect, sunny and high 70s. Plenty of shade and water spray to keep things comfortable. Great hike for the kids if you are in the Entiat river area. Only 1 mile long with lots of benches for rest stops and only a few steep spots.</p>",
+    "Photos": ["http://www.wta.org/site_images/trip-reports/2008/2008051806a.jpg"],
+    "Title": "Silver Falls  #1442",
+    "Date": "05-18-2008",
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/tripreport-2008051806",
+    "Author": "Chuckwalla",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
+},
+{
+    "BodyText": "<p>Easy walk in the park from the<br /> lot for the Patriarchs. Nice hike to a pretty waterfall the family can enjoy.</p>",
+    "Photos": [],
+    "Title": "Silver Falls",
+    "Date": "08-03-1997",
+    "FullReportUrl": "http://www.wta.org/go-hiking/trip-reports/tripreport-1997080308",
+    "Author": "toms_strat",
+    "HikeType": "day-hike",
+    "HikeIds": ["silver-falls"]
 }]
