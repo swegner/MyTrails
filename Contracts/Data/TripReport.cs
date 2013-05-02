@@ -19,6 +19,7 @@
         public TripReport()
         {
             this.Trails = new Collection<Trail>();
+            this.Photos = new Collection<TripReportPhoto>();
         }
 
         /// <summary>
@@ -93,6 +94,11 @@
         /// <summary>
         /// Trails included in the trip report.
         /// </summary>
-        public virtual ICollection<Trail> Trails { get; private set; } 
+        public virtual ICollection<Trail> Trails { get; private set; }
+
+        /// <summary>
+        /// Photos associated with the trip report.
+        /// </summary>
+        public virtual ICollection<TripReportPhoto> Photos { get; private set; }
     }
 }

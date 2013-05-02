@@ -22,6 +22,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\TripReportPhoto.cs" />
     <Compile Include="Data\DrivingDirections.cs" />
     <Compile Include="Data\GuideBook.cs" />
     <Compile Include="Data\Address.cs" />
